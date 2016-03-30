@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Tagging;
+using Xannden.GLSL.Errors;
+using Xannden.VSGLSL.Extensions.Text;
+using Xannden.VSGLSL.Sources;
+
+namespace Xannden.VSGLSL.Tagging.Errors
+{
+	internal sealed class ErrorTagger : ITagger<ErrorTag>
+	{
+		private ErrorHandler handler;
+		private VSSource source;
+
+		public ErrorTagger(ErrorHandler handler, VSSource source)
+		{
+			this.handler = handler;
+			this.source = source;
+
+			this.source.DoneParsing += this.Source_DoneParsing;
+		}
+
+		public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+
+		public IEnumerable<ITagSpan<ErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+		{
+			List<Error> errors = this.handler.GetErrors();
+
+			for (int i = 0; i < errors.Count; i++)
+			{
+				foreach (SnapshotSpan span in spans)
+				{
+					if (errors[i].Span.Overlaps(span))
+					{
+						yield return new TagSpan<ErrorTag>(new SnapshotSpan(span.Snapshot, errors[i].Span.ToVSSpan()), new ErrorTag("syntaxError", errors[i].Message));
+					}
+				}
+			}
+		}
+
+		private void Source_DoneParsing(object sender, EventArgs e)
+		{
+			this.TagsChanged.Invoke(this, new SnapshotSpanEventArgs(this.source.CurrentSnapshot.GetSnapshotSpan(this.source.CurrentSnapshot.Span)));
+		}
+	}
+}

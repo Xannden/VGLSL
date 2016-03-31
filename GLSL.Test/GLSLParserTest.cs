@@ -8,7 +8,7 @@ using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Test.Text;
 
-namespace Xannden.GLSL.Test.Tests
+namespace Xannden.GLSL.Test
 {
 	[TestClass]
 	internal class GLSLParserTest

@@ -8,10 +8,10 @@ using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Test.Text;
 
-namespace Xannden.GLSL.Test.Tests
+namespace Xannden.GLSL.Tests
 {
 	[TestClass]
-	internal class GLSLLexerTests
+	public class GLSLLexerTests
 	{
 		[TestMethod]
 		public void LexComment()

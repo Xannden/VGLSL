@@ -45,7 +45,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Xannden.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
     <DocumentationFile>bin\Release\GLSL.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>

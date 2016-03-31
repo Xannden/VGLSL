@@ -4,11 +4,12 @@ using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Test.Text;
 using Xannden.GLSL.Text;
 
-namespace Xannden.GLSL.Test.Tests
+namespace Xannden.GLSL.Tests
 {
 	[TestClass]
-	internal class TextNavigatorTests
+	public class TextNavigotorTests
 	{
+
 		[TestMethod]
 		public void AdvancePastEnd()
 		{
@@ -117,4 +118,5 @@ namespace Xannden.GLSL.Test.Tests
 			Assert.AreEqual(TextNavigator.EndCharacter, nav.PeekChar());
 		}
 	}
+
 }

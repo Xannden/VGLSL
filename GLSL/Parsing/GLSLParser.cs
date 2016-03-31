@@ -1916,50 +1916,6 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private bool IsImageType(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.Image1D:
-				case SyntaxType.Image2D:
-				case SyntaxType.Image3D:
-				case SyntaxType.IImage1D:
-				case SyntaxType.IImage2D:
-				case SyntaxType.IImage3D:
-				case SyntaxType.UImage1D:
-				case SyntaxType.UImage2D:
-				case SyntaxType.UImage3D:
-				case SyntaxType.Image2DRect:
-				case SyntaxType.IImage2DRect:
-				case SyntaxType.UImage2DRect:
-				case SyntaxType.ImageCube:
-				case SyntaxType.IImageCube:
-				case SyntaxType.UImageCube:
-				case SyntaxType.ImageBuffer:
-				case SyntaxType.IImageBuffer:
-				case SyntaxType.UImageBuffer:
-				case SyntaxType.Image1DArray:
-				case SyntaxType.IImage1DArray:
-				case SyntaxType.UImage1DArray:
-				case SyntaxType.Image2DArray:
-				case SyntaxType.IImage2DArray:
-				case SyntaxType.UImage2DArray:
-				case SyntaxType.ImageCubeArray:
-				case SyntaxType.IImageCubeArray:
-				case SyntaxType.UImageCubeArray:
-				case SyntaxType.Image2DMS:
-				case SyntaxType.IImage2DMS:
-				case SyntaxType.UImage2DMS:
-				case SyntaxType.Image2DMSArray:
-				case SyntaxType.IImage2DMSArray:
-				case SyntaxType.UImage2DMSArray:
-					return true;
-
-				default:
-					return false;
-			}
-		}
-
 		private bool IsInitDeclaratorList()
 		{
 			bool result = false;
@@ -1980,50 +1936,6 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private bool IsKeyword(SyntaxType type)
-		{
-			switch (type)
-			{
-				default:
-					return false;
-			}
-		}
-
-		private bool IsMatrixType(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.Mat2Keyword:
-				case SyntaxType.Mat2x2Keyword:
-				case SyntaxType.Mat2x3Keyword:
-				case SyntaxType.Mat2x4Keyword:
-				case SyntaxType.Mat3Keyword:
-				case SyntaxType.Mat3x2Keyword:
-				case SyntaxType.Mat3x3Keyword:
-				case SyntaxType.Mat3x4Keyword:
-				case SyntaxType.Mat4Keyword:
-				case SyntaxType.Mat4x2Keyword:
-				case SyntaxType.Mat4x3Keyword:
-				case SyntaxType.Mat4x4Keyword:
-				case SyntaxType.DMat2Keyword:
-				case SyntaxType.DMat2x2Keyword:
-				case SyntaxType.DMat2x3Keyword:
-				case SyntaxType.DMat2x4Keyword:
-				case SyntaxType.DMat3Keyword:
-				case SyntaxType.DMat3x2Keyword:
-				case SyntaxType.DMat3x3Keyword:
-				case SyntaxType.DMat3x4Keyword:
-				case SyntaxType.DMat4Keyword:
-				case SyntaxType.DMat4x2Keyword:
-				case SyntaxType.DMat4x3Keyword:
-				case SyntaxType.DMat4x4Keyword:
-					return true;
-
-				default:
-					return false;
-			}
-		}
-
 		private bool IsPostFixOperator(SyntaxType type)
 		{
 			return type == SyntaxType.PlusPlusToken || type == SyntaxType.MinusMinusToken;
@@ -2032,57 +1944,6 @@ namespace Xannden.GLSL.Parsing
 		private bool IsPreprocessor()
 		{
 			return this.builder.CurrentToken?.Type.IsPreprocessor() ?? false;
-		}
-
-		private bool IsSamplerType(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.Sampler1DKeyword:
-				case SyntaxType.Sampler2DKeyword:
-				case SyntaxType.Sampler3DKeyword:
-				case SyntaxType.SamplerCubeKeyword:
-				case SyntaxType.Sampler1DShadowKeyword:
-				case SyntaxType.Sampler2DShadowKeyword:
-				case SyntaxType.SamplerCubeShadowKeyword:
-				case SyntaxType.Sampler1DArrayKeyword:
-				case SyntaxType.Sampler2DArrayKeyword:
-				case SyntaxType.Sampler1DArrayShadowKeyword:
-				case SyntaxType.Sampler2DArrayShadowKeyword:
-				case SyntaxType.ISampler1DKeyword:
-				case SyntaxType.ISampler2DKeyword:
-				case SyntaxType.ISampler3DKeyword:
-				case SyntaxType.ISamplerCubeKeyword:
-				case SyntaxType.ISampler1DArrayKeyword:
-				case SyntaxType.ISampler2DArrayKeyword:
-				case SyntaxType.USampler1DKeyword:
-				case SyntaxType.USampler2DKeyword:
-				case SyntaxType.USampler3DKeyword:
-				case SyntaxType.USamplerCubeKeyword:
-				case SyntaxType.USampler1DArrayKeyword:
-				case SyntaxType.USampler2DArrayKeyword:
-				case SyntaxType.Sampler2DRectKeyword:
-				case SyntaxType.Sampler2DRectShadowKeyword:
-				case SyntaxType.ISampler2DRectKeyword:
-				case SyntaxType.USampler2DRectKeyword:
-				case SyntaxType.SamplerBufferKeyword:
-				case SyntaxType.ISamplerBufferKeyword:
-				case SyntaxType.USamplerBufferKeyword:
-				case SyntaxType.SamplerCubeArrayKeyword:
-				case SyntaxType.SamplerCubeArrayShadowKeyword:
-				case SyntaxType.ISamplerCubeArrayKeyword:
-				case SyntaxType.USamplerCubeArrayKeyword:
-				case SyntaxType.Sampler2DMSKeyword:
-				case SyntaxType.ISampler2DMSKeyword:
-				case SyntaxType.USampler2DMSKeyword:
-				case SyntaxType.Sampler2DMSArrayKeyword:
-				case SyntaxType.ISampler2DMSArrayKeyword:
-				case SyntaxType.USampler2DMSArrayKeyword:
-					return true;
-
-				default:
-					return false;
-			}
 		}
 
 		private bool IsSimpleStatement(SyntaxType type)
@@ -2388,32 +2249,6 @@ namespace Xannden.GLSL.Parsing
 					{
 						return false;
 					}
-			}
-		}
-
-		private bool IsVectorType(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.Vec2Keyword:
-				case SyntaxType.Vec3Keyword:
-				case SyntaxType.Vec4Keyword:
-				case SyntaxType.DVec2Keyword:
-				case SyntaxType.DVec3Keyword:
-				case SyntaxType.DVec4Keyword:
-				case SyntaxType.BVec2Keyword:
-				case SyntaxType.BVec3Keyword:
-				case SyntaxType.BVec4Keyword:
-				case SyntaxType.IVec2Keyword:
-				case SyntaxType.IVec3Keyword:
-				case SyntaxType.IVec4Keyword:
-				case SyntaxType.UVec2Keyword:
-				case SyntaxType.UVec3Keyword:
-				case SyntaxType.UVec4Keyword:
-					return true;
-
-				default:
-					return false;
 			}
 		}
 

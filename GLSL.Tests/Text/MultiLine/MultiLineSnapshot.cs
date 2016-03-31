@@ -12,11 +12,6 @@ namespace Xannden.GLSL.Test.Text
 			this.Lines = new List<TextLine>();
 		}
 
-		public MultiLineSnapshot(Source source, List<TextLine> lines) : base(source)
-		{
-			this.Lines = lines;
-		}
-
 		public override int Length
 		{
 			get

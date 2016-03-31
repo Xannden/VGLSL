@@ -9,7 +9,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.VSGLSL.Sources
 {
-	internal sealed class VSSource : Source
+	internal sealed class VSSource : Source, IDisposable
 	{
 		private AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 		private bool isParsing = false;
@@ -43,6 +43,11 @@ namespace Xannden.VSGLSL.Sources
 			return source;
 		}
 
+		public void Dispose()
+		{
+			this.Dispose(true);
+		}
+
 		public void Parse()
 		{
 			this.Buffer_Changed(null, null);
@@ -59,6 +64,14 @@ namespace Xannden.VSGLSL.Sources
 					this.isParsing = true;
 					ThreadPool.QueueUserWorkItem(this.Parse);
 				}
+			}
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				this.autoResetEvent.Dispose();
 			}
 		}
 

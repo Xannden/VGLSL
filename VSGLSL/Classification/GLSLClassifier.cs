@@ -153,16 +153,10 @@ namespace Xannden.VSGLSL.Classification
 
 		private bool IsFunction(Token token, SyntaxNode node)
 		{
-			if (node.Parent?.SyntaxType == SyntaxType.FunctionHeader && node.SyntaxType == SyntaxType.IdentifierToken)
-			{
-				IdentifierSyntax identifier = node as IdentifierSyntax;
+			IdentifierSyntax identifier = node as IdentifierSyntax;
 
-				return token.Text == identifier.Name;
-			}
-			else if (node.Parent?.SyntaxType == SyntaxType.FunctionCall && node.SyntaxType == SyntaxType.IdentifierToken)
+			if (identifier?.Parent?.SyntaxType == SyntaxType.FunctionHeader || identifier?.Parent?.SyntaxType == SyntaxType.FunctionCall)
 			{
-				IdentifierSyntax identifier = node as IdentifierSyntax;
-
 				return token.Text == identifier.Name;
 			}
 

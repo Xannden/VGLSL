@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Text;
 
@@ -12,11 +11,6 @@ namespace Xannden.GLSL.Test.Text
 		public MultiLineTextSource(ErrorHandler reporter) : base(reporter)
 		{
 			this.snapshot = new MultiLineSnapshot(this);
-		}
-
-		public MultiLineTextSource(ErrorHandler reporter, Source source, List<TextLine> lines) : base(reporter)
-		{
-			this.snapshot = new MultiLineSnapshot(this, lines);
 		}
 
 		public override Snapshot CurrentSnapshot => this.snapshot;

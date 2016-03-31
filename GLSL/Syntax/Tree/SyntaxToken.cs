@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security;
 using System.Text;
 using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
@@ -72,7 +71,7 @@ namespace Xannden.GLSL.Syntax.Tree
 		{
 			List<string> elements = new List<string>();
 
-			elements.Add($"Text=\"{SecurityElement.Escape(this.Text)}\"");
+			elements.Add($"Text=\"{this.Escape(this.Text)}\"");
 
 			if (this.HasLeadingTrivia())
 			{
@@ -114,6 +113,11 @@ namespace Xannden.GLSL.Syntax.Tree
 			{
 				builder.Append(this.TrailingTrivia.ToString());
 			}
+		}
+
+		private string Escape(string text)
+		{
+			return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
 		}
 	}
 }

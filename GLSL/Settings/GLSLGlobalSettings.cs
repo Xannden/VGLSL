@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Settings
 {
-	internal class GLSLGlobalSettings
+	internal static class GLSLGlobalSettings
 	{
 	}
 }

@@ -69,6 +69,18 @@ namespace Xannden.GLSL.Parsing
 			this.stack.Peek().AddChild(this.CreateNode(expected, this.CurrentToken.Span, true));
 		}
 
+		public void Error(SyntaxType expected, string message, Span span)
+		{
+			if (span == null)
+			{
+				span = this.CurrentToken.Span;
+			}
+
+			this.errorHandler.AddError(message, span);
+
+			this.stack.Peek().AddChild(this.CreateNode(expected, this.CurrentToken.Span, true));
+		}
+
 		public ResetPoint GetResetPoint()
 		{
 			return new ResetPoint(this.listNode);
@@ -112,7 +124,7 @@ namespace Xannden.GLSL.Parsing
 			this.listNode = point.Node;
 		}
 
-		public void StartNode(SyntaxType type)
+		public SyntaxNode StartNode(SyntaxType type)
 		{
 			SyntaxNode node = this.CreateNode(type, null);
 
@@ -126,6 +138,8 @@ namespace Xannden.GLSL.Parsing
 			}
 
 			this.stack.Push(node);
+
+			return node;
 		}
 
 		private SyntaxNode CreateNode(SyntaxType type, Span span, bool isMissing = false)

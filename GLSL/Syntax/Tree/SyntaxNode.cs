@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xannden.GLSL.Syntax.Tree.Syntax;
+using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 
@@ -127,6 +128,13 @@ namespace Xannden.GLSL.Syntax.Tree
 			node.Initilize(tree, start);
 
 			return node;
+		}
+
+		public SyntaxTrivia GetTrailingTrivia()
+		{
+			SyntaxToken token = (SyntaxToken)this.Children.FindLast(node => node is SyntaxToken);
+
+			return token?.TrailingTrivia;
 		}
 
 		public void AddChild(SyntaxNode child)

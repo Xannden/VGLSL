@@ -80,6 +80,9 @@
     <Compile Include="Sources\VSTrackingSpan.cs" />
     <Compile Include="Tagging\Errors\ErrorTagger.cs" />
     <Compile Include="Tagging\Errors\ErrorTaggerProvider.cs" />
+    <Compile Include="Utility\Theme\VSTheme.cs" />
+    <Compile Include="Utility\Theme\ThemeChangedEventArgs.cs" />
+    <Compile Include="Utility\Theme\VSThemeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

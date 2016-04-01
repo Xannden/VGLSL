@@ -36,6 +36,16 @@ namespace Xannden.GLSL.Text
 			return new Span(start, end);
 		}
 
+		public static Span Create(int position)
+		{
+			if (position < 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(position), $"position must be greater then 0");
+			}
+
+			return new Span(position, position);
+		}
+
 		public bool Contains(int position)
 		{
 			return position >= this.Start && position <= this.End;

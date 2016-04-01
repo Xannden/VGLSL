@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Media;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
@@ -20,6 +21,7 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Keyword)]
 		[Name(GLSLConstants.Keyword)]
 		[UserVisible(true)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Keyword)]
 		private class GLSLKeywordFormatDefinition : ClassificationFormatDefinition
 		{
 			private GLSLKeywordFormatDefinition()

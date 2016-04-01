@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
+using Xannden.GLSL.Properties;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
@@ -273,7 +274,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseBlock()
 		{
-			this.builder.StartNode(SyntaxType.Block);
+			BlockSyntax node = this.builder.StartNode(SyntaxType.Block) as BlockSyntax;
 
 			if (this.AcceptToken(SyntaxType.LeftBraceToken))
 			{
@@ -286,7 +287,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.SemiColonToken);
+				this.RequireToken(SyntaxType.SemiColonToken, this.GetErrorMessage(), Span.Create(node.TempStart));
 			}
 
 			this.builder.EndNode();
@@ -1363,9 +1364,9 @@ namespace Xannden.GLSL.Parsing
 
 			int line = this.builder.CurrentToken.Line.LineNumber;
 
-			this.RequireToken(SyntaxType.DefinePreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.DefinePreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			if (this.AcceptToken(SyntaxType.LeftParenToken, true))
 			{
@@ -1374,7 +1375,7 @@ namespace Xannden.GLSL.Parsing
 					this.ParseMacroArguments();
 				}
 
-				this.RequireToken(SyntaxType.RightParenToken, true);
+				this.PreprocessorRequireToken(SyntaxType.RightParenToken);
 
 				this.ParseTokenString(line);
 			}
@@ -1394,7 +1395,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool isTrue = this.settings.GetPreprocessorValue(this.snapshot, this.builder.CurrentToken.Span.Start);
 
-			this.RequireToken(SyntaxType.ElseIfPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.ElseIfPreprocessorKeyword);
 
 			this.ParseTokenString(line);
 
@@ -1417,7 +1418,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool isTrue = this.settings.GetPreprocessorValue(this.snapshot, this.builder.CurrentToken.Span.Start, true);
 
-			this.RequireToken(SyntaxType.ElsePreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.ElsePreprocessorKeyword);
 
 			if (!isTrue)
 			{
@@ -1438,7 +1439,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.EndIfPreprocessor);
 
-			this.RequireToken(SyntaxType.EndIfPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.EndIfPreprocessorKeyword);
 
 			this.builder.EndNode();
 
@@ -1454,7 +1455,7 @@ namespace Xannden.GLSL.Parsing
 
 			int line = this.builder.CurrentToken.Line.LineNumber;
 
-			this.RequireToken(SyntaxType.ErrorPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.ErrorPreprocessorKeyword);
 
 			this.ParseTokenString(line);
 
@@ -1488,13 +1489,13 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.ExtensionPreprocessor);
 
-			this.RequireToken(SyntaxType.ExtensionPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.ExtensionPreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
-			this.RequireToken(SyntaxType.ColonToken, true);
+			this.PreprocessorRequireToken(SyntaxType.ColonToken);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			this.builder.EndNode();
 		}
@@ -1505,9 +1506,9 @@ namespace Xannden.GLSL.Parsing
 
 			bool isTrue = this.settings.GetPreprocessorValue(this.snapshot, this.builder.CurrentToken.Span.Start);
 
-			this.RequireToken(SyntaxType.IfDefinedPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.IfDefinedPreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			if (!isTrue)
 			{
@@ -1540,9 +1541,9 @@ namespace Xannden.GLSL.Parsing
 
 			bool isTrue = this.settings.GetPreprocessorValue(this.snapshot, this.builder.CurrentToken.Span.Start);
 
-			this.RequireToken(SyntaxType.IfNotDefinedPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.IfNotDefinedPreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			if (!isTrue)
 			{
@@ -1571,7 +1572,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool isTrue = this.settings.GetPreprocessorValue(this.snapshot, this.builder.CurrentToken.Span.Start);
 
-			this.RequireToken(SyntaxType.IfPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.IfPreprocessorKeyword);
 
 			this.ParseTokenString(line);
 
@@ -1598,9 +1599,9 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.LinePreprocessor);
 
-			this.RequireToken(SyntaxType.LinePreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.LinePreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IntConstToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IntConstToken);
 
 			this.AcceptToken(SyntaxType.IntConstToken, true);
 
@@ -1611,11 +1612,11 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.MacroArguments);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			while (this.AcceptToken(SyntaxType.CommaToken, true))
 			{
-				this.RequireToken(SyntaxType.IdentifierToken, true);
+				this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 			}
 
 			this.builder.EndNode();
@@ -1627,7 +1628,7 @@ namespace Xannden.GLSL.Parsing
 
 			int line = this.builder.CurrentToken.Line.LineNumber;
 
-			this.RequireToken(SyntaxType.PragmaPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.PragmaPreprocessorKeyword);
 
 			this.ParseTokenString(line);
 
@@ -1716,9 +1717,9 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.UndefinePreprocessor);
 
-			this.RequireToken(SyntaxType.UndefinePreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.UndefinePreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IdentifierToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
 			this.builder.EndNode();
 		}
@@ -1727,9 +1728,9 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.VersionPreprocessor);
 
-			this.RequireToken(SyntaxType.VersionPreprocessorKeyword, true);
+			this.PreprocessorRequireToken(SyntaxType.VersionPreprocessorKeyword);
 
-			this.RequireToken(SyntaxType.IntConstToken, true);
+			this.PreprocessorRequireToken(SyntaxType.IntConstToken);
 
 			this.AcceptToken(SyntaxType.IdentifierToken, true);
 
@@ -2252,6 +2253,11 @@ namespace Xannden.GLSL.Parsing
 			}
 		}
 
+		private string GetErrorMessage()
+		{
+			return Resources.Error_MissingSemicolon;
+		}
+
 		#endregion Helpers
 
 		#region Token Helpers
@@ -2304,11 +2310,11 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private void RequireToken(SyntaxType type, bool skipPreprocessor = false)
+		private void RequireToken(SyntaxType type, string errorMessage = "", Span span = null)
 		{
-			if (!this.AcceptToken(type, skipPreprocessor))
+			if (!this.AcceptToken(type))
 			{
-				this.builder.Error(type);
+				this.builder.Error(type, errorMessage, span);
 			}
 		}
 
@@ -2317,6 +2323,14 @@ namespace Xannden.GLSL.Parsing
 			if (!this.AcceptToken(types))
 			{
 				this.builder.Error(types[0]);
+			}
+		}
+
+		private void PreprocessorRequireToken(SyntaxType type)
+		{
+			if (!this.AcceptToken(type, true))
+			{
+				this.builder.Error(type);
 			}
 		}
 

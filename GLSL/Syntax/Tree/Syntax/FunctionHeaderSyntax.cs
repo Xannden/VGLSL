@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class FunctionHeaderSyntax : SyntaxNode
+	public sealed class FunctionHeaderSyntax : SyntaxNode
 	{
 		internal FunctionHeaderSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionHeader, start)
 		{

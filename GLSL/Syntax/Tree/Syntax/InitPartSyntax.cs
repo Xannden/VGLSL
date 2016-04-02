@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class InitPartSyntax : SyntaxNode
+	public sealed class InitPartSyntax : SyntaxNode
 	{
 		internal InitPartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitPart, start)
 		{

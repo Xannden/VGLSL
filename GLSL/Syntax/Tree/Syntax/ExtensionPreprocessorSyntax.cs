@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class ExtensionPreprocessorSyntax : SyntaxNode
+	public sealed class ExtensionPreprocessorSyntax : SyntaxNode
 	{
 		internal ExtensionPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExtensionPreprocessor, start)
 		{

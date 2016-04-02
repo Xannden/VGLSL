@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class AssignmentExpressionSyntax : SyntaxNode
+	public sealed class AssignmentExpressionSyntax : SyntaxNode
 	{
 		internal AssignmentExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AssignmentExpression, start)
 		{

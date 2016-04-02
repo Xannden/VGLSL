@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class PostfixExpressionStartSyntax : SyntaxNode
+	public sealed class PostfixExpressionStartSyntax : SyntaxNode
 	{
 		internal PostfixExpressionStartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpressionStart, start)
 		{

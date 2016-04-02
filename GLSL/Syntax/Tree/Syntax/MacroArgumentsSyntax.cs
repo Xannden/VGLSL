@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class MacroArgumentsSyntax : SyntaxNode
+	public sealed class MacroArgumentsSyntax : SyntaxNode
 	{
 		internal MacroArgumentsSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.MacroArguments, start)
 		{

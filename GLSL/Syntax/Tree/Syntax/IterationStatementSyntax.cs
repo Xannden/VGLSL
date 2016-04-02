@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class IterationStatementSyntax : SyntaxNode
+	public sealed class IterationStatementSyntax : SyntaxNode
 	{
 		internal IterationStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.IterationStatement, start)
 		{

@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class ConditionalExpressionSyntax : SyntaxNode
+	public sealed class ConditionalExpressionSyntax : SyntaxNode
 	{
 		internal ConditionalExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ConditionalExpression, start)
 		{

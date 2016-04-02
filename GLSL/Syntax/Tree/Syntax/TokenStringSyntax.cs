@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class TokenStringSyntax : SyntaxNode
+	public sealed class TokenStringSyntax : SyntaxNode
 	{
 		internal TokenStringSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TokenString, start)
 		{

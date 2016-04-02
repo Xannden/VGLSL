@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class TokenSparatedList<T> where T : SyntaxNode
+	public sealed class TokenSparatedList<T> where T : SyntaxNode
 	{
 		private List<T> nodes = new List<T>();
 		private List<SyntaxToken> tokens = new List<SyntaxToken>();

@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class ReturnTypeSyntax : SyntaxNode
+	public sealed class ReturnTypeSyntax : SyntaxNode
 	{
 		internal ReturnTypeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ReturnType, start)
 		{

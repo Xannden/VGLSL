@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class AndExpressionSyntax : SyntaxNode
+	public sealed class AndExpressionSyntax : SyntaxNode
 	{
 		internal AndExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AndExpression, start)
 		{

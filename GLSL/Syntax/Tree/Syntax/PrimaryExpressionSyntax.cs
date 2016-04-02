@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class PrimaryExpressionSyntax : SyntaxNode
+	public sealed class PrimaryExpressionSyntax : SyntaxNode
 	{
 		internal PrimaryExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PrimaryExpression, start)
 		{

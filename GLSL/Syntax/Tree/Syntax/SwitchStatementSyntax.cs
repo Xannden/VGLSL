@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class SwitchStatementSyntax : SyntaxNode
+	public sealed class SwitchStatementSyntax : SyntaxNode
 	{
 		internal SwitchStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SwitchStatement, start)
 		{

@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class InitListSyntax : SyntaxNode
+	public sealed class InitListSyntax : SyntaxNode
 	{
 		internal InitListSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitList, start)
 		{

@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class StructDeclaratorSyntax : SyntaxNode
+	public sealed class StructDeclaratorSyntax : SyntaxNode
 	{
 		internal StructDeclaratorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructDeclarator, start)
 		{

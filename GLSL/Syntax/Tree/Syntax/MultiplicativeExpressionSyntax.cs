@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class MultiplicativeExpressionSyntax : SyntaxNode
+	public sealed class MultiplicativeExpressionSyntax : SyntaxNode
 	{
 		internal MultiplicativeExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.MultiplicativeExpression, start)
 		{

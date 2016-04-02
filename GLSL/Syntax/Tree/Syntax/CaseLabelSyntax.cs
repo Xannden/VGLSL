@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class CaseLabelSyntax : SyntaxNode
+	public sealed class CaseLabelSyntax : SyntaxNode
 	{
 		internal CaseLabelSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.CaseLabel, start)
 		{

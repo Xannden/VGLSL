@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class FunctionCallSyntax : SyntaxNode
+	public sealed class FunctionCallSyntax : SyntaxNode
 	{
 		internal FunctionCallSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionCall, start)
 		{

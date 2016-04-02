@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class RelationalExpressionSyntax : SyntaxNode
+	public sealed class RelationalExpressionSyntax : SyntaxNode
 	{
 		internal RelationalExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.RelationalExpression, start)
 		{

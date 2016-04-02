@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class UndefinePreprocessorSyntax : SyntaxNode
+	public sealed class UndefinePreprocessorSyntax : SyntaxNode
 	{
 		internal UndefinePreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.UndefinePreprocessor, start)
 		{

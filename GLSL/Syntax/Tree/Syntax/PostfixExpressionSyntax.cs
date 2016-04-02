@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class PostfixExpressionSyntax : SyntaxNode
+	public sealed class PostfixExpressionSyntax : SyntaxNode
 	{
 		internal PostfixExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpression, start)
 		{

@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public class TypeSyntax : SyntaxNode
+	public sealed class TypeSyntax : SyntaxNode
 	{
 		internal TypeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Type, start)
 		{

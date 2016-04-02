@@ -15,6 +15,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Keyword)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Keyword)]
 		internal static ClassificationTypeDefinition GLSLKeywordDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -27,7 +28,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLKeywordFormatDefinition()
 			{
 				this.DisplayName = "GLSL Keyword";
-				this.ForegroundColor = Color.FromRgb(86, 156, 214);
 			}
 		}
 
@@ -37,6 +37,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Comment)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Comment)]
 		internal static ClassificationTypeDefinition GLSLCommentDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -49,7 +50,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLCommentFormatDefinition()
 			{
 				this.DisplayName = "GLSL Comment";
-				this.ForegroundColor = Color.FromRgb(87, 166, 74);
 			}
 		}
 
@@ -59,6 +59,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Number)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Number)]
 		internal static ClassificationTypeDefinition GLSLNumberLiteralDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -70,7 +71,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLNumberLiteralFormatDefinition()
 			{
 				this.DisplayName = "GLSL Number";
-				this.ForegroundColor = Color.FromRgb(181, 206, 168);
 			}
 		}
 
@@ -80,6 +80,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Punctuation)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Operator)]
 		internal static ClassificationTypeDefinition GLSLPunctuationDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -91,7 +92,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLPunctuationFormatDefinition()
 			{
 				this.DisplayName = "GLSL Punctuation";
-				this.ForegroundColor = Colors.DeepPink;
 			}
 		}
 
@@ -113,6 +113,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Identifier)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLIdentifierDefinition { get; }
 
 		[Export]
@@ -175,7 +176,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLIdentifierFormatDefinition()
 			{
 				this.DisplayName = "GLSL Identifier";
-				this.ForegroundColor = Colors.PaleGoldenrod;
 			}
 		}
 
@@ -224,6 +224,7 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.ExcludedCode)]
+		[BaseDefinition(PredefinedClassificationTypeNames.ExcludedCode)]
 		internal static ClassificationTypeDefinition GLSLExcludedCodeDefinition { get; }
 
 		[Export]
@@ -232,10 +233,12 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.PreprocessorKeyword)]
+		[BaseDefinition(PredefinedClassificationTypeNames.PreprocessorKeyword)]
 		internal static ClassificationTypeDefinition GLSLPreprocessorKeywordDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.PreprocessorText)]
+		[BaseDefinition(PredefinedClassificationTypeNames.FormalLanguage)]
 		internal static ClassificationTypeDefinition GLSLPreprocessorTextDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -247,7 +250,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLExcludedCodeFormatDefinition()
 			{
 				this.DisplayName = "GLSL Excluded Code";
-				this.ForegroundColor = Color.FromRgb(155, 155, 155);
 			}
 		}
 
@@ -273,7 +275,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLPreprocessorKeywordFormatDefinition()
 			{
 				this.DisplayName = "GLSL Preprocessor Keyword";
-				this.ForegroundColor = Color.FromRgb(155, 155, 155);
 			}
 		}
 
@@ -286,7 +287,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLPreprocessorTextFormatDefinition()
 			{
 				this.DisplayName = "GLSL Preprocessor Text";
-				this.ForegroundColor = Color.FromRgb(220, 220, 220);
 			}
 		}
 

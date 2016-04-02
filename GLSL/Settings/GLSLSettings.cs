@@ -30,7 +30,7 @@ namespace Xannden.GLSL.Settings
 			return this.Preprocessors.Find(preprocessor => preprocessor.Contains(snapshot, position)) != null;
 		}
 
-		public void SetPreprocessors(Snapshot snapshot, List<IfPreprocessor> preprocessors)
+		public void SetPreprocessors(List<IfPreprocessor> preprocessors)
 		{
 			this.Preprocessors = preprocessors;
 		}

@@ -59,14 +59,5 @@ namespace Xannden.GLSL.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ; expected.
-        /// </summary>
-        internal static string Error_MissingSemicolon {
-            get {
-                return ResourceManager.GetString("Error_MissingSemicolon", resourceCulture);
-            }
-        }
     }
 }

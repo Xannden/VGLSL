@@ -64,21 +64,25 @@ namespace Xannden.GLSL.Parsing
 
 		public void Error(SyntaxType expected)
 		{
-			this.errorHandler.AddError($"Unexpected Token: {this.CurrentToken.ToString()}. Expected {expected}", this.CurrentToken.Span);
+			Span span;
 
-			this.stack.Peek().AddChild(this.CreateNode(expected, this.CurrentToken.Span, true));
-		}
-
-		public void Error(SyntaxType expected, string message, Span span)
-		{
-			if (span == null)
+			if (this.stack.Count > 0)
+			{
+				span = Span.Create(this.stack.Peek().TempStart);
+			}
+			else
 			{
 				span = this.CurrentToken.Span;
 			}
 
-			this.errorHandler.AddError(message, span);
+			this.errorHandler.AddError($"{expected.ToString().Replace("Token", string.Empty).Replace("Keyword", string.Empty)} expected", span);
 
 			this.stack.Peek().AddChild(this.CreateNode(expected, this.CurrentToken.Span, true));
+		}
+
+		public void Error(string message)
+		{
+			this.errorHandler.AddError(message, this.CurrentToken.Span);
 		}
 
 		public ResetPoint GetResetPoint()
@@ -392,7 +396,7 @@ namespace Xannden.GLSL.Parsing
 					return SyntaxToken.Create<IdentifierSyntax>(this.tree, this.snapshot.CreateTrackingSpan(span), this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
 
 				default:
-					if (type >= SyntaxType.LeftParenToken && type <= SyntaxType.PreprocessorToken)
+					if ((type >= SyntaxType.LeftParenToken && type <= SyntaxType.PreprocessorToken) || type == SyntaxType.EOF)
 					{
 						if (isMissing)
 						{

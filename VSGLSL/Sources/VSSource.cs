@@ -91,7 +91,7 @@ namespace Xannden.VSGLSL.Sources
 
 			this.Tree = this.Parser.Run(this.CurrentSnapshot, tokens);
 
-			this.Settings.SetPreprocessors(snapshot, this.Parser.GetPreprocessors());
+			this.Settings.SetPreprocessors(this.Parser.GetPreprocessors());
 
 			this.DoneParsing?.Invoke(this, new EventArgs());
 

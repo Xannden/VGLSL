@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
-using Xannden.GLSL.Properties;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
@@ -228,7 +227,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.IntKeyword, SyntaxType.UIntKeyword, SyntaxType.FloatKeyword, SyntaxType.DoubleKeyword, SyntaxType.Vec2Keyword, SyntaxType.Vec3Keyword, SyntaxType.Vec4Keyword, SyntaxType.UVec2Keyword, SyntaxType.UVec3Keyword, SyntaxType.UVec4Keyword, SyntaxType.IVec2Keyword, SyntaxType.IVec3Keyword, SyntaxType.IVec4Keyword, SyntaxType.DVec2Keyword, SyntaxType.DVec3Keyword, SyntaxType.DVec4Keyword, SyntaxType.BVec2Keyword, SyntaxType.BVec3Keyword, SyntaxType.BVec4Keyword, SyntaxType.Mat2Keyword, SyntaxType.Mat3Keyword, SyntaxType.Mat4Keyword, SyntaxType.Mat2x2Keyword, SyntaxType.Mat2x3Keyword, SyntaxType.Mat2x4Keyword, SyntaxType.Mat3x2Keyword, SyntaxType.Mat3x3Keyword, SyntaxType.Mat3x4Keyword, SyntaxType.Mat4x2Keyword, SyntaxType.Mat4x3Keyword, SyntaxType.Mat4x4Keyword, SyntaxType.DMat2Keyword, SyntaxType.DMat3Keyword, SyntaxType.DMat4Keyword, SyntaxType.DMat2x2Keyword, SyntaxType.DMat2x3Keyword, SyntaxType.DMat2x4Keyword, SyntaxType.DMat3x2Keyword, SyntaxType.DMat3x3Keyword, SyntaxType.DMat3x4Keyword, SyntaxType.DMat4x2Keyword, SyntaxType.DMat4x3Keyword, SyntaxType.DMat4x4Keyword, SyntaxType.Sampler1DKeyword, SyntaxType.Sampler2DKeyword, SyntaxType.Sampler3DKeyword, SyntaxType.SamplerCubeKeyword, SyntaxType.Sampler1DShadowKeyword, SyntaxType.Sampler2DShadowKeyword, SyntaxType.SamplerCubeShadowKeyword, SyntaxType.Sampler1DArrayKeyword, SyntaxType.Sampler2DArrayKeyword, SyntaxType.Sampler1DArrayShadowKeyword, SyntaxType.Sampler2DArrayShadowKeyword, SyntaxType.ISampler1DKeyword, SyntaxType.ISampler2DKeyword, SyntaxType.ISampler3DKeyword, SyntaxType.ISamplerCubeKeyword, SyntaxType.ISampler1DArrayKeyword, SyntaxType.ISampler2DArrayKeyword, SyntaxType.USampler1DKeyword, SyntaxType.USampler2DKeyword, SyntaxType.USampler3DKeyword, SyntaxType.USamplerCubeKeyword, SyntaxType.USampler1DArrayKeyword, SyntaxType.USampler2DArrayKeyword, SyntaxType.Sampler2DRectKeyword, SyntaxType.Sampler2DRectShadowKeyword, SyntaxType.ISampler2DRectKeyword, SyntaxType.USampler2DRectKeyword, SyntaxType.SamplerBufferKeyword, SyntaxType.ISamplerBufferKeyword, SyntaxType.USamplerBufferKeyword, SyntaxType.SamplerCubeArrayKeyword, SyntaxType.SamplerCubeArrayShadowKeyword, SyntaxType.ISamplerCubeArrayKeyword, SyntaxType.USamplerCubeArrayKeyword, SyntaxType.Sampler2DMSKeyword, SyntaxType.ISampler2DMSKeyword, SyntaxType.USampler2DMSKeyword, SyntaxType.Sampler2DMSArrayKeyword, SyntaxType.ISampler2DMSArrayKeyword, SyntaxType.USampler2DMSArrayKeyword, SyntaxType.Image1D, SyntaxType.Image2D, SyntaxType.Image3D, SyntaxType.IImage1D, SyntaxType.IImage2D, SyntaxType.IImage3D, SyntaxType.UImage1D, SyntaxType.UImage2D, SyntaxType.UImage3D, SyntaxType.Image2DRect, SyntaxType.IImage2DRect, SyntaxType.UImage2DRect, SyntaxType.ImageCube, SyntaxType.IImageCube, SyntaxType.UImageCube, SyntaxType.ImageBuffer, SyntaxType.IImageBuffer, SyntaxType.UImageBuffer, SyntaxType.Image1DArray, SyntaxType.IImage1DArray, SyntaxType.UImage1DArray, SyntaxType.Image2DArray, SyntaxType.IImage2DArray, SyntaxType.UImage2DArray, SyntaxType.ImageCubeArray, SyntaxType.IImageCubeArray, SyntaxType.UImageCubeArray, SyntaxType.Image2DMS, SyntaxType.IImage2DMS, SyntaxType.UImage2DMS, SyntaxType.Image2DMSArray, SyntaxType.IImage2DMSArray, SyntaxType.UImage2DMSArray);
+				this.RequireToken(SyntaxType.IntKeyword, SyntaxType.UIntKeyword, SyntaxType.FloatKeyword, SyntaxType.DoubleKeyword, SyntaxType.Vec2Keyword, SyntaxType.Vec3Keyword, SyntaxType.Vec4Keyword, SyntaxType.UVec2Keyword, SyntaxType.UVec3Keyword, SyntaxType.UVec4Keyword, SyntaxType.IVec2Keyword, SyntaxType.IVec3Keyword, SyntaxType.IVec4Keyword, SyntaxType.DVec2Keyword, SyntaxType.DVec3Keyword, SyntaxType.DVec4Keyword, SyntaxType.BVec2Keyword, SyntaxType.BVec3Keyword, SyntaxType.BVec4Keyword, SyntaxType.Mat2Keyword, SyntaxType.Mat3Keyword, SyntaxType.Mat4Keyword, SyntaxType.Mat2x2Keyword, SyntaxType.Mat2x3Keyword, SyntaxType.Mat2x4Keyword, SyntaxType.Mat3x2Keyword, SyntaxType.Mat3x3Keyword, SyntaxType.Mat3x4Keyword, SyntaxType.Mat4x2Keyword, SyntaxType.Mat4x3Keyword, SyntaxType.Mat4x4Keyword, SyntaxType.DMat2Keyword, SyntaxType.DMat3Keyword, SyntaxType.DMat4Keyword, SyntaxType.DMat2x2Keyword, SyntaxType.DMat2x3Keyword, SyntaxType.DMat2x4Keyword, SyntaxType.DMat3x2Keyword, SyntaxType.DMat3x3Keyword, SyntaxType.DMat3x4Keyword, SyntaxType.DMat4x2Keyword, SyntaxType.DMat4x3Keyword, SyntaxType.DMat4x4Keyword, SyntaxType.Sampler1DKeyword, SyntaxType.Sampler2DKeyword, SyntaxType.Sampler3DKeyword, SyntaxType.SamplerCubeKeyword, SyntaxType.Sampler1DShadowKeyword, SyntaxType.Sampler2DShadowKeyword, SyntaxType.SamplerCubeShadowKeyword, SyntaxType.Sampler1DArrayKeyword, SyntaxType.Sampler2DArrayKeyword, SyntaxType.Sampler1DArrayShadowKeyword, SyntaxType.Sampler2DArrayShadowKeyword, SyntaxType.ISampler1DKeyword, SyntaxType.ISampler2DKeyword, SyntaxType.ISampler3DKeyword, SyntaxType.ISamplerCubeKeyword, SyntaxType.ISampler1DArrayKeyword, SyntaxType.ISampler2DArrayKeyword, SyntaxType.USampler1DKeyword, SyntaxType.USampler2DKeyword, SyntaxType.USampler3DKeyword, SyntaxType.USamplerCubeKeyword, SyntaxType.USampler1DArrayKeyword, SyntaxType.USampler2DArrayKeyword, SyntaxType.Sampler2DRectKeyword, SyntaxType.Sampler2DRectShadowKeyword, SyntaxType.ISampler2DRectKeyword, SyntaxType.USampler2DRectKeyword, SyntaxType.SamplerBufferKeyword, SyntaxType.ISamplerBufferKeyword, SyntaxType.USamplerBufferKeyword, SyntaxType.SamplerCubeArrayKeyword, SyntaxType.SamplerCubeArrayShadowKeyword, SyntaxType.ISamplerCubeArrayKeyword, SyntaxType.USamplerCubeArrayKeyword, SyntaxType.Sampler2DMSKeyword, SyntaxType.ISampler2DMSKeyword, SyntaxType.USampler2DMSKeyword, SyntaxType.Sampler2DMSArrayKeyword, SyntaxType.ISampler2DMSArrayKeyword, SyntaxType.USampler2DMSArrayKeyword, SyntaxType.Image1DKeyword, SyntaxType.Image2DKeyword, SyntaxType.Image3DKeyword, SyntaxType.IImage1DKeyword, SyntaxType.IImage2DKeyword, SyntaxType.IImage3DKeyword, SyntaxType.UImage1DKeyword, SyntaxType.UImage2DKeyword, SyntaxType.UImage3DKeyword, SyntaxType.Image2DRectKeyword, SyntaxType.IImage2DRectKeyword, SyntaxType.UImage2DRectKeyword, SyntaxType.ImageCubeKeyword, SyntaxType.IImageCubeKeyword, SyntaxType.UImageCubeKeyword, SyntaxType.ImageBufferKeyword, SyntaxType.IImageBufferKeyword, SyntaxType.UImageBufferKeyword, SyntaxType.Image1DArrayKeyword, SyntaxType.IImage1DArrayKeyword, SyntaxType.UImage1DArrayKeyword, SyntaxType.Image2DArrayKeyword, SyntaxType.IImage2DArrayKeyword, SyntaxType.UImage2DArrayKeyword, SyntaxType.ImageCubeArrayKeyword, SyntaxType.IImageCubeArrayKeyword, SyntaxType.UImageCubeArrayKeyword, SyntaxType.Image2DMSKeyword, SyntaxType.IImage2DMSKeyword, SyntaxType.UImage2DMSKeyword, SyntaxType.Image2DMSArrayKeyword, SyntaxType.IImage2DMSArrayKeyword, SyntaxType.UImage2DMSArrayKeyword);
 			}
 
 			this.builder.EndNode();
@@ -287,7 +286,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.SemiColonToken, this.GetErrorMessage(), Span.Create(node.TempStart));
+				this.RequireToken(SyntaxType.SemiColonToken);
 			}
 
 			this.builder.EndNode();
@@ -349,16 +348,18 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseType();
 
-			if (this.AcceptToken(SyntaxType.IdentifierToken))
+			if (this.IsType(this.builder.CurrentToken.Type))
 			{
+				this.ParseType();
+			}
+			else
+			{
+				this.RequireToken(SyntaxType.IdentifierToken);
+
 				while (this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
 				{
 					this.ParseArraySpecifier();
 				}
-			}
-			else
-			{
-				this.ParseType();
 			}
 
 			this.builder.EndNode();
@@ -2118,39 +2119,39 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.Sampler2DMSArrayKeyword:
 				case SyntaxType.ISampler2DMSArrayKeyword:
 				case SyntaxType.USampler2DMSArrayKeyword:
-				case SyntaxType.Image1D:
-				case SyntaxType.Image2D:
-				case SyntaxType.Image3D:
-				case SyntaxType.IImage1D:
-				case SyntaxType.IImage2D:
-				case SyntaxType.IImage3D:
-				case SyntaxType.UImage1D:
-				case SyntaxType.UImage2D:
-				case SyntaxType.UImage3D:
-				case SyntaxType.Image2DRect:
-				case SyntaxType.IImage2DRect:
-				case SyntaxType.UImage2DRect:
-				case SyntaxType.ImageCube:
-				case SyntaxType.IImageCube:
-				case SyntaxType.UImageCube:
-				case SyntaxType.ImageBuffer:
-				case SyntaxType.IImageBuffer:
-				case SyntaxType.UImageBuffer:
-				case SyntaxType.Image1DArray:
-				case SyntaxType.IImage1DArray:
-				case SyntaxType.UImage1DArray:
-				case SyntaxType.Image2DArray:
-				case SyntaxType.IImage2DArray:
-				case SyntaxType.UImage2DArray:
-				case SyntaxType.ImageCubeArray:
-				case SyntaxType.IImageCubeArray:
-				case SyntaxType.UImageCubeArray:
-				case SyntaxType.Image2DMS:
-				case SyntaxType.IImage2DMS:
-				case SyntaxType.UImage2DMS:
-				case SyntaxType.Image2DMSArray:
-				case SyntaxType.IImage2DMSArray:
-				case SyntaxType.UImage2DMSArray:
+				case SyntaxType.Image1DKeyword:
+				case SyntaxType.Image2DKeyword:
+				case SyntaxType.Image3DKeyword:
+				case SyntaxType.IImage1DKeyword:
+				case SyntaxType.IImage2DKeyword:
+				case SyntaxType.IImage3DKeyword:
+				case SyntaxType.UImage1DKeyword:
+				case SyntaxType.UImage2DKeyword:
+				case SyntaxType.UImage3DKeyword:
+				case SyntaxType.Image2DRectKeyword:
+				case SyntaxType.IImage2DRectKeyword:
+				case SyntaxType.UImage2DRectKeyword:
+				case SyntaxType.ImageCubeKeyword:
+				case SyntaxType.IImageCubeKeyword:
+				case SyntaxType.UImageCubeKeyword:
+				case SyntaxType.ImageBufferKeyword:
+				case SyntaxType.IImageBufferKeyword:
+				case SyntaxType.UImageBufferKeyword:
+				case SyntaxType.Image1DArrayKeyword:
+				case SyntaxType.IImage1DArrayKeyword:
+				case SyntaxType.UImage1DArrayKeyword:
+				case SyntaxType.Image2DArrayKeyword:
+				case SyntaxType.IImage2DArrayKeyword:
+				case SyntaxType.UImage2DArrayKeyword:
+				case SyntaxType.ImageCubeArrayKeyword:
+				case SyntaxType.IImageCubeArrayKeyword:
+				case SyntaxType.UImageCubeArrayKeyword:
+				case SyntaxType.Image2DMSKeyword:
+				case SyntaxType.IImage2DMSKeyword:
+				case SyntaxType.UImage2DMSKeyword:
+				case SyntaxType.Image2DMSArrayKeyword:
+				case SyntaxType.IImage2DMSArrayKeyword:
+				case SyntaxType.UImage2DMSArrayKeyword:
 				case SyntaxType.StructKeyword:
 					return true;
 
@@ -2253,11 +2254,6 @@ namespace Xannden.GLSL.Parsing
 			}
 		}
 
-		private string GetErrorMessage()
-		{
-			return Resources.Error_MissingSemicolon;
-		}
-
 		#endregion Helpers
 
 		#region Token Helpers
@@ -2310,11 +2306,11 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private void RequireToken(SyntaxType type, string errorMessage = "", Span span = null)
+		private void RequireToken(SyntaxType type)
 		{
 			if (!this.AcceptToken(type))
 			{
-				this.builder.Error(type, errorMessage, span);
+				this.builder.Error(type);
 			}
 		}
 

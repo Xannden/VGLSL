@@ -71,6 +71,14 @@
       <Name>GLSL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\test.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\tree.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

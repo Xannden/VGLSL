@@ -2,9 +2,9 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class StatementSyntax : SyntaxNode
+	public class StatementSyntax : SyntaxNode
 	{
-		public StatementSyntax() : base(SyntaxType.Statement)
+		internal StatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Statement, start)
 		{
 		}
 

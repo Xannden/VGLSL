@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class InitializerSyntax : SyntaxNode
+	public class InitializerSyntax : SyntaxNode
 	{
-		public InitializerSyntax() : base(SyntaxType.Initializer)
+		internal InitializerSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Initializer, start)
 		{
 		}
 

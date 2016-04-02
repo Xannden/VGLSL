@@ -9,7 +9,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Parsing
 {
-	internal class GLSLParser
+	public class GLSLParser
 	{
 		private TreeBuilder builder;
 		private List<DefinePreprocessorSyntax> macroDefinitions;

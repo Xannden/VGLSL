@@ -2,9 +2,9 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class InitPartSyntax : SyntaxNode
+	public class InitPartSyntax : SyntaxNode
 	{
-		public InitPartSyntax() : base(SyntaxType.InitPart)
+		internal InitPartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitPart, start)
 		{
 		}
 

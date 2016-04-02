@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class EqualityExpressionSyntax : SyntaxNode
+	public class EqualityExpressionSyntax : SyntaxNode
 	{
-		public EqualityExpressionSyntax() : base(SyntaxType.EqualityExpression)
+		internal EqualityExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.EqualityExpression, start)
 		{
 		}
 

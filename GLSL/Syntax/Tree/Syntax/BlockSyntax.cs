@@ -2,9 +2,9 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class BlockSyntax : SyntaxNode
+	public class BlockSyntax : SyntaxNode
 	{
-		public BlockSyntax() : base(SyntaxType.Block)
+		internal BlockSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Block, start)
 		{
 		}
 

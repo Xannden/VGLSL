@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class DoWhileStatementSyntax : SyntaxNode
+	public class DoWhileStatementSyntax : SyntaxNode
 	{
-		public DoWhileStatementSyntax() : base(SyntaxType.DoWhileStatement)
+		internal DoWhileStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.DoWhileStatement, start)
 		{
 		}
 

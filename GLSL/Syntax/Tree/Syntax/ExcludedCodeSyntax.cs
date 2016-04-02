@@ -2,9 +2,9 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ExcludedCodeSyntax : SyntaxNode
+	public class ExcludedCodeSyntax : SyntaxNode
 	{
-		public ExcludedCodeSyntax() : base(SyntaxType.ExcludedCode)
+		internal ExcludedCodeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExcludedCode, start)
 		{
 		}
 

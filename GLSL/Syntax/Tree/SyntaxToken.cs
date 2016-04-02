@@ -5,7 +5,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree
 {
-	internal class SyntaxToken : SyntaxNode
+	public class SyntaxToken : SyntaxNode
 	{
 		private TrackingSpan fullSpan;
 
@@ -22,10 +22,6 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.IsMissing = isMissing;
 		}
 
-		protected SyntaxToken(SyntaxType type) : base(type)
-		{
-		}
-
 		public override TrackingSpan FullSpan => this.fullSpan;
 
 		public SyntaxTrivia LeadingTrivia { get; private set; }
@@ -33,16 +29,6 @@ namespace Xannden.GLSL.Syntax.Tree
 		public string Text { get; private set; }
 
 		public SyntaxTrivia TrailingTrivia { get; private set; }
-
-		public static SyntaxToken Create<T>(SyntaxTree tree, TrackingSpan span, string text, SyntaxTrivia leadingTrivia, SyntaxTrivia trailingTrivia, Snapshot snapshot, bool isMissing = false) where T : SyntaxToken, new()
-		{
-			T node = new T();
-
-			node.Initilize(tree, span, text, leadingTrivia, trailingTrivia, snapshot);
-			node.IsMissing = isMissing;
-
-			return node;
-		}
 
 		public bool HasLeadingTrivia() => this.LeadingTrivia != null;
 
@@ -84,20 +70,6 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 
 			return elements;
-		}
-
-		protected void Initilize(SyntaxTree tree, TrackingSpan span, string text, SyntaxTrivia leadingTrivia, SyntaxTrivia trailingTrivia, Snapshot snapshot)
-		{
-			this.Initilize(tree, span);
-
-			this.Text = text;
-			this.LeadingTrivia = leadingTrivia;
-			this.TrailingTrivia = trailingTrivia;
-
-			int start = this.HasLeadingTrivia() ? this.LeadingTrivia.Span.GetSpan(snapshot).Start : this.Span.GetSpan(snapshot).Start;
-			int end = this.HasTrailingTrivia() ? this.TrailingTrivia.Span.GetSpan(snapshot).End : this.Span.GetSpan(snapshot).End;
-
-			this.fullSpan = snapshot.CreateTrackingSpan(GLSL.Text.Span.Create(start, end));
 		}
 
 		protected override void ToString(StringBuilder builder)

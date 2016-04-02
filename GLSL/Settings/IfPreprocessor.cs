@@ -5,7 +5,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Settings
 {
-	internal class IfPreprocessor : Preprocessor
+	public sealed class IfPreprocessor : Preprocessor
 	{
 		internal IfPreprocessor(SyntaxToken keyword, bool value) : base(keyword, value)
 		{

@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Text
 {
-	internal sealed class Span
+	public sealed class Span
 	{
 		private Span(int start, int end)
 		{

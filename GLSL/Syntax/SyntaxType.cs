@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Syntax
 {
-	internal enum SyntaxType
+	public enum SyntaxType
 	{
 		None,
 		EOF,

@@ -3,7 +3,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Settings
 {
-	internal class GLSLSettings
+	public class GLSLSettings
 	{
 		protected List<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
 

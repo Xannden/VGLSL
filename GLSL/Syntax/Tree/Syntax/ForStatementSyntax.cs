@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ForStatementSyntax : SyntaxNode
+	public class ForStatementSyntax : SyntaxNode
 	{
-		public ForStatementSyntax() : base(SyntaxType.ForStatement)
+		internal ForStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ForStatement, start)
 		{
 		}
 

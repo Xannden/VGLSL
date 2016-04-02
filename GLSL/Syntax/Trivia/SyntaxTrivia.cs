@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Trivia
 {
-	internal class SyntaxTrivia
+	public class SyntaxTrivia
 	{
 		private string text = string.Empty;
 
@@ -29,18 +28,6 @@ namespace Xannden.GLSL.Syntax.Trivia
 		public virtual string Text => this.text;
 
 		public SyntaxType Type { get; }
-
-		public virtual List<TrackingSpan> GetCommentSpans()
-		{
-			List<TrackingSpan> span = new List<TrackingSpan>();
-
-			if (this.Type.IsComment())
-			{
-				span.Add(this.Span);
-			}
-
-			return span;
-		}
 
 		public override string ToString()
 		{

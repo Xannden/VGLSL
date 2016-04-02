@@ -8,7 +8,7 @@ using Xannden.GLSL.Text.Utility;
 
 namespace Xannden.GLSL.Syntax.Tree
 {
-	internal class SyntaxNode
+	public class SyntaxNode
 	{
 		internal SyntaxNode(SyntaxTree tree, SyntaxType type, int start)
 		{
@@ -24,12 +24,6 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.Span = span;
 			this.Children = new List<SyntaxNode>();
 			this.Tree = tree;
-		}
-
-		protected SyntaxNode(SyntaxType type)
-		{
-			this.SyntaxType = type;
-			this.Children = new List<SyntaxNode>();
 		}
 
 		public IEnumerable<SyntaxNode> Ancestors
@@ -121,28 +115,11 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		protected SyntaxTree Tree { get; private set; }
 
-		public static SyntaxNode Create<T>(SyntaxTree tree, int start) where T : SyntaxNode, new()
-		{
-			T node = new T();
-
-			node.Initilize(tree, start);
-
-			return node;
-		}
-
 		public SyntaxTrivia GetTrailingTrivia()
 		{
 			SyntaxToken token = (SyntaxToken)this.Children.FindLast(node => node is SyntaxToken);
 
 			return token?.TrailingTrivia;
-		}
-
-		public void AddChild(SyntaxNode child)
-		{
-			child.Parent = this;
-			this.Children.Add(child);
-
-			this.NewChild(child);
 		}
 
 		public override string ToString()
@@ -155,6 +132,14 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 
 			return builder.ToString();
+		}
+
+		internal void AddChild(SyntaxNode child)
+		{
+			child.Parent = this;
+			this.Children.Add(child);
+
+			this.NewChild(child);
 		}
 
 		internal void SetEnd(Snapshot snapshot, int end)
@@ -204,18 +189,6 @@ namespace Xannden.GLSL.Syntax.Tree
 		protected virtual List<string> GetExtraXmlTagInfo()
 		{
 			return null;
-		}
-
-		protected void Initilize(SyntaxTree tree, int start)
-		{
-			this.Tree = tree;
-			this.TempStart = start;
-		}
-
-		protected void Initilize(SyntaxTree tree, TrackingSpan span)
-		{
-			this.Tree = tree;
-			this.Span = span;
 		}
 
 		protected virtual void NewChild(SyntaxNode node)

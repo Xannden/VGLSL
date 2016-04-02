@@ -6,7 +6,7 @@ using Xannden.GLSL.Text.Utility;
 
 namespace Xannden.GLSL.Syntax.Tree
 {
-	internal class SyntaxTree
+	public class SyntaxTree
 	{
 		private List<DefinePreprocessorSyntax> macroDefinitions;
 

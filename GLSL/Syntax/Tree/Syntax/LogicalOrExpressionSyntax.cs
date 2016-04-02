@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class LogicalOrExpressionSyntax : SyntaxNode
+	public class LogicalOrExpressionSyntax : SyntaxNode
 	{
-		public LogicalOrExpressionSyntax() : base(SyntaxType.LogicalOrExpression)
+		internal LogicalOrExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.LogicalOrExpression, start)
 		{
 		}
 

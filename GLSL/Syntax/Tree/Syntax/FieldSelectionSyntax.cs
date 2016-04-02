@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class FieldSelectionSyntax : SyntaxNode
+	public class FieldSelectionSyntax : SyntaxNode
 	{
-		public FieldSelectionSyntax() : base(SyntaxType.FieldSelection)
+		internal FieldSelectionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FieldSelection, start)
 		{
 		}
 

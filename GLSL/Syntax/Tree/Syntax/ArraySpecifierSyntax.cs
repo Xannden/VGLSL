@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ArraySpecifierSyntax : SyntaxNode
+	public class ArraySpecifierSyntax : SyntaxNode
 	{
-		public ArraySpecifierSyntax() : base(SyntaxType.ArraySpecifier)
+		internal ArraySpecifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ArraySpecifier, start)
 		{
 		}
 

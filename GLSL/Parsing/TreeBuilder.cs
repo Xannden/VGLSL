@@ -152,249 +152,249 @@ namespace Xannden.GLSL.Parsing
 			switch (type)
 			{
 				case SyntaxType.Program:
-					return SyntaxNode.Create<ProgramSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ProgramSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Declaration:
-					return SyntaxNode.Create<DeclarationSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new DeclarationSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.InitDeclaratorListDeclaration:
-					return SyntaxNode.Create<InitDeclaratorListDeclarationSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InitDeclaratorListDeclarationSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PrecisionDeclaration:
-					return SyntaxNode.Create<PrecisionDeclarationSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PrecisionDeclarationSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.DeclarationList:
-					return SyntaxNode.Create<DeclarationListSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new DeclarationListSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ArraySpecifier:
-					return SyntaxNode.Create<ArraySpecifierSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ArraySpecifierSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Type:
-					return SyntaxNode.Create<TypeSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new TypeSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.TypeNonArray:
-					return SyntaxNode.Create<TypeNonArraySyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new TypeNonArraySyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.TypeName:
-					return SyntaxNode.Create<TypeNameSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new TypeNameSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.TypeQualifier:
-					return SyntaxNode.Create<TypeQualifierSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new TypeQualifierSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.FunctionDefinition:
-					return SyntaxNode.Create<FunctionDefinitionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new FunctionDefinitionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Block:
-					return SyntaxNode.Create<BlockSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new BlockSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.FunctionHeader:
-					return SyntaxNode.Create<FunctionHeaderSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new FunctionHeaderSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Parameter:
-					return SyntaxNode.Create<ParameterSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ParameterSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ReturnType:
-					return SyntaxNode.Create<ReturnTypeSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ReturnTypeSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Statement:
-					return SyntaxNode.Create<StatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new StatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.SimpleStatement:
-					return SyntaxNode.Create<SimpleStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new SimpleStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.SelectionStatement:
-					return SyntaxNode.Create<SelectionStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new SelectionStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ElseStatement:
-					return SyntaxNode.Create<ElseStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ElseStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.SwitchStatement:
-					return SyntaxNode.Create<SwitchStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new SwitchStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.CaseLabel:
-					return SyntaxNode.Create<CaseLabelSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new CaseLabelSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.IterationStatement:
-					return SyntaxNode.Create<IterationStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new IterationStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.WhileStatement:
-					return SyntaxNode.Create<WhileStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new WhileStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.DoWhileStatement:
-					return SyntaxNode.Create<DoWhileStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new DoWhileStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ForStatement:
-					return SyntaxNode.Create<ForStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ForStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.JumpStatement:
-					return SyntaxNode.Create<JumpStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new JumpStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ExpressionStatement:
-					return SyntaxNode.Create<ExpressionStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ExpressionStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.FunctionStatement:
-					return SyntaxNode.Create<FunctionStatementSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new FunctionStatementSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Condition:
-					return SyntaxNode.Create<ConditionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ConditionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.StructDefinition:
-					return SyntaxNode.Create<StructDefinitionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new StructDefinitionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.StructSpecifier:
-					return SyntaxNode.Create<StructSpecifierSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new StructSpecifierSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.StructDeclaration:
-					return SyntaxNode.Create<StructDeclarationSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new StructDeclarationSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.StructDeclarator:
-					return SyntaxNode.Create<StructDeclaratorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new StructDeclaratorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Expression:
-					return SyntaxNode.Create<ExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ConstantExpression:
-					return SyntaxNode.Create<ConstantExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ConstantExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.AssignmentExpression:
-					return SyntaxNode.Create<AssignmentExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new AssignmentExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.AssignmentOperator:
-					return SyntaxNode.Create<AssignmentOperatorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new AssignmentOperatorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ConditionalExpression:
-					return SyntaxNode.Create<ConditionalExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ConditionalExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.LogicalOrExpression:
-					return SyntaxNode.Create<LogicalOrExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new LogicalOrExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.LogicalXOrExpression:
-					return SyntaxNode.Create<LogicalXOrExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new LogicalXOrExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.LogicalAndExpression:
-					return SyntaxNode.Create<LogicalAndExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new LogicalAndExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.InclusiveOrExpression:
-					return SyntaxNode.Create<InclusiveOrExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InclusiveOrExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ExclusiveOrExpression:
-					return SyntaxNode.Create<ExclusiveOrExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ExclusiveOrExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.AndExpression:
-					return SyntaxNode.Create<AndExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new AndExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.EqualityExpression:
-					return SyntaxNode.Create<EqualityExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new EqualityExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.RelationalExpression:
-					return SyntaxNode.Create<RelationalExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new RelationalExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ShiftExpression:
-					return SyntaxNode.Create<ShiftExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ShiftExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.AdditiveExpression:
-					return SyntaxNode.Create<AdditiveExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new AdditiveExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.MultiplicativeExpression:
-					return SyntaxNode.Create<MultiplicativeExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new MultiplicativeExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.UnaryExpression:
-					return SyntaxNode.Create<UnaryExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new UnaryExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PostFixExpression:
-					return SyntaxNode.Create<PostfixExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PostfixExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PostFixExpressionStart:
-					return SyntaxNode.Create<PostfixExpressionStartSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PostfixExpressionStartSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PostFixExpressionContinuation:
-					return SyntaxNode.Create<PostfixExpressionContinuationSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PostfixExpressionContinuationSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PostFixArrayAccess:
-					return SyntaxNode.Create<PostfixArrayAccessSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PostfixArrayAccessSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PrimaryExpression:
-					return SyntaxNode.Create<PrimaryExpressionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PrimaryExpressionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.FunctionCall:
-					return SyntaxNode.Create<FunctionCallSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new FunctionCallSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Constructor:
-					return SyntaxNode.Create<ConstructorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ConstructorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.FieldSelection:
-					return SyntaxNode.Create<FieldSelectionSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new FieldSelectionSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.InitDeclaratorList:
-					return SyntaxNode.Create<InitDeclaratorListSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InitDeclaratorListSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.InitPart:
-					return SyntaxNode.Create<InitPartSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InitPartSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Initializer:
-					return SyntaxNode.Create<InitializerSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InitializerSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.InitList:
-					return SyntaxNode.Create<InitListSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new InitListSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.Preprocessor:
-					return SyntaxNode.Create<PreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.DefinePreprocessor:
-					return SyntaxNode.Create<DefinePreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new DefinePreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.UndefinePreprocessor:
-					return SyntaxNode.Create<UndefinePreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new UndefinePreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.IfPreprocessor:
-					return SyntaxNode.Create<IfPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new IfPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.IfDefinedPreprocessor:
-					return SyntaxNode.Create<IfDefinedPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new IfDefinedPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.IfNotDefinedPreprocessor:
-					return SyntaxNode.Create<IfNotDefinedPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new IfNotDefinedPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ElsePreprocessor:
-					return SyntaxNode.Create<ElsePreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ElsePreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ElseIfPreprocessor:
-					return SyntaxNode.Create<ElseIfPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ElseIfPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.EndIfPreprocessor:
-					return SyntaxNode.Create<EndIfPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new EndIfPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ErrorPreprocessor:
-					return SyntaxNode.Create<ErrorPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ErrorPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.PragmaPreprocessor:
-					return SyntaxNode.Create<PragmaPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new PragmaPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ExtensionPreprocessor:
-					return SyntaxNode.Create<ExtensionPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ExtensionPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.VersionPreprocessor:
-					return SyntaxNode.Create<VersionPreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new VersionPreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.LinePreprocessor:
-					return SyntaxNode.Create<LinePreprocessorSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new LinePreprocessorSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.TokenString:
-					return SyntaxNode.Create<TokenStringSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new TokenStringSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.MacroArguments:
-					return SyntaxNode.Create<MacroArgumentsSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new MacroArgumentsSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.ExcludedCode:
-					return SyntaxNode.Create<ExcludedCodeSyntax>(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
+					return new ExcludedCodeSyntax(this.tree, this.CurrentToken.FullSpan(this.snapshot).Start);
 
 				case SyntaxType.IdentifierToken:
 					if (isMissing)
 					{
-						return SyntaxToken.Create<IdentifierSyntax>(this.tree, this.snapshot.CreateTrackingSpan(span), string.Empty, null, null, this.snapshot, isMissing);
+						return new IdentifierSyntax(this.tree, this.snapshot.CreateTrackingSpan(span), string.Empty, null, null, this.snapshot, isMissing);
 					}
 
-					return SyntaxToken.Create<IdentifierSyntax>(this.tree, this.snapshot.CreateTrackingSpan(span), this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
+					return new IdentifierSyntax(this.tree, this.snapshot.CreateTrackingSpan(span), this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
 
 				default:
 					if ((type >= SyntaxType.LeftParenToken && type <= SyntaxType.PreprocessorToken) || type == SyntaxType.EOF)

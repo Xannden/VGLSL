@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class TypeNameSyntax : SyntaxNode
+	public class TypeNameSyntax : SyntaxNode
 	{
-		public TypeNameSyntax() : base(SyntaxType.TypeName)
+		internal TypeNameSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeName, start)
 		{
 		}
 

@@ -48,17 +48,5 @@ namespace Xannden.GLSL.Syntax.Trivia
 
 			return syntaxTriviaList;
 		}
-
-		public override List<TrackingSpan> GetCommentSpans()
-		{
-			List<TrackingSpan> spans = new List<TrackingSpan>();
-
-			for (int i = 0; i < this.List.Count; i++)
-			{
-				spans.AddRange(this.List[i].GetCommentSpans());
-			}
-
-			return spans;
-		}
 	}
 }

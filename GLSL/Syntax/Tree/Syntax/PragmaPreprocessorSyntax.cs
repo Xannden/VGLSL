@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class PragmaPreprocessorSyntax : SyntaxNode
+	public class PragmaPreprocessorSyntax : SyntaxNode
 	{
-		public PragmaPreprocessorSyntax() : base(SyntaxType.PragmaPreprocessor)
+		internal PragmaPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PragmaPreprocessor, start)
 		{
 		}
 

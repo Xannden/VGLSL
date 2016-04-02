@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class AssignmentOperatorSyntax : SyntaxNode
+	public class AssignmentOperatorSyntax : SyntaxNode
 	{
-		public AssignmentOperatorSyntax() : base(SyntaxType.AssignmentOperator)
+		internal AssignmentOperatorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AssignmentOperator, start)
 		{
 		}
 

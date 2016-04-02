@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class TypeNonArraySyntax : SyntaxNode
+	public class TypeNonArraySyntax : SyntaxNode
 	{
-		public TypeNonArraySyntax() : base(SyntaxType.TypeNonArray)
+		internal TypeNonArraySyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeNonArray, start)
 		{
 		}
 

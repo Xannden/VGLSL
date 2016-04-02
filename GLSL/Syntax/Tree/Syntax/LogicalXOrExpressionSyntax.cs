@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class LogicalXOrExpressionSyntax : SyntaxNode
+	public class LogicalXOrExpressionSyntax : SyntaxNode
 	{
-		public LogicalXOrExpressionSyntax() : base(SyntaxType.LogicalXOrExpression)
+		internal LogicalXOrExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.LogicalXOrExpression, start)
 		{
 		}
 

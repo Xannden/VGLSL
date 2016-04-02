@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class FunctionStatementSyntax : SyntaxNode
+	public class FunctionStatementSyntax : SyntaxNode
 	{
-		public FunctionStatementSyntax() : base(SyntaxType.FunctionStatement)
+		internal FunctionStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionStatement, start)
 		{
 		}
 

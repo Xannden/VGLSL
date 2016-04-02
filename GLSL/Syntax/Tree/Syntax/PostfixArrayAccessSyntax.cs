@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class PostfixArrayAccessSyntax : SyntaxNode
+	public class PostfixArrayAccessSyntax : SyntaxNode
 	{
-		public PostfixArrayAccessSyntax() : base(SyntaxType.PostFixArrayAccess)
+		internal PostfixArrayAccessSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixArrayAccess, start)
 		{
 		}
 

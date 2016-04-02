@@ -3,7 +3,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Errors
 {
-	internal sealed class ErrorHandler
+	public sealed class ErrorHandler
 	{
 		private List<Error> errors = new List<Error>();
 
@@ -12,14 +12,14 @@ namespace Xannden.GLSL.Errors
 			this.errors.Add(new Error(message, span));
 		}
 
-		public void ClearErrors()
-		{
-			this.errors.Clear();
-		}
-
 		public List<Error> GetErrors()
 		{
 			return this.errors;
+		}
+
+		public void ClearErrors()
+		{
+			this.errors.Clear();
 		}
 	}
 }

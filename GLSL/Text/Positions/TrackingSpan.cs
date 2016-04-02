@@ -1,11 +1,7 @@
 ﻿namespace Xannden.GLSL.Text
 {
-	internal abstract class TrackingSpan
+	public abstract class TrackingSpan
 	{
-		internal TrackingSpan()
-		{
-		}
-
 		public abstract Span GetSpan(Snapshot snapshot);
 	}
 }

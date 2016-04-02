@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class JumpStatementSyntax : SyntaxNode
+	public class JumpStatementSyntax : SyntaxNode
 	{
-		public JumpStatementSyntax() : base(SyntaxType.JumpStatement)
+		internal JumpStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.JumpStatement, start)
 		{
 		}
 

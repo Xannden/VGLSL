@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ParameterSyntax : SyntaxNode
+	public class ParameterSyntax : SyntaxNode
 	{
-		public ParameterSyntax() : base(SyntaxType.Parameter)
+		internal ParameterSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Parameter, start)
 		{
 		}
 

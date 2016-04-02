@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class DefinePreprocessorSyntax : SyntaxNode
+	public class DefinePreprocessorSyntax : SyntaxNode
 	{
-		public DefinePreprocessorSyntax() : base(SyntaxType.DefinePreprocessor)
+		internal DefinePreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.DefinePreprocessor, start)
 		{
 		}
 

@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class UnaryExpressionSyntax : SyntaxNode
+	public class UnaryExpressionSyntax : SyntaxNode
 	{
-		public UnaryExpressionSyntax() : base(SyntaxType.UnaryExpression)
+		internal UnaryExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.UnaryExpression, start)
 		{
 		}
 

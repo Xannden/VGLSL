@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ExpressionStatementSyntax : SyntaxNode
+	public class ExpressionStatementSyntax : SyntaxNode
 	{
-		public ExpressionStatementSyntax() : base(SyntaxType.ExpressionStatement)
+		internal ExpressionStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExpressionStatement, start)
 		{
 		}
 

@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ElseIfPreprocessorSyntax : SyntaxNode
+	public class ElseIfPreprocessorSyntax : SyntaxNode
 	{
-		public ElseIfPreprocessorSyntax() : base(SyntaxType.ElseIfPreprocessor)
+		internal ElseIfPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ElseIfPreprocessor, start)
 		{
 		}
 

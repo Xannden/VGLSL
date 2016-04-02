@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class AdditiveExpressionSyntax : SyntaxNode
+	public class AdditiveExpressionSyntax : SyntaxNode
 	{
-		public AdditiveExpressionSyntax() : base(SyntaxType.AdditiveExpression)
+		internal AdditiveExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AdditiveExpression, start)
 		{
 		}
 

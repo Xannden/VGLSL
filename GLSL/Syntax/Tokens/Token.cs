@@ -3,9 +3,9 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tokens
 {
-	internal class Token
+	public class Token
 	{
-		public Token(SyntaxType type, Span span, SourceLine line, string text, SyntaxTrivia leadingTrivia)
+		internal Token(SyntaxType type, Span span, SourceLine line, string text, SyntaxTrivia leadingTrivia)
 		{
 			this.Type = type;
 			this.Span = span;

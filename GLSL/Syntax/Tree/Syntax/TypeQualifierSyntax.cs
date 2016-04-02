@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class TypeQualifierSyntax : SyntaxNode
+	public class TypeQualifierSyntax : SyntaxNode
 	{
-		public TypeQualifierSyntax() : base(SyntaxType.TypeQualifier)
+		internal TypeQualifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeQualifier, start)
 		{
 		}
 

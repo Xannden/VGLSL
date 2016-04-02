@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class SelectionStatementSyntax : SyntaxNode
+	public class SelectionStatementSyntax : SyntaxNode
 	{
-		public SelectionStatementSyntax() : base(SyntaxType.SelectionStatement)
+		internal SelectionStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SelectionStatement, start)
 		{
 		}
 

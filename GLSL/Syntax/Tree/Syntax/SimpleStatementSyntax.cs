@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class SimpleStatementSyntax : SyntaxNode
+	public class SimpleStatementSyntax : SyntaxNode
 	{
-		public SimpleStatementSyntax() : base(SyntaxType.SimpleStatement)
+		internal SimpleStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SimpleStatement, start)
 		{
 		}
 

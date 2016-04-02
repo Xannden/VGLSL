@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ConstantExpressionSyntax : SyntaxNode
+	public class ConstantExpressionSyntax : SyntaxNode
 	{
-		public ConstantExpressionSyntax() : base(SyntaxType.ConstantExpression)
+		internal ConstantExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ConstantExpression, start)
 		{
 		}
 

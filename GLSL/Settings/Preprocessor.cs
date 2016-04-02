@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Settings
 {
-	internal class Preprocessor
+	public class Preprocessor
 	{
 		internal Preprocessor(SyntaxToken keyword, bool value)
 		{

@@ -6,13 +6,13 @@ using Xannden.GLSL.Syntax.Tree;
 
 namespace Xannden.GLSL.Text
 {
-	internal abstract class Source
+	public abstract class Source
 	{
 		private List<TrackingSpan> commentSpans = new List<TrackingSpan>();
 		private object lockObject = new object();
 		private SyntaxTree tree;
 
-		internal Source(ErrorHandler errorHandler)
+		protected Source(ErrorHandler errorHandler)
 		{
 			this.ErrorHandler = errorHandler;
 

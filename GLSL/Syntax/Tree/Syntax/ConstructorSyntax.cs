@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ConstructorSyntax : SyntaxNode
+	public class ConstructorSyntax : SyntaxNode
 	{
-		public ConstructorSyntax() : base(SyntaxType.Constructor)
+		internal ConstructorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Constructor, start)
 		{
 		}
 

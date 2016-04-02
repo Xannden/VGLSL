@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class ElseStatementSyntax : SyntaxNode
+	public class ElseStatementSyntax : SyntaxNode
 	{
-		public ElseStatementSyntax() : base(SyntaxType.ElseStatement)
+		internal ElseStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ElseStatement, start)
 		{
 		}
 

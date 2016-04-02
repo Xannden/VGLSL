@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class EndIfPreprocessorSyntax : SyntaxNode
+	public class EndIfPreprocessorSyntax : SyntaxNode
 	{
-		public EndIfPreprocessorSyntax() : base(SyntaxType.EndIfPreprocessor)
+		internal EndIfPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.EndIfPreprocessor, start)
 		{
 		}
 

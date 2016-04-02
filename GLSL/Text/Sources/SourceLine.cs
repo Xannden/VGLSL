@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Text
 {
-	internal abstract class SourceLine
+	public abstract class SourceLine
 	{
-		internal SourceLine(Snapshot snapshot, int start, int end, int lineNumber)
+		protected SourceLine(Snapshot snapshot, int start, int end, int lineNumber)
 		{
 			this.Snapshot = snapshot;
 
@@ -30,7 +30,12 @@
 
 		public abstract string Text { get; }
 
-		public bool HasLineContinuation()
+		public override string ToString()
+		{
+			return this.Text;
+		}
+
+		internal bool HasLineContinuation()
 		{
 			int position = this.Text.Length - 1;
 			char character = this.Text[position--];
@@ -41,11 +46,6 @@
 			}
 
 			return character == '\\';
-		}
-
-		public override string ToString()
-		{
-			return this.Text;
 		}
 	}
 }

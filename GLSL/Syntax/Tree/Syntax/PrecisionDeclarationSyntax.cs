@@ -1,8 +1,8 @@
 ﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	internal class PrecisionDeclarationSyntax : SyntaxNode
+	public class PrecisionDeclarationSyntax : SyntaxNode
 	{
-		public PrecisionDeclarationSyntax() : base(SyntaxType.PrecisionDeclaration)
+		internal PrecisionDeclarationSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PrecisionDeclaration, start)
 		{
 		}
 

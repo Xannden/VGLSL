@@ -8,7 +8,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Lexing
 {
-	internal class GLSLLexer
+	public class GLSLLexer
 	{
 		private List<TrackingSpan> commentSpans = new List<TrackingSpan>();
 		private TokenInfo info;

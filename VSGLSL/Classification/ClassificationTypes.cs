@@ -101,14 +101,17 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.Field)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLFieldDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Function)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLFunctionDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.GlobalVariable)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLGlobalVariableDefinition { get; }
 
 		[Export]
@@ -118,14 +121,17 @@ namespace Xannden.VSGLSL.Classification
 
 		[Export]
 		[Name(GLSLConstants.LocalVariable)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLLocalVariableDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Parameter)]
+		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
 		internal static ClassificationTypeDefinition GLSLParameterDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.TypeName)]
+		[BaseDefinition(PredefinedClassificationTypeNames.SymbolReference)]
 		internal static ClassificationTypeDefinition GLSLTypeNameDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -137,7 +143,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLFieldFormantDefinition()
 			{
 				this.DisplayName = "GLSL Field";
-				this.ForegroundColor = Colors.MediumPurple;
 			}
 		}
 
@@ -150,7 +155,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLFunctionFormatDefinition()
 			{
 				this.DisplayName = "GLSL Function";
-				this.ForegroundColor = Colors.Cyan;
 			}
 		}
 
@@ -163,7 +167,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLGlobalVariableFormantDefinition()
 			{
 				this.DisplayName = "GLSL Global Variable";
-				this.ForegroundColor = Colors.OrangeRed;
 			}
 		}
 
@@ -188,7 +191,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLLocalVariableFormantDefinition()
 			{
 				this.DisplayName = "GLSL Local Variable";
-				this.ForegroundColor = Colors.Red;
 			}
 		}
 
@@ -201,7 +203,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLParameterFormatDefinition()
 			{
 				this.DisplayName = "GLSL Parameter";
-				this.ForegroundColor = Colors.Purple;
 			}
 		}
 
@@ -214,7 +215,6 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLTypeNameFormantDefinition()
 			{
 				this.DisplayName = "GLSL TypeName";
-				this.ForegroundColor = Colors.Teal;
 			}
 		}
 
@@ -262,7 +262,7 @@ namespace Xannden.VSGLSL.Classification
 			private GLSLMacroFormatDefinition()
 			{
 				this.DisplayName = "GLSL Macro";
-				this.ForegroundColor = Colors.HotPink;
+				this.ForegroundColor = Colors.OrangeRed;
 			}
 		}
 

@@ -12,7 +12,6 @@ namespace Xannden.GLSL.Parsing
 	{
 		private ErrorHandler errorHandler;
 		private LinkedListNode<Token> listNode;
-		private SyntaxNode root;
 		private Snapshot snapshot;
 		private Stack<SyntaxNode> stack = new Stack<SyntaxNode>();
 		private LinkedList<Token> tokens;
@@ -90,9 +89,11 @@ namespace Xannden.GLSL.Parsing
 			return new ResetPoint(this.listNode);
 		}
 
-		public SyntaxTree GetTree()
+		public SyntaxTree GetTree(List<DefinePreprocessorSyntax> macroDefinitions)
 		{
-			return new SyntaxTree(this.root);
+			this.tree.SetMacroDefinitions(macroDefinitions);
+
+			return this.tree;
 		}
 
 		public bool IsTypeName(Token token)
@@ -138,7 +139,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.root = node;
+				this.tree.Root = node;
 			}
 
 			this.stack.Push(node);

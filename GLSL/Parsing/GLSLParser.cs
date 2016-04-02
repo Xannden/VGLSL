@@ -12,6 +12,7 @@ namespace Xannden.GLSL.Parsing
 	internal class GLSLParser
 	{
 		private TreeBuilder builder;
+		private List<DefinePreprocessorSyntax> macroDefinitions;
 		private ErrorHandler errorHandler;
 		private List<IfPreprocessor> preprocessors;
 		private Stack<IfPreprocessor> preprocessorStack;
@@ -35,10 +36,11 @@ namespace Xannden.GLSL.Parsing
 			this.builder = new TreeBuilder(snapshot, tokens, this.errorHandler);
 			this.preprocessors = new List<IfPreprocessor>();
 			this.preprocessorStack = new Stack<IfPreprocessor>();
+			this.macroDefinitions = new List<DefinePreprocessorSyntax>();
 
 			this.ParseProgram();
 
-			return this.builder.GetTree();
+			return this.builder.GetTree(this.macroDefinitions);
 		}
 
 		private void ParseProgram()
@@ -1385,7 +1387,9 @@ namespace Xannden.GLSL.Parsing
 				this.ParseTokenString(line);
 			}
 
-			this.builder.EndNode();
+			DefinePreprocessorSyntax node = this.builder.EndNode() as DefinePreprocessorSyntax;
+
+			this.macroDefinitions.Add(node);
 		}
 
 		private void ParseElseIfPreprocessor()

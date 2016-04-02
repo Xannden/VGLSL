@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 
@@ -6,16 +8,9 @@ namespace Xannden.GLSL.Syntax.Tree
 {
 	internal class SyntaxTree
 	{
-		public SyntaxTree()
-		{
-		}
+		private List<DefinePreprocessorSyntax> macroDefinitions;
 
-		public SyntaxTree(SyntaxNode root)
-		{
-			this.Root = root;
-		}
-
-		public SyntaxNode Root { get; private set; }
+		public SyntaxNode Root { get; internal set; }
 
 		public SyntaxNode GetNodeContainingSpan(Snapshot snapshot, Span span)
 		{
@@ -45,18 +40,32 @@ namespace Xannden.GLSL.Syntax.Tree
 			{
 				node = child;
 
-				child = node.Children.Find(n => n.Span.GetSpan(snapshot).Contains(position));
+				SyntaxNode result = node.Children.Find(n => n.Span?.GetSpan(snapshot).Contains(position) ?? false);
+
+				if (result != null)
+				{
+					child = result;
+				}
+				else
+				{
+					break;
+				}
 			}
 
 			return node;
 		}
 
-		public void WriteToXML(string file, Snapshot snapshot)
+		internal void WriteToXML(string file, Snapshot snapshot)
 		{
 			using (IndentedTextWriter indentedWriter = new IndentedTextWriter(new StreamWriter(File.Create(file)), "\t"))
 			{
 				this.Root.WriteToXML(indentedWriter, snapshot);
 			}
+		}
+
+		internal void SetMacroDefinitions(List<DefinePreprocessorSyntax> macros)
+		{
+			this.macroDefinitions = macros;
 		}
 	}
 }

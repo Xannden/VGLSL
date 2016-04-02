@@ -16,7 +16,7 @@ namespace Xannden.GLSL.Tests
 		[TestMethod]
 		public void FullParse()
 		{
-			string[] lines = File.ReadAllLines("test.glsl");
+			string[] lines = File.ReadAllLines(@"F:\Projects\VoxelGame\VoxelGame\Resources\vertex.glsl");
 
 			ErrorHandler errors = new ErrorHandler();
 			GLSLLexer lexer = new GLSLLexer();

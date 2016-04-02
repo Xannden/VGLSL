@@ -31,7 +31,7 @@ namespace Xannden.VSGLSL.Tagging.Errors
 			{
 				foreach (SnapshotSpan span in spans)
 				{
-					if (errors[i].Span.Overlaps(span))
+					if (errors[i].Span.Overlaps(span) && errors[i].Span.End < span.Snapshot.Length)
 					{
 						yield return new TagSpan<ErrorTag>(new SnapshotSpan(span.Snapshot, errors[i].Span.ToVSSpan()), new ErrorTag("syntaxError", errors[i].Message));
 					}

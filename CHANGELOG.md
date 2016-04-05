@@ -5,19 +5,12 @@
 
 Features that have a checkmark are complete and available for
 download in the
-[CI build](http://vsixgallery.com/extension/VSGLSL.Jacob Yost.22e23217-3b60-46c7-8047-a5ae0a268489/).
+[CI build](http://vsixgallery.com/extension/22e23217-3b60-46c7-8047-a5ae0a268489/).
 
 # Changelog
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
-
-## 1.1
-
-**2016-02-13**
-
-- [x] Feature 3
-- [x] Feature 4
 
 ## 1.0
 

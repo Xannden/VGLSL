@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class AndExpressionSyntax : SyntaxNode
 	{
 		internal AndExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AndExpression, start)
+		{
+		}
+
+		internal AndExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.AndExpression, span)
 		{
 		}
 

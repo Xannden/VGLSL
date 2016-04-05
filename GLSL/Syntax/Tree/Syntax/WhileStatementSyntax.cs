@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class WhileStatementSyntax : SyntaxNode
 	{
 		internal WhileStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.WhileStatement, start)
+		{
+		}
+
+		internal WhileStatementSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.WhileStatement, span)
 		{
 		}
 

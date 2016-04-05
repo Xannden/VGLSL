@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ReturnTypeSyntax : SyntaxNode
 	{
 		internal ReturnTypeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ReturnType, start)
+		{
+		}
+
+		internal ReturnTypeSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ReturnType, span)
 		{
 		}
 

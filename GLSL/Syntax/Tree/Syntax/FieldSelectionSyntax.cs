@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class FieldSelectionSyntax : SyntaxNode
 	{
 		internal FieldSelectionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FieldSelection, start)
+		{
+		}
+
+		internal FieldSelectionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.FieldSelection, span)
 		{
 		}
 

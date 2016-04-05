@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionContinuationSyntax : SyntaxNode
 	{
 		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpressionContinuation, start)
+		{
+		}
+
+		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixExpressionContinuation, span)
 		{
 		}
 

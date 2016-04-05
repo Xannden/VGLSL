@@ -11,7 +11,7 @@ namespace Xannden.GLSL.Syntax.Tokens
 			this.ErrorType = type;
 		}
 
-		public InvalidToken(Token token, string message) : this(token.Type, token.Span, token.Line, token.Text, token.LeadingTrivia, message)
+		public InvalidToken(Token token, string message) : this(token.SyntaxType, token.Span, token.Line, token.Text, token.LeadingTrivia, message)
 		{
 			this.TrailingTrivia = token.TrailingTrivia;
 		}

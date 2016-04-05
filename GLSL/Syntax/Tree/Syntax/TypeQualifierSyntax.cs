@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TypeQualifierSyntax : SyntaxNode
 	{
 		internal TypeQualifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeQualifier, start)
+		{
+		}
+
+		internal TypeQualifierSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.TypeQualifier, span)
 		{
 		}
 

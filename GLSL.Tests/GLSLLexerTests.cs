@@ -41,7 +41,7 @@ namespace Xannden.GLSL.Tests
 
 			Assert.AreEqual(1, list.Count);
 
-			Assert.AreEqual(SyntaxType.EOF, node.Value.Type);
+			Assert.AreEqual(SyntaxType.EOF, node.Value.SyntaxType);
 			Assert.AreEqual(false, node.Value.HasTrailingTrivia);
 			Assert.AreEqual(true, node.Value.HasLeadingTrivia);
 
@@ -77,7 +77,7 @@ namespace Xannden.GLSL.Tests
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
-				Assert.AreEqual(resultTypes[i], tokens.First.Value.Type);
+				Assert.AreEqual(resultTypes[i], tokens.First.Value.SyntaxType);
 			}
 		}
 
@@ -97,11 +97,11 @@ namespace Xannden.GLSL.Tests
 
 				if (lines[i].Contains("lf") || lines[i].Contains("LF"))
 				{
-					Assert.AreEqual(SyntaxType.DoubleConstToken, tokens.First.Value.Type);
+					Assert.AreEqual(SyntaxType.DoubleConstToken, tokens.First.Value.SyntaxType);
 				}
 				else
 				{
-					Assert.AreEqual(SyntaxType.FloatConstToken, tokens.First.Value.Type);
+					Assert.AreEqual(SyntaxType.FloatConstToken, tokens.First.Value.SyntaxType);
 				}
 			}
 		}
@@ -120,7 +120,7 @@ namespace Xannden.GLSL.Tests
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
-				Assert.AreEqual(resultTypes[i % 3], tokens.First.Value.Type);
+				Assert.AreEqual(resultTypes[i % 3], tokens.First.Value.SyntaxType);
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace Xannden.GLSL.Tests
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
-				Assert.AreEqual(resultTypes[i], tokens.First.Value.Type);
+				Assert.AreEqual(resultTypes[i], tokens.First.Value.SyntaxType);
 			}
 		}
 
@@ -172,7 +172,7 @@ namespace Xannden.GLSL.Tests
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
-				Assert.AreEqual(resultTypes[i], tokens.First.Value.Type);
+				Assert.AreEqual(resultTypes[i], tokens.First.Value.SyntaxType);
 			}
 		}
 
@@ -192,14 +192,14 @@ namespace Xannden.GLSL.Tests
 				tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
-				Assert.AreEqual(types[i], tokens.First.Value.Type);
+				Assert.AreEqual(types[i], tokens.First.Value.SyntaxType);
 			}
 
 			source = new TextSource("#unknown", errors);
 			tokens = lexer.Run(source.CurrentSnapshot);
 
 			Assert.AreEqual(2, tokens.Count);
-			Assert.AreEqual(SyntaxType.InvalidToken, tokens.First.Value.Type);
+			Assert.AreEqual(SyntaxType.InvalidToken, tokens.First.Value.SyntaxType);
 
 			InvalidToken token = (InvalidToken)tokens.First.Value;
 
@@ -225,7 +225,7 @@ namespace Xannden.GLSL.Tests
 
 			foreach (Token token in lexer.Run(source.CurrentSnapshot))
 			{
-				Assert.AreEqual(expectedTypes[index++], token.Type);
+				Assert.AreEqual(expectedTypes[index++], token.SyntaxType);
 			}
 
 			Assert.AreEqual(expectedTypes.Length, index);
@@ -251,11 +251,11 @@ namespace Xannden.GLSL.Tests
 			List<Token> tokens = lexer.Run(source.CurrentSnapshot).ToList();
 
 			Assert.AreEqual(5, tokens.Count);
-			Assert.AreEqual(SyntaxType.IntKeyword, tokens[0].Type);
-			Assert.AreEqual(SyntaxType.IdentifierToken, tokens[1].Type);
+			Assert.AreEqual(SyntaxType.IntKeyword, tokens[0].SyntaxType);
+			Assert.AreEqual(SyntaxType.IdentifierToken, tokens[1].SyntaxType);
 			Assert.AreEqual("abcdefgh", tokens[1].Text);
-			Assert.AreEqual(SyntaxType.SemiColonToken, tokens[2].Type);
-			Assert.AreEqual(SyntaxType.IntConstToken, tokens[3].Type);
+			Assert.AreEqual(SyntaxType.SemiColonToken, tokens[2].SyntaxType);
+			Assert.AreEqual(SyntaxType.IntConstToken, tokens[3].SyntaxType);
 			Assert.AreEqual("123456789", tokens[3].Text);
 		}
 	}

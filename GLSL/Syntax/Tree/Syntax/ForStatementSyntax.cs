@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ForStatementSyntax : SyntaxNode
 	{
 		internal ForStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ForStatement, start)
+		{
+		}
+
+		internal ForStatementSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ForStatement, span)
 		{
 		}
 

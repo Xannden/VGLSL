@@ -1,4 +1,5 @@
-﻿using Xannden.GLSL.Text;
+﻿using System.Text;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Trivia
 {
@@ -28,6 +29,14 @@ namespace Xannden.GLSL.Syntax.Trivia
 		public virtual string Text => this.text;
 
 		public SyntaxType Type { get; }
+
+		public virtual void ToStringWithoutNewLines(StringBuilder builder)
+		{
+			if (this.Type != SyntaxType.NewLineTrivia && this.Type != SyntaxType.LineCommentTrivia && this.Type != SyntaxType.BlockCommentTrivia)
+			{
+				builder.Append(this.text.Trim('\t'));
+			}
+		}
 
 		public override string ToString()
 		{

@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ExtensionPreprocessorSyntax : SyntaxNode
 	{
 		internal ExtensionPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExtensionPreprocessor, start)
+		{
+		}
+
+		internal ExtensionPreprocessorSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ExtensionPreprocessor, span)
 		{
 		}
 

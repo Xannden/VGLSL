@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class FunctionDefinitionSyntax : SyntaxNode
 	{
 		internal FunctionDefinitionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionDefinition, start)
+		{
+		}
+
+		internal FunctionDefinitionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.FunctionDefinition, span)
 		{
 		}
 

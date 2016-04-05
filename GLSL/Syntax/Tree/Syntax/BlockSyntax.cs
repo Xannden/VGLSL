@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class BlockSyntax : SyntaxNode
 	{
 		internal BlockSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Block, start)
+		{
+		}
+
+		internal BlockSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.Block, span)
 		{
 		}
 

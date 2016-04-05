@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class SwitchStatementSyntax : SyntaxNode
 	{
 		internal SwitchStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SwitchStatement, start)
+		{
+		}
+
+		internal SwitchStatementSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.SwitchStatement, span)
 		{
 		}
 

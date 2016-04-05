@@ -5,7 +5,7 @@
 
 <!-- Update the VS Gallery link after you upload the VSIX-->
 Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
-or get the [CI build](http://vsixgallery.com/extension/VSGLSL.Jacob Yost.22e23217-3b60-46c7-8047-a5ae0a268489/).
+or get the [CI build](http://vsixgallery.com/extension/22e23217-3b60-46c7-8047-a5ae0a268489/).
 
 ---------------------------------------
 

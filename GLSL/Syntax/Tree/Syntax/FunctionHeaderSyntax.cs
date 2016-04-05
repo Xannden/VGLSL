@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class FunctionHeaderSyntax : SyntaxNode
 	{
 		internal FunctionHeaderSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionHeader, start)
+		{
+		}
+
+		internal FunctionHeaderSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.FunctionHeader, span)
 		{
 		}
 

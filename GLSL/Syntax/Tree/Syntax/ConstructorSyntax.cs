@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ConstructorSyntax : SyntaxNode
 	{
 		internal ConstructorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Constructor, start)
+		{
+		}
+
+		internal ConstructorSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.Constructor, span)
 		{
 		}
 

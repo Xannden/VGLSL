@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionSyntax : SyntaxNode
 	{
 		internal PostfixExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpression, start)
+		{
+		}
+
+		internal PostfixExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixExpression, span)
 		{
 		}
 

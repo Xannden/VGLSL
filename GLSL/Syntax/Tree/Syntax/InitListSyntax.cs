@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InitListSyntax : SyntaxNode
 	{
 		internal InitListSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitList, start)
+		{
+		}
+
+		internal InitListSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.InitList, span)
 		{
 		}
 

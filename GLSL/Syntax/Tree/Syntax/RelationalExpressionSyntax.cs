@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class RelationalExpressionSyntax : SyntaxNode
 	{
 		internal RelationalExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.RelationalExpression, start)
+		{
+		}
+
+		internal RelationalExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.RelationalExpression, span)
 		{
 		}
 

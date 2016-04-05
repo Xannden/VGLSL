@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ConditionalExpressionSyntax : SyntaxNode
 	{
 		internal ConditionalExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ConditionalExpression, start)
+		{
+		}
+
+		internal ConditionalExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ConditionalExpression, span)
 		{
 		}
 

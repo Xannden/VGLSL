@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructDeclaratorSyntax : SyntaxNode
 	{
 		internal StructDeclaratorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructDeclarator, start)
+		{
+		}
+
+		internal StructDeclaratorSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.StructDeclarator, span)
 		{
 		}
 

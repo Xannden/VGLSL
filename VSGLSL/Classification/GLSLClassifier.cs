@@ -54,57 +54,59 @@ namespace Xannden.VSGLSL.Classification
 
 				string classificationName = string.Empty;
 
-				if (token.IsPreprocessor)
+				if (token.SyntaxType.IsPreprocessor())
 				{
 					classificationName = GLSLConstants.PreprocessorKeyword;
 				}
-				else if (token.Type == SyntaxType.IdentifierToken && this.IsMacro(token, node))
+				else if ((node as IdentifierSyntax)?.IsMacro() ?? false)
 				{
 					classificationName = GLSLConstants.Macro;
 				}
-				else if (this.IsExcludedCode(node))
+				else if (node?.IsExcludedCode() ?? false)
 				{
 					classificationName = GLSLConstants.ExcludedCode;
 				}
-				else if (token.IsPuctuation)
+				else if (token.SyntaxType.IsPuctuation())
 				{
 					classificationName = GLSLConstants.Punctuation;
 				}
-				else if (this.IsPreprocessorText(node))
+				else if (node?.IsPreprocessorText() ?? false)
 				{
 					classificationName = GLSLConstants.PreprocessorText;
 				}
-				else if (token.IsKeyword)
+				else if (token.SyntaxType.IsKeyword())
 				{
 					classificationName = GLSLConstants.Keyword;
 				}
-				else if (token.IsNumber)
+				else if (token.SyntaxType.IsNumber())
 				{
 					classificationName = GLSLConstants.Number;
 				}
-				else if (token.Type == SyntaxType.IdentifierToken)
+				else if (node.SyntaxType == SyntaxType.IdentifierToken)
 				{
-					if (this.IsParameter(token, node))
+					IdentifierSyntax identifier = node as IdentifierSyntax;
+
+					if (identifier.IsParameter())
 					{
 						classificationName = GLSLConstants.Parameter;
 					}
-					else if (this.IsFunction(token, node))
+					else if (identifier.IsFunction())
 					{
 						classificationName = GLSLConstants.Function;
 					}
-					else if (this.IsTypeName(token, node))
+					else if (identifier.IsTypeName())
 					{
 						classificationName = GLSLConstants.TypeName;
 					}
-					else if (this.IsField(token, node))
+					else if (identifier.IsField())
 					{
 						classificationName = GLSLConstants.Field;
 					}
-					else if (this.IsLocalVariable(token, node))
+					else if (identifier.IsLocalVariable())
 					{
 						classificationName = GLSLConstants.LocalVariable;
 					}
-					else if (this.IsGlobalVariable(token, tree))
+					else if (identifier.IsGlobalVariable())
 					{
 						classificationName = GLSLConstants.GlobalVariable;
 					}
@@ -139,142 +141,6 @@ namespace Xannden.VSGLSL.Classification
 					spans.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, commentSpan), this.classificationTypeRegistryService.GetClassificationType(GLSLConstants.Comment)));
 				}
 			}
-		}
-
-		private bool IsExcludedCode(SyntaxNode node)
-		{
-			return node.Parent?.SyntaxType == SyntaxType.ExcludedCode;
-		}
-
-		private bool IsField(Token token, SyntaxNode node)
-		{
-			return (node?.SyntaxType == SyntaxType.IdentifierToken && node?.Parent?.SyntaxType == SyntaxType.FieldSelection) || (node?.SyntaxType == SyntaxType.IdentifierToken && node?.Parent?.SyntaxType == SyntaxType.StructDeclarator && node?.Parent?.Parent?.SyntaxType == SyntaxType.StructDeclaration);
-		}
-
-		private bool IsFunction(Token token, SyntaxNode node)
-		{
-			IdentifierSyntax identifier = node as IdentifierSyntax;
-
-			if (identifier?.Parent?.SyntaxType == SyntaxType.FunctionHeader || identifier?.Parent?.SyntaxType == SyntaxType.FunctionCall)
-			{
-				return token.Text == identifier.Name;
-			}
-
-			return false;
-		}
-
-		private bool IsGlobalVariable(Token token, SyntaxTree tree)
-		{
-			foreach (SyntaxNode node in tree.Root.Children)
-			{
-				if (node.SyntaxType == SyntaxType.FunctionDefinition)
-				{
-					continue;
-				}
-
-				List<InitPartSyntax> initParts = (node as DeclarationSyntax)?.InitDeclaratorListDeclaration?.InitDeclaratorList.InitParts.GetNodes();
-
-				for (int i = 0; i < (initParts?.Count ?? 0); i++)
-				{
-					if (token.Text == initParts[i].Identifier.Name)
-					{
-						return true;
-					}
-				}
-
-				StructDefinitionSyntax structDefinition = (node as DeclarationSyntax)?.StructDefinition;
-
-				if (token.Text == structDefinition?.StructDeclarator?.Identifier?.Name)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		private bool IsLocalVariable(Token token, SyntaxNode node)
-		{
-			foreach (SyntaxNode ancestor in node.Ancestors)
-			{
-				if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
-				{
-					break;
-				}
-
-				foreach (SyntaxNode sibling in ancestor.SiblingsAndSelf)
-				{
-					List<InitPartSyntax> initparts = (sibling as SimpleStatementSyntax)?.Declaration?.InitDeclaratorListDeclaration?.InitDeclaratorList.InitParts.GetNodes();
-
-					for (int i = 0; i < (initparts?.Count ?? 0); i++)
-					{
-						if (initparts[i].Identifier.Name == token.Text)
-						{
-							return true;
-						}
-					}
-
-					StructDefinitionSyntax structDef = (sibling as SimpleStatementSyntax)?.Declaration?.StructDefinition;
-
-					if (structDef?.StructDeclarator?.Identifier.Name == token.Text)
-					{
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-
-		private bool IsMacro(Token token, SyntaxNode node)
-		{
-			return node.SyntaxType == SyntaxType.IdentifierToken && node.Parent?.SyntaxType == SyntaxType.DefinePreprocessor;
-		}
-
-		private bool IsParameter(Token token, SyntaxNode node)
-		{
-			if (node.Parent?.SyntaxType == SyntaxType.FunctionHeader)
-			{
-				return false;
-			}
-
-			foreach (SyntaxNode ancestor in node.Ancestors)
-			{
-				if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
-				{
-					FunctionDefinitionSyntax functionDef = ancestor as FunctionDefinitionSyntax;
-
-					List<ParameterSyntax> parameters = functionDef.FunctionHeader.Parameters;
-
-					for (int i = 0; i < parameters.Count; i++)
-					{
-						if (parameters[i].Identifier?.Name == token.Text)
-						{
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		private bool IsPreprocessorText(SyntaxNode node)
-		{
-			foreach (SyntaxNode ancestor in node.AncestorsAndSelf)
-			{
-				if (ancestor.SyntaxType == SyntaxType.Preprocessor)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		private bool IsTypeName(Token token, SyntaxNode node)
-		{
-			return node.SyntaxType == SyntaxType.IdentifierToken && node.Parent?.SyntaxType == SyntaxType.TypeName;
 		}
 
 		private void Source_DoneParsing(object sender, EventArgs e)

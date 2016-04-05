@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class MultiplicativeExpressionSyntax : SyntaxNode
 	{
 		internal MultiplicativeExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.MultiplicativeExpression, start)
+		{
+		}
+
+		internal MultiplicativeExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.MultiplicativeExpression, span)
 		{
 		}
 

@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class IfPreprocessorSyntax : SyntaxNode
 	{
 		internal IfPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.IfPreprocessor, start)
+		{
+		}
+
+		internal IfPreprocessorSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.IfPreprocessor, span)
 		{
 		}
 

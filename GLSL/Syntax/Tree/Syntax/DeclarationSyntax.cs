@@ -1,4 +1,6 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class DeclarationSyntax : SyntaxNode
 	{
@@ -6,9 +8,13 @@
 		{
 		}
 
+		internal DeclarationSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.Declaration, span)
+		{
+		}
+
 		public DeclarationListSyntax DeclarationList { get; private set; }
 
-		public InitDeclaratorListDeclarationSyntax InitDeclaratorListDeclaration { get; private set; }
+		public InitDeclaratorListSyntax InitDeclaratorList { get; private set; }
 
 		public PrecisionDeclarationSyntax PrecisionDeclaration { get; private set; }
 
@@ -18,8 +24,8 @@
 		{
 			switch (node.SyntaxType)
 			{
-				case SyntaxType.InitDeclaratorListDeclaration:
-					this.InitDeclaratorListDeclaration = node as InitDeclaratorListDeclarationSyntax;
+				case SyntaxType.InitDeclaratorList:
+					this.InitDeclaratorList = node as InitDeclaratorListSyntax;
 					break;
 
 				case SyntaxType.PrecisionDeclaration:

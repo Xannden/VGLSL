@@ -2,7 +2,7 @@
 using System.Drawing;
 using Microsoft.VisualStudio.PlatformUI;
 
-namespace Xannden.VSGLSL.Utility.Theme
+namespace Xannden.VSGLSL.Theme
 {
 	internal static class VSThemeHelper
 	{

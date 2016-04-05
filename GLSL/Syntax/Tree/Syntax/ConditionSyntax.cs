@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ConditionSyntax : SyntaxNode
 	{
 		internal ConditionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Condition, start)
+		{
+		}
+
+		internal ConditionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.Condition, span)
 		{
 		}
 

@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class AdditiveExpressionSyntax : SyntaxNode
 	{
 		internal AdditiveExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.AdditiveExpression, start)
+		{
+		}
+
+		internal AdditiveExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.AdditiveExpression, span)
 		{
 		}
 

@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ShiftExpressionSyntax : SyntaxNode
 	{
 		internal ShiftExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ShiftExpression, start)
+		{
+		}
+
+		internal ShiftExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ShiftExpression, span)
 		{
 		}
 

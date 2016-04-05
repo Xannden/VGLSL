@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PrecisionDeclarationSyntax : SyntaxNode
 	{
 		internal PrecisionDeclarationSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PrecisionDeclaration, start)
+		{
+		}
+
+		internal PrecisionDeclarationSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PrecisionDeclaration, span)
 		{
 		}
 

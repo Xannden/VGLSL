@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class SelectionStatementSyntax : SyntaxNode
 	{
 		internal SelectionStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SelectionStatement, start)
+		{
+		}
+
+		internal SelectionStatementSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.SelectionStatement, span)
 		{
 		}
 

@@ -7,12 +7,12 @@ namespace Xannden.VSGLSL.Sources
 {
 	internal sealed class VSTrackingSpan : TrackingSpan
 	{
-		private ITrackingSpan trackingSpan;
-
 		public VSTrackingSpan(ITrackingSpan span)
 		{
-			this.trackingSpan = span;
+			this.TrackingSpan = span;
 		}
+
+		internal ITrackingSpan TrackingSpan { get; }
 
 		public override GLSL.Text.Span GetSpan(Snapshot snapshot)
 		{
@@ -23,7 +23,7 @@ namespace Xannden.VSGLSL.Sources
 				throw new ArgumentException("snapshot must be a VSSnapshot");
 			}
 
-			return this.trackingSpan.GetSpan(vs.TextSnapshot).ToGLSLSpan();
+			return this.TrackingSpan.GetSpan(vs.TextSnapshot).ToGLSLSpan();
 		}
 	}
 }

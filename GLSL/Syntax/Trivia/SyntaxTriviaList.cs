@@ -48,5 +48,13 @@ namespace Xannden.GLSL.Syntax.Trivia
 
 			return syntaxTriviaList;
 		}
+
+		public override void ToStringWithoutNewLines(StringBuilder builder)
+		{
+			for (int i = 0; i < this.List.Count; i++)
+			{
+				this.List[i].ToStringWithoutNewLines(builder);
+			}
+		}
 	}
 }

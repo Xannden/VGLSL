@@ -316,7 +316,6 @@
 		Program,
 
 		Declaration,
-		InitDeclaratorListDeclaration,
 		PrecisionDeclaration,
 		DeclarationList,
 		ArraySpecifier,
@@ -415,9 +414,49 @@
 
 #pragma warning disable SA1649 // File name must match first type name
 
-	internal static class Extentions
+	public static class Extentions
 #pragma warning restore SA1649 // File name must match first type name
 	{
+		public static bool IsComment(this SyntaxType type)
+		{
+			return type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia;
+		}
+
+		public static bool IsPreprocessor(this SyntaxType type)
+		{
+			return type >= SyntaxType.DefinePreprocessorKeyword && type <= SyntaxType.LinePreprocessorKeyword;
+		}
+
+		public static bool IsReserved(this SyntaxType type)
+		{
+			return type >= SyntaxType.CommonKeyword && type <= SyntaxType.UsingKeyword;
+		}
+
+		public static bool IsTrivia(this SyntaxType type)
+		{
+			return type == SyntaxType.WhitespaceTrivia || type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia || type == SyntaxType.NewLineTrivia;
+		}
+
+		public static bool IsType(this SyntaxType type)
+		{
+			return type >= SyntaxType.BoolKeyword && type <= SyntaxType.VoidKeyword;
+		}
+
+		public static bool IsPuctuation(this SyntaxType type)
+		{
+			return type >= SyntaxType.LeftParenToken && type <= SyntaxType.MinusEqualToken;
+		}
+
+		public static bool IsKeyword(this SyntaxType type)
+		{
+			return type >= SyntaxType.AttributeKeyword && type <= SyntaxType.FalseKeyword;
+		}
+
+		public static bool IsNumber(this SyntaxType type)
+		{
+			return type >= SyntaxType.FloatConstToken && type <= SyntaxType.UIntConstToken;
+		}
+
 		internal static bool Contains(this SyntaxType[] array, SyntaxType type)
 		{
 			for (int i = 0; i < array.Length; i++)
@@ -429,31 +468,6 @@
 			}
 
 			return false;
-		}
-
-		internal static bool IsComment(this SyntaxType type)
-		{
-			return type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia;
-		}
-
-		internal static bool IsPreprocessor(this SyntaxType type)
-		{
-			return type >= SyntaxType.DefinePreprocessorKeyword && type <= SyntaxType.LinePreprocessorKeyword;
-		}
-
-		internal static bool IsReserved(this SyntaxType type)
-		{
-			return type >= SyntaxType.CommonKeyword && type <= SyntaxType.UsingKeyword;
-		}
-
-		internal static bool IsTrivia(this SyntaxType type)
-		{
-			return type == SyntaxType.WhitespaceTrivia || type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia || type == SyntaxType.NewLineTrivia;
-		}
-
-		internal static bool IsType(this SyntaxType type)
-		{
-			return type >= SyntaxType.BoolKeyword && type <= SyntaxType.VoidKeyword;
 		}
 	}
 }

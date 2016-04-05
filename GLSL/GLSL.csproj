@@ -131,7 +131,6 @@
     <Compile Include="Syntax\Tree\Syntax\IfNotDefinedPreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\IfPreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InclusiveOrExpressionSyntax.cs" />
-    <Compile Include="Syntax\Tree\Syntax\InitDeclaratorListDeclarationSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InitDeclaratorListSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InitializerSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InitListSyntax.cs" />
@@ -177,8 +176,8 @@
     <Compile Include="Syntax\Tree\Syntax\WhileStatementSyntax.cs" />
     <Compile Include="Syntax\Trivia\SyntaxTrivia.cs" />
     <Compile Include="Syntax\Trivia\SyntaxTriviaList.cs" />
-    <Compile Include="Text\Positions\Span.cs" />
-    <Compile Include="Text\Positions\TrackingSpan.cs" />
+    <Compile Include="Text\Spans\Span.cs" />
+    <Compile Include="Text\Spans\TrackingSpan.cs" />
     <Compile Include="Text\Sources\Snapshot.cs" />
     <Compile Include="Text\Sources\Source.cs" />
     <Compile Include="Text\Sources\SourceLine.cs" />

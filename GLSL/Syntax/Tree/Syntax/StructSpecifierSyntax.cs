@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructSpecifierSyntax : SyntaxNode
 	{
 		internal StructSpecifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructSpecifier, start)
+		{
+		}
+
+		internal StructSpecifierSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.StructSpecifier, span)
 		{
 		}
 

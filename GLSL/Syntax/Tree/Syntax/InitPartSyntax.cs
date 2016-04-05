@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 
+using Xannden.GLSL.Text;
+
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InitPartSyntax : SyntaxNode
 	{
 		internal InitPartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitPart, start)
+		{
+		}
+
+		internal InitPartSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.InitPart, span)
 		{
 		}
 

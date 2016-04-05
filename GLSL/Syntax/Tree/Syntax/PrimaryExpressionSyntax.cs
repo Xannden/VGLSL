@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PrimaryExpressionSyntax : SyntaxNode
 	{
 		internal PrimaryExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PrimaryExpression, start)
+		{
+		}
+
+		internal PrimaryExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PrimaryExpression, span)
 		{
 		}
 

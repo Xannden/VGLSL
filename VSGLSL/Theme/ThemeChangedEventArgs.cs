@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xannden.VSGLSL.Utility.Theme
+namespace Xannden.VSGLSL.Theme
 {
 	internal class ThemeChangedEventArgs : EventArgs
 	{

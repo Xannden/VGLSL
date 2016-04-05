@@ -47,7 +47,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Program);
 
-			while (this.builder.CurrentToken.Type != SyntaxType.EOF)
+			while (this.builder.CurrentToken.SyntaxType != SyntaxType.EOF)
 			{
 				if (this.IsPreprocessor())
 				{
@@ -81,7 +81,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftBracketToken);
 
-			if (this.builder.CurrentToken?.Type != SyntaxType.RightBracketToken)
+			if (this.builder.CurrentToken?.SyntaxType != SyntaxType.RightBracketToken)
 			{
 				this.ParseConstantExpression();
 			}
@@ -198,7 +198,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseTypeNonArray();
 
-			while (this.builder.CurrentToken?.Type == SyntaxType.LeftBracketToken)
+			while (this.builder.CurrentToken?.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParseArraySpecifier();
 			}
@@ -219,11 +219,11 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.TypeNonArray);
 
-			if (this.builder.CurrentToken.Type == SyntaxType.StructKeyword)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.StructKeyword)
 			{
 				this.ParseStructSpecifier();
 			}
-			else if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.ParseTypeName();
 			}
@@ -239,7 +239,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.TypeQualifier);
 
-			SyntaxType type = this.builder.CurrentToken.Type;
+			SyntaxType type = this.builder.CurrentToken.SyntaxType;
 
 			if (type == SyntaxType.PreciseKeyword)
 			{
@@ -279,7 +279,7 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.AcceptToken(SyntaxType.LeftBraceToken))
 			{
-				while (this.IsSimpleStatement(this.builder.CurrentToken.Type))
+				while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
 				{
 					this.ParseSimpleStatement();
 				}
@@ -309,7 +309,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.FunctionHeader);
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseTypeQualifier();
 			}
@@ -320,7 +320,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
-			if (this.IsType(this.builder.CurrentToken.Type) || this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsType(this.builder.CurrentToken.SyntaxType) || this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseParameter();
 
@@ -343,14 +343,14 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Parameter);
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseTypeQualifier();
 			}
 
 			this.ParseType();
 
-			if (this.IsType(this.builder.CurrentToken.Type))
+			if (this.IsType(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseType();
 			}
@@ -358,7 +358,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.RequireToken(SyntaxType.IdentifierToken);
 
-				while (this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
+				while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 				{
 					this.ParseArraySpecifier();
 				}
@@ -405,13 +405,13 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Condition);
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseExpression();
 			}
 			else
 			{
-				if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+				if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 				{
 					this.ParseTypeQualifier();
 				}
@@ -464,7 +464,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.ExpressionStatement);
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseExpression();
 			}
@@ -488,7 +488,7 @@ namespace Xannden.GLSL.Parsing
 
 				this.RequireToken(SyntaxType.SemiColonToken);
 			}
-			else if (this.IsUnaryExpression(this.builder.CurrentToken.Type) || this.builder.CurrentToken.Type == SyntaxType.SemiColonToken)
+			else if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken)
 			{
 				this.ParseExpressionStatement();
 			}
@@ -497,14 +497,14 @@ namespace Xannden.GLSL.Parsing
 				this.ParseDeclaration();
 			}
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type) || this.IsType(this.builder.CurrentToken.Type) || this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.IsType(this.builder.CurrentToken.SyntaxType) || this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseCondition();
 			}
 
 			this.RequireToken(SyntaxType.SemiColonToken);
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseExpression();
 			}
@@ -530,7 +530,7 @@ namespace Xannden.GLSL.Parsing
 		private void ParseIterationStatement()
 		{
 			this.builder.StartNode(SyntaxType.IterationStatement);
-			switch (this.builder.CurrentToken.Type)
+			switch (this.builder.CurrentToken.SyntaxType)
 			{
 				case SyntaxType.WhileKeyword:
 					this.ParseWhileStatement();
@@ -556,7 +556,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.RequireToken(SyntaxType.ReturnKeyword);
 
-				if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+				if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 				{
 					this.ParseExpression();
 				}
@@ -581,7 +581,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseStatement();
 
-			if (this.builder.CurrentToken.Type == SyntaxType.ElseKeyword)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.ElseKeyword)
 			{
 				this.ParseElseStatement();
 			}
@@ -593,7 +593,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.SimpleStatement);
 
-			SyntaxType type = this.builder.CurrentToken.Type;
+			SyntaxType type = this.builder.CurrentToken.SyntaxType;
 
 			if (type == SyntaxType.IfKeyword)
 			{
@@ -646,7 +646,7 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.AcceptToken(SyntaxType.LeftBraceToken))
 			{
-				while (this.IsSimpleStatement(this.builder.CurrentToken.Type))
+				while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
 				{
 					this.ParseSimpleStatement();
 				}
@@ -675,7 +675,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftBraceToken);
 
-			while (this.IsSimpleStatement(this.builder.CurrentToken.Type))
+			while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseSimpleStatement();
 			}
@@ -710,7 +710,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.StructDeclaration);
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseTypeQualifier();
 			}
@@ -735,7 +735,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.IdentifierToken);
 
-			while (this.builder.CurrentToken?.Type == SyntaxType.LeftBracketToken)
+			while (this.builder.CurrentToken?.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParseArraySpecifier();
 			}
@@ -757,11 +757,11 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseStructDeclaration();
 			}
-			while (this.IsTypeQualifier(this.builder.CurrentToken.Type) || this.IsType(this.builder.CurrentToken.Type));
+			while (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType) || this.IsType(this.builder.CurrentToken.SyntaxType));
 
 			this.RequireToken(SyntaxType.RightBraceToken);
 
-			if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.ParseStructDeclarator();
 			}
@@ -777,7 +777,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.StructKeyword);
 
-			if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.ParseTypeName();
 			}
@@ -788,7 +788,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseStructDeclaration();
 			}
-			while (this.IsTypeQualifier(this.builder.CurrentToken.Type) || this.IsType(this.builder.CurrentToken.Type));
+			while (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType) || this.IsType(this.builder.CurrentToken.SyntaxType));
 
 			this.RequireToken(SyntaxType.RightBraceToken);
 
@@ -891,7 +891,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseAssignmentExpression();
 
@@ -978,7 +978,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
-			if (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseAssignmentExpression();
 
@@ -1086,7 +1086,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParsePostFixExpressionStart();
 
-			while (this.IsPostFixOperator(this.builder.CurrentToken.Type) || this.builder.CurrentToken.Type == SyntaxType.DotToken || this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
+			while (this.IsPostFixOperator(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.DotToken || this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParsePostFixExpressionContinuation();
 			}
@@ -1101,11 +1101,11 @@ namespace Xannden.GLSL.Parsing
 			if (this.AcceptToken(SyntaxType.PlusPlusToken, SyntaxType.MinusMinusToken))
 			{
 			}
-			else if (this.builder.CurrentToken.Type == SyntaxType.DotToken)
+			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.DotToken)
 			{
 				this.ParseFieldSelection();
 			}
-			else if (this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
+			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParsePostFixArrayAccess();
 			}
@@ -1203,7 +1203,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Declaration);
 
-			if (this.builder.CurrentToken.Type == SyntaxType.PrecisionKeyword)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.PrecisionKeyword)
 			{
 				this.ParsePrecisionDeclaration();
 			}
@@ -1213,9 +1213,9 @@ namespace Xannden.GLSL.Parsing
 			}
 			else if (this.IsInitDeclaratorList())
 			{
-				this.ParseInitDeclaratorListDeclaration();
+				this.ParseInitDeclaratorList();
 			}
-			else if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			else if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseDeclarationList();
 			}
@@ -1251,14 +1251,14 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.InitDeclaratorList);
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.ParseTypeQualifier();
 			}
 
 			this.ParseType();
 
-			if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.ParseInitPart();
 
@@ -1267,15 +1267,6 @@ namespace Xannden.GLSL.Parsing
 					this.ParseInitPart();
 				}
 			}
-
-			this.builder.EndNode();
-		}
-
-		private void ParseInitDeclaratorListDeclaration()
-		{
-			this.builder.StartNode(SyntaxType.InitDeclaratorListDeclaration);
-
-			this.ParseInitDeclaratorList();
 
 			this.RequireToken(SyntaxType.SemiColonToken);
 
@@ -1286,7 +1277,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Initializer);
 
-			if (this.builder.CurrentToken.Type == SyntaxType.LeftBraceToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBraceToken)
 			{
 				this.ParseInitList();
 			}
@@ -1308,7 +1299,7 @@ namespace Xannden.GLSL.Parsing
 
 			while (this.AcceptToken(SyntaxType.CommaToken))
 			{
-				if (this.builder.CurrentToken.Type == SyntaxType.RightBraceToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.RightBraceToken)
 				{
 					break;
 				}
@@ -1329,7 +1320,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.IdentifierToken);
 
-			while (this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
+			while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParseArraySpecifier();
 			}
@@ -1373,7 +1364,7 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.AcceptToken(SyntaxType.LeftParenToken, true))
 			{
-				if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					this.ParseMacroArguments();
 				}
@@ -1473,13 +1464,13 @@ namespace Xannden.GLSL.Parsing
 
 			int depth = 0;
 
-			while (depth > 0 || (this.builder.CurrentToken.Type != SyntaxType.EndIfPreprocessorKeyword && this.builder.CurrentToken.Type != SyntaxType.ElseIfPreprocessorKeyword && this.builder.CurrentToken.Type != SyntaxType.ElsePreprocessorKeyword))
+			while (depth > 0 || (this.builder.CurrentToken.SyntaxType != SyntaxType.EndIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElseIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElsePreprocessorKeyword))
 			{
-				if (this.builder.CurrentToken.Type == SyntaxType.IfPreprocessorKeyword)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IfPreprocessorKeyword)
 				{
 					depth++;
 				}
-				else if (this.builder.CurrentToken.Type == SyntaxType.EndIfPreprocessorKeyword && depth > 0)
+				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.EndIfPreprocessorKeyword && depth > 0)
 				{
 					depth--;
 				}
@@ -1644,7 +1635,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Preprocessor);
 
-			switch (this.builder.CurrentToken.Type)
+			switch (this.builder.CurrentToken.SyntaxType)
 			{
 				case SyntaxType.ExtensionPreprocessorKeyword:
 					this.ParseExtensionPreprocessor();
@@ -1756,12 +1747,12 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			while (this.IsUnaryExpression(this.builder.CurrentToken.Type))
+			while (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 			}
 
-			switch (this.builder.CurrentToken.Type)
+			switch (this.builder.CurrentToken.SyntaxType)
 			{
 				case SyntaxType.EqualToken:
 				case SyntaxType.StarEqualToken:
@@ -1788,11 +1779,11 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.IsType(this.builder.CurrentToken.Type))
+			if (this.IsType(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.LeftParenToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftParenToken)
 				{
 					result = true;
 				}
@@ -1805,7 +1796,7 @@ namespace Xannden.GLSL.Parsing
 
 		private bool IsDeclaration()
 		{
-			if (this.builder.CurrentToken.Type == SyntaxType.PrecisionKeyword || this.builder.IsTypeName(this.builder.CurrentToken))
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.PrecisionKeyword || this.builder.IsTypeName(this.builder.CurrentToken))
 			{
 				return true;
 			}
@@ -1813,30 +1804,30 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.SemiColonToken || this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					result = true;
 				}
 			}
 
-			if (!result && this.IsType(this.builder.CurrentToken.Type))
+			if (!result && this.IsType(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.Type == SyntaxType.EqualToken || this.builder.CurrentToken.Type == SyntaxType.SemiColonToken || this.builder.CurrentToken.Type == SyntaxType.LeftBracketToken)
+					if (this.builder.CurrentToken.SyntaxType == SyntaxType.EqualToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 					{
 						result = true;
 					}
 				}
-				else if (this.builder.CurrentToken.Type == SyntaxType.SemiColonToken)
+				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken)
 				{
 					result = true;
 				}
@@ -1877,11 +1868,11 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.LeftParenToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftParenToken)
 				{
 					result = true;
 				}
@@ -1897,20 +1888,20 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 			}
 
-			if (this.IsType(this.builder.CurrentToken.Type) || this.builder.CurrentToken.Type == SyntaxType.VoidKeyword)
+			if (this.IsType(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.VoidKeyword)
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.Type == SyntaxType.LeftParenToken)
+					if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftParenToken)
 					{
 						result = true;
 					}
@@ -1927,12 +1918,12 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 			}
 
-			if (this.IsType(this.builder.CurrentToken.Type))
+			if (this.IsType(this.builder.CurrentToken.SyntaxType))
 			{
 				result = true;
 			}
@@ -1949,7 +1940,7 @@ namespace Xannden.GLSL.Parsing
 
 		private bool IsPreprocessor()
 		{
-			return this.builder.CurrentToken?.Type.IsPreprocessor() ?? false;
+			return this.builder.CurrentToken?.SyntaxType.IsPreprocessor() ?? false;
 		}
 
 		private bool IsSimpleStatement(SyntaxType type)
@@ -2016,15 +2007,15 @@ namespace Xannden.GLSL.Parsing
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 
-			if (this.IsTypeQualifier(this.builder.CurrentToken.Type))
+			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.Type == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.Type == SyntaxType.LeftBraceToken)
+					if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBraceToken)
 					{
 						result = true;
 					}
@@ -2238,7 +2229,7 @@ namespace Xannden.GLSL.Parsing
 
 						this.builder.MoveNext();
 
-						if (this.builder.CurrentToken.Type == SyntaxType.LeftParenToken)
+						if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftParenToken)
 						{
 							this.builder.Reset(resetPoint);
 
@@ -2271,7 +2262,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool result = false;
 
-			if (this.builder.CurrentToken.Type == type || type == SyntaxType.Any)
+			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
 			{
 				this.builder.AddToken();
 
@@ -2295,7 +2286,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool result = false;
 
-			if (types.Contains(this.builder.CurrentToken.Type))
+			if (types.Contains(this.builder.CurrentToken.SyntaxType))
 			{
 				this.builder.AddToken();
 

@@ -7,7 +7,7 @@ namespace Xannden.GLSL.Syntax.Tokens
 	{
 		internal Token(SyntaxType type, Span span, SourceLine line, string text, SyntaxTrivia leadingTrivia)
 		{
-			this.Type = type;
+			this.SyntaxType = type;
 			this.Span = span;
 			this.Line = line;
 			this.Text = text;
@@ -17,16 +17,6 @@ namespace Xannden.GLSL.Syntax.Tokens
 		public bool HasLeadingTrivia => this.LeadingTrivia != null;
 
 		public bool HasTrailingTrivia => this.TrailingTrivia != null;
-
-		public bool IsKeyword => this.Type >= SyntaxType.AttributeKeyword && this.Type <= SyntaxType.FalseKeyword;
-
-		public bool IsNumber => this.Type >= SyntaxType.FloatConstToken && this.Type <= SyntaxType.UIntConstToken;
-
-		public bool IsPreprocessor => this.Type.IsPreprocessor();
-
-		public bool IsPuctuation => this.Type >= SyntaxType.LeftParenToken && this.Type <= SyntaxType.MinusEqualToken;
-
-		public bool IsTrivia => this.Type.IsTrivia();
 
 		public SyntaxTrivia LeadingTrivia { get; }
 
@@ -40,7 +30,7 @@ namespace Xannden.GLSL.Syntax.Tokens
 
 		public SyntaxTrivia TrailingTrivia { get; internal set; }
 
-		public SyntaxType Type { get; }
+		public SyntaxType SyntaxType { get; }
 
 		public Span FullSpan(Snapshot snapshot)
 		{

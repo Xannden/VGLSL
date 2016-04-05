@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
@@ -15,14 +14,12 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.TempStart = start;
 			this.SyntaxType = type;
 			this.Tree = tree;
-			this.Children = new List<SyntaxNode>();
 		}
 
 		protected SyntaxNode(SyntaxTree tree, SyntaxType type, TrackingSpan span)
 		{
 			this.SyntaxType = type;
 			this.Span = span;
-			this.Children = new List<SyntaxNode>();
 			this.Tree = tree;
 		}
 
@@ -56,17 +53,17 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
-		public List<SyntaxNode> Children { get; }
+		public IReadOnlyList<SyntaxNode> Children => this.InternalChildren;
 
 		public IEnumerable<SyntaxNode> Descendants
 		{
 			get
 			{
-				for (int i = 0; i < this.Children.Count; i++)
+				for (int i = 0; i < this.InternalChildren.Count; i++)
 				{
-					yield return this.Children[i];
+					yield return this.InternalChildren[i];
 
-					foreach (SyntaxNode child in this.Children[i].Descendants)
+					foreach (SyntaxNode child in this.InternalChildren[i].Descendants)
 					{
 						yield return child;
 					}
@@ -80,17 +77,15 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		public SyntaxNode Parent { get; private set; }
 
-		public List<PreprocessorSyntax> Prepocessors { get; } = new List<PreprocessorSyntax>();
-
 		public IEnumerable<SyntaxNode> Siblings
 		{
 			get
 			{
-				for (int i = 0; i < this.Parent?.Children.Count; i++)
+				for (int i = 0; i < this.Parent?.InternalChildren.Count; i++)
 				{
-					if (this.Parent.Children[i] != this)
+					if (this.Parent.InternalChildren[i] != this)
 					{
-						yield return this.Parent.Children[i];
+						yield return this.Parent.InternalChildren[i];
 					}
 				}
 			}
@@ -100,35 +95,76 @@ namespace Xannden.GLSL.Syntax.Tree
 		{
 			get
 			{
-				for (int i = 0; i < this.Parent?.Children.Count; i++)
+				for (int i = 0; i < this.Parent?.InternalChildren.Count; i++)
 				{
-					yield return this.Parent.Children[i];
+					yield return this.Parent.InternalChildren[i];
 				}
 			}
 		}
 
-		public TrackingSpan Span { get; set; }
+		public TrackingSpan Span { get; internal set; }
+
+		public IEnumerable<SyntaxToken> SyntaxTokens
+		{
+			get
+			{
+				if (this is SyntaxToken)
+				{
+					yield return this as SyntaxToken;
+				}
+				else
+				{
+					foreach (SyntaxNode decendent in this.Descendants)
+					{
+						if (decendent is SyntaxToken)
+						{
+							yield return decendent as SyntaxToken;
+						}
+					}
+				}
+			}
+		}
 
 		public SyntaxType SyntaxType { get; }
 
-		internal int TempStart { get; private set; }
+		public SyntaxTree Tree { get; private set; }
 
-		protected SyntaxTree Tree { get; private set; }
+		internal List<SyntaxNode> InternalChildren { get; } = new List<SyntaxNode>();
+
+		internal int TempStart { get; private set; }
 
 		public SyntaxTrivia GetTrailingTrivia()
 		{
-			SyntaxToken token = (SyntaxToken)this.Children.FindLast(node => node is SyntaxToken);
+			SyntaxToken token = (SyntaxToken)this.InternalChildren.FindLast(node => node is SyntaxToken);
 
 			return token?.TrailingTrivia;
+		}
+
+		public bool IsExcludedCode()
+		{
+			return this.Parent?.SyntaxType == SyntaxType.ExcludedCode;
+		}
+
+		public bool IsPreprocessorText()
+		{
+			foreach (SyntaxNode ancestor in this.AncestorsAndSelf)
+			{
+				if (ancestor.SyntaxType == SyntaxType.Preprocessor)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();
 
-			for (int i = 0; i < this.Children.Count; i++)
+			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
-				this.Children[i].ToString(builder);
+				this.InternalChildren[i].ToString(builder);
 			}
 
 			return builder.ToString();
@@ -137,7 +173,7 @@ namespace Xannden.GLSL.Syntax.Tree
 		internal void AddChild(SyntaxNode child)
 		{
 			child.Parent = this;
-			this.Children.Add(child);
+			this.InternalChildren.Add(child);
 
 			this.NewChild(child);
 		}
@@ -160,7 +196,7 @@ namespace Xannden.GLSL.Syntax.Tree
 
 			this.GetFormatedTagInfo(builder);
 
-			if (this.Children.Count <= 0)
+			if (this.InternalChildren.Count <= 0)
 			{
 				builder.Append("/>");
 			}
@@ -173,14 +209,14 @@ namespace Xannden.GLSL.Syntax.Tree
 
 			writer.IndentLevel++;
 
-			for (int i = 0; i < this.Children.Count; i++)
+			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
-				this.Children[i].WriteToXML(writer, snapshot);
+				this.InternalChildren[i].WriteToXML(writer, snapshot);
 			}
 
 			writer.IndentLevel--;
 
-			if (this.Children.Count > 0)
+			if (this.InternalChildren.Count > 0)
 			{
 				writer.WriteLine($"</{Enum.GetName(typeof(SyntaxType), this.SyntaxType)}>");
 			}
@@ -193,19 +229,13 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		protected virtual void NewChild(SyntaxNode node)
 		{
-			switch (node.SyntaxType)
-			{
-				case SyntaxType.Preprocessor:
-					this.Prepocessors.Add(node as PreprocessorSyntax);
-					break;
-			}
 		}
 
 		protected virtual void ToString(StringBuilder builder)
 		{
-			for (int i = 0; i < this.Children.Count; i++)
+			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
-				this.Children[i].ToString(builder);
+				this.InternalChildren[i].ToString(builder);
 			}
 		}
 

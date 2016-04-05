@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ExclusiveOrExpressionSyntax : SyntaxNode
 	{
 		internal ExclusiveOrExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExclusiveOrExpression, start)
+		{
+		}
+
+		internal ExclusiveOrExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ExclusiveOrExpression, span)
 		{
 		}
 

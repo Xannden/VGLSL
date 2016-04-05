@@ -34,6 +34,25 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		public bool HasTrailingTrivia() => this.TrailingTrivia != null;
 
+		public string ToStringWithoutNewLines()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			if (this.HasLeadingTrivia())
+			{
+				this.LeadingTrivia.ToStringWithoutNewLines(builder);
+			}
+
+			builder.Append(this.Text);
+
+			if (this.HasTrailingTrivia())
+			{
+				this.TrailingTrivia.ToStringWithoutNewLines(builder);
+			}
+
+			return builder.ToString();
+		}
+
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();

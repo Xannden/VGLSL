@@ -8,7 +8,7 @@ namespace Xannden.GLSL.Syntax.Tree
 {
 	public class SyntaxTree
 	{
-		private List<DefinePreprocessorSyntax> macroDefinitions;
+		public IReadOnlyList<DefinePreprocessorSyntax> MacroDefinitions { get; private set; }
 
 		public SyntaxNode Root { get; internal set; }
 
@@ -35,12 +35,12 @@ namespace Xannden.GLSL.Syntax.Tree
 		{
 			SyntaxNode node = this.Root;
 
-			SyntaxNode child = node.Children.Find(n => n.Span.GetSpan(snapshot).Contains(position));
+			SyntaxNode child = node.InternalChildren.Find(n => n.Span.GetSpan(snapshot).Contains(position));
 			while (node.Children.Count > 0 && child != null)
 			{
 				node = child;
 
-				SyntaxNode result = node.Children.Find(n => n.Span?.GetSpan(snapshot).Contains(position) ?? false);
+				SyntaxNode result = node.InternalChildren.Find(n => n.Span?.GetSpan(snapshot).Contains(position) ?? false);
 
 				if (result != null)
 				{
@@ -55,17 +55,17 @@ namespace Xannden.GLSL.Syntax.Tree
 			return node;
 		}
 
+		internal void SetMacroDefinitions(List<DefinePreprocessorSyntax> macros)
+		{
+			this.MacroDefinitions = macros;
+		}
+
 		internal void WriteToXML(string file, Snapshot snapshot)
 		{
 			using (IndentedTextWriter indentedWriter = new IndentedTextWriter(new StreamWriter(File.Create(file)), "\t"))
 			{
 				this.Root.WriteToXML(indentedWriter, snapshot);
 			}
-		}
-
-		internal void SetMacroDefinitions(List<DefinePreprocessorSyntax> macros)
-		{
-			this.macroDefinitions = macros;
 		}
 	}
 }

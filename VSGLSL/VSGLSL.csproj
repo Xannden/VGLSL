@@ -61,9 +61,16 @@
     <Compile Include="Classification\GLSLClassifierProvider.cs" />
     <Compile Include="Classification\ClassificationTypes.cs" />
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
     <Compile Include="Extensions\Text\SourceExtensions.cs" />
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\Text\SpanExtensions.cs" />
+    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoController.cs" />
+    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoControllerProvider.cs" />
+    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSource.cs" />
+    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSourceProvider.cs" />
+    <Compile Include="IntelliSense\QuickTips\QuickTipPanel.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedAction.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
@@ -81,9 +88,9 @@
     <Compile Include="Sources\VSTrackingSpan.cs" />
     <Compile Include="Tagging\Errors\ErrorTagger.cs" />
     <Compile Include="Tagging\Errors\ErrorTaggerProvider.cs" />
-    <Compile Include="Utility\Theme\VSTheme.cs" />
-    <Compile Include="Utility\Theme\ThemeChangedEventArgs.cs" />
-    <Compile Include="Utility\Theme\VSThemeHelper.cs" />
+    <Compile Include="Theme\VSTheme.cs" />
+    <Compile Include="Theme\ThemeChangedEventArgs.cs" />
+    <Compile Include="Theme\VSThemeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -253,6 +260,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\GLSLPackage.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IntelliSense\Compleations\" />
+    <Folder Include="IntelliSense\ParameterHelp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

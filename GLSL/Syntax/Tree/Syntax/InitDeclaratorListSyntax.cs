@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InitDeclaratorListSyntax : SyntaxNode
 	{
 		internal InitDeclaratorListSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitDeclaratorList, start)
+		{
+		}
+
+		internal InitDeclaratorListSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.InitDeclaratorList, span)
 		{
 		}
 
@@ -11,6 +17,8 @@
 		public TypeSyntax Type { get; private set; }
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
+
+		public SyntaxToken SemiColon { get; private set; }
 
 		protected override void NewChild(SyntaxNode node)
 		{
@@ -30,6 +38,10 @@
 
 				case SyntaxType.CommaToken:
 					this.InitParts.AddToken(node as SyntaxToken);
+					break;
+
+				case SyntaxType.SemiColonToken:
+					this.SemiColon = node as SyntaxToken;
 					break;
 			}
 		}

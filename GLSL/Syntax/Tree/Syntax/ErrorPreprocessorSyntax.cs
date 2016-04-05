@@ -1,8 +1,14 @@
-﻿namespace Xannden.GLSL.Syntax.Tree.Syntax
+﻿using Xannden.GLSL.Text;
+
+namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ErrorPreprocessorSyntax : SyntaxNode
 	{
 		internal ErrorPreprocessorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ErrorPreprocessor, start)
+		{
+		}
+
+		internal ErrorPreprocessorSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.ErrorPreprocessor, span)
 		{
 		}
 

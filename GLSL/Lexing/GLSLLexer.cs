@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Trivia;
@@ -52,10 +53,10 @@ namespace Xannden.GLSL.Lexing
 				["buffer"] = SyntaxType.BufferKeyword,
 				["shared"] = SyntaxType.SharedKeyword,
 				["coherent"] = SyntaxType.CoherentKeyword,
-				["volatile"] = SyntaxType.VolitileKeyword,
+				["volatile"] = SyntaxType.VolatileKeyword,
 				["restrict"] = SyntaxType.RestrictKeyword,
-				["readonly"] = SyntaxType.ReadonlyKeyword,
-				["writeonly"] = SyntaxType.WriteonlyKeyword,
+				["readonly"] = SyntaxType.ReadOnlyKeyword,
+				["writeonly"] = SyntaxType.WriteOnlyKeyword,
 				["atomic_uint"] = SyntaxType.AtomicUIntKeyword,
 				["layout"] = SyntaxType.LayoutKeyword,
 				["centroid"] = SyntaxType.CentroidKeyword,
@@ -95,24 +96,24 @@ namespace Xannden.GLSL.Lexing
 				["dmat2"] = SyntaxType.DMat2Keyword,
 				["dmat3"] = SyntaxType.DMat3Keyword,
 				["dmat4"] = SyntaxType.DMat4Keyword,
-				["mat2x2"] = SyntaxType.Mat2x2Keyword,
-				["mat2x3"] = SyntaxType.Mat2x3Keyword,
-				["mat2x4"] = SyntaxType.Mat2x4Keyword,
-				["mat3x2"] = SyntaxType.Mat3x2Keyword,
-				["mat3x3"] = SyntaxType.Mat3x3Keyword,
-				["mat3x4"] = SyntaxType.Mat3x4Keyword,
-				["mat4x2"] = SyntaxType.Mat4x2Keyword,
-				["mat4x3"] = SyntaxType.Mat4x3Keyword,
-				["mat4x4"] = SyntaxType.Mat4x4Keyword,
-				["dmat2x2"] = SyntaxType.DMat2x2Keyword,
-				["dmat2x3"] = SyntaxType.DMat2x3Keyword,
-				["dmat2x4"] = SyntaxType.DMat2x4Keyword,
-				["dmat3x2"] = SyntaxType.DMat3x2Keyword,
-				["dmat3x3"] = SyntaxType.DMat3x3Keyword,
-				["dmat3x4"] = SyntaxType.DMat3x4Keyword,
-				["dmat4x2"] = SyntaxType.DMat4x2Keyword,
-				["dmat4x3"] = SyntaxType.DMat4x3Keyword,
-				["dmat4x4"] = SyntaxType.DMat4x4Keyword,
+				["mat2x2"] = SyntaxType.Mat2X2Keyword,
+				["mat2x3"] = SyntaxType.Mat2X3Keyword,
+				["mat2x4"] = SyntaxType.Mat2X4Keyword,
+				["mat3x2"] = SyntaxType.Mat3X2Keyword,
+				["mat3x3"] = SyntaxType.Mat3X3Keyword,
+				["mat3x4"] = SyntaxType.Mat3X4Keyword,
+				["mat4x2"] = SyntaxType.Mat4X2Keyword,
+				["mat4x3"] = SyntaxType.Mat4X3Keyword,
+				["mat4x4"] = SyntaxType.Mat4X4Keyword,
+				["dmat2x2"] = SyntaxType.DMat2X2Keyword,
+				["dmat2x3"] = SyntaxType.DMat2X3Keyword,
+				["dmat2x4"] = SyntaxType.DMat2X4Keyword,
+				["dmat3x2"] = SyntaxType.DMat3X2Keyword,
+				["dmat3x3"] = SyntaxType.DMat3X3Keyword,
+				["dmat3x4"] = SyntaxType.DMat3X4Keyword,
+				["dmat4x2"] = SyntaxType.DMat4X2Keyword,
+				["dmat4x3"] = SyntaxType.DMat4X3Keyword,
+				["dmat4x4"] = SyntaxType.DMat4X4Keyword,
 				["vec2"] = SyntaxType.Vec2Keyword,
 				["vec3"] = SyntaxType.Vec3Keyword,
 				["vec4"] = SyntaxType.Vec4Keyword,
@@ -249,12 +250,9 @@ namespace Xannden.GLSL.Lexing
 			};
 		}
 
-		public List<TrackingSpan> GetCommentSpans()
-		{
-			return this.commentSpans;
-		}
+		public IReadOnlyList<TrackingSpan> CommentSpans => this.commentSpans;
 
-		public LinkedList<Token> Run(Snapshot snapshot, Span span = null)
+		public LinkedList<Token> Run(Snapshot snapshot, Span span)
 		{
 			this.info = new TokenInfo(0, null, string.Empty, SyntaxType.None, 0, string.Empty, SyntaxType.None);
 			this.invalidTokens = 0;
@@ -270,6 +268,11 @@ namespace Xannden.GLSL.Lexing
 			this.LexSource();
 
 			return this.tokens;
+		}
+
+		public LinkedList<Token> Run(Snapshot snapshot)
+		{
+			return this.Run(snapshot, null);
 		}
 
 		private void CreateToken()
@@ -560,7 +563,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.SemiColonToken;
+						this.info.Type = SyntaxType.SemicolonToken;
 
 						this.End();
 						break;
@@ -910,7 +913,7 @@ namespace Xannden.GLSL.Lexing
 					case '\t':
 						this.Start();
 
-						this.info.Type = SyntaxType.WhitespaceTrivia;
+						this.info.Type = SyntaxType.WhiteSpaceTrivia;
 
 						this.ScanWhiteSpaceTriva();
 

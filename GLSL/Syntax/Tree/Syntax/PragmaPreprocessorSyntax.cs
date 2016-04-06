@@ -12,16 +12,16 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public SyntaxToken PragamKeyword { get; private set; }
+		public SyntaxToken PragmaKeyword { get; private set; }
 
 		public TokenStringSyntax TokenString { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
 				case SyntaxType.PragmaPreprocessorKeyword:
-					this.PragamKeyword = node as SyntaxToken;
+					this.PragmaKeyword = node as SyntaxToken;
 					break;
 
 				case SyntaxType.TokenString:

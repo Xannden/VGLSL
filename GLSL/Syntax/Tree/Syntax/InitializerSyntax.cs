@@ -12,15 +12,15 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public SyntaxNode Initilizer { get; private set; }
+		public SyntaxNode Initializer { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
 				case SyntaxType.AssignmentExpression:
 				case SyntaxType.InitList:
-					this.Initilizer = node;
+					this.Initializer = node;
 					break;
 			}
 		}

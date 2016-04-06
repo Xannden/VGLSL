@@ -20,7 +20,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public StructDefinitionSyntax StructDefinition { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

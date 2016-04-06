@@ -12,18 +12,18 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<LogicalXOrExpressionSyntax> LogicalXOrExpressions { get; } = new TokenSparatedList<LogicalXOrExpressionSyntax>();
+		public TokenSeparatedList<LogicalXorExpressionSyntax> LogicalXorExpressions { get; } = new TokenSeparatedList<LogicalXorExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
-				case SyntaxType.LogicalXOrExpression:
-					this.LogicalXOrExpressions.AddNode(node as LogicalXOrExpressionSyntax);
+				case SyntaxType.LogicalXorExpression:
+					this.LogicalXorExpressions.AddNode(node as LogicalXorExpressionSyntax);
 					break;
 
 				case SyntaxType.BarBarToken:
-					this.LogicalXOrExpressions.AddToken(node as SyntaxToken);
+					this.LogicalXorExpressions.AddToken(node as SyntaxToken);
 					break;
 			}
 		}

@@ -18,13 +18,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public IdentifierSyntax Identifier { get; private set; }
 
-		public InitializerSyntax Initilizer { get; private set; }
+		public InitializerSyntax Initializer { get; private set; }
 
-		public TypeSyntax Type { get; private set; }
+		public TypeSyntax TypeSyntax { get; private set; }
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -37,7 +37,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Type:
-					this.Type = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 
 				case SyntaxType.IdentifierToken:
@@ -49,7 +49,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Initializer:
-					this.Initilizer = node as InitializerSyntax;
+					this.Initializer = node as InitializerSyntax;
 					break;
 			}
 		}

@@ -16,9 +16,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken Keyword { get; private set; }
 
-		public SyntaxToken SemiColon { get; private set; }
+		public SyntaxToken Semicolon { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -33,8 +33,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.Expression = node as ExpressionSyntax;
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

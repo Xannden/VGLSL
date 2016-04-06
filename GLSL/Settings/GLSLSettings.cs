@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Settings
 {
 	public class GLSLSettings
 	{
-		protected List<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
+		private IReadOnlyList<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
 
-		public IfPreprocessor GetPreprocessor(Snapshot snapshot, int position)
-		{
-			return this.Preprocessors.Find(preprocessor => preprocessor.Contains(snapshot, position));
-		}
+		public IfPreprocessor GetPreprocessor(Snapshot snapshot, int position) => this.Preprocessors.Find(preprocessor => preprocessor.Contains(snapshot, position));
 
-		public bool GetPreprocessorValue(Snapshot snapshot, int position, bool defaultValue = false)
+		public bool GetPreprocessorValue(Snapshot snapshot, int position, bool defaultValue)
 		{
 			for (int i = 0; i < this.Preprocessors.Count; i++)
 			{
@@ -25,14 +23,10 @@ namespace Xannden.GLSL.Settings
 			return defaultValue;
 		}
 
-		public bool IsPreprocessor(Snapshot snapshot, int position)
-		{
-			return this.Preprocessors.Find(preprocessor => preprocessor.Contains(snapshot, position)) != null;
-		}
+		public bool GetPreprocessorValue(Snapshot snapshot, int position) => this.GetPreprocessorValue(snapshot, position, false);
 
-		public void SetPreprocessors(List<IfPreprocessor> preprocessors)
-		{
-			this.Preprocessors = preprocessors;
-		}
+		public bool IsPreprocessor(Snapshot snapshot, int position) => this.Preprocessors.Contains(preprocessor => preprocessor.Contains(snapshot, position));
+
+		public void SetPreprocessors(IReadOnlyList<IfPreprocessor> preprocessors) => this.Preprocessors = preprocessors;
 	}
 }

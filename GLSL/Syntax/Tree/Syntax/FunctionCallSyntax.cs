@@ -12,7 +12,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<AssignmentExpressionSyntax> AssignemntExpression { get; } = new TokenSparatedList<AssignmentExpressionSyntax>();
+		public TokenSeparatedList<AssignmentExpressionSyntax> AssignmentExpression { get; } = new TokenSeparatedList<AssignmentExpressionSyntax>();
 
 		public IdentifierSyntax Identifier { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken VoidKeyword { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -39,11 +39,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.AssignmentExpression:
-					this.AssignemntExpression.AddNode(node as AssignmentExpressionSyntax);
+					this.AssignmentExpression.AddNode(node as AssignmentExpressionSyntax);
 					break;
 
 				case SyntaxType.CommaToken:
-					this.AssignemntExpression.AddToken(node as SyntaxToken);
+					this.AssignmentExpression.AddToken(node as SyntaxToken);
 					break;
 
 				case SyntaxType.RightParenToken:

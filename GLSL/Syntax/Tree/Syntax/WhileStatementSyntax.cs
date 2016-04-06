@@ -16,13 +16,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken LeftParentheses { get; private set; }
 
-		public SyntaxToken RightPrentheses { get; private set; }
+		public SyntaxToken RightParentheses { get; private set; }
 
 		public StatementSyntax Statement { get; private set; }
 
 		public SyntaxToken WhileKeyword { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -39,7 +39,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.RightParenToken:
-					this.RightPrentheses = node as SyntaxToken;
+					this.RightParentheses = node as SyntaxToken;
 					break;
 
 				case SyntaxType.Statement:

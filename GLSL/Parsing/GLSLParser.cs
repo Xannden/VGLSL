@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
@@ -12,8 +13,8 @@ namespace Xannden.GLSL.Parsing
 	public class GLSLParser
 	{
 		private TreeBuilder builder;
-		private List<DefinePreprocessorSyntax> macroDefinitions;
 		private ErrorHandler errorHandler;
+		private List<DefinePreprocessorSyntax> macroDefinitions;
 		private List<IfPreprocessor> preprocessors;
 		private Stack<IfPreprocessor> preprocessorStack;
 		private GLSLSettings settings;
@@ -25,10 +26,7 @@ namespace Xannden.GLSL.Parsing
 			this.settings = settings;
 		}
 
-		public List<IfPreprocessor> GetPreprocessors()
-		{
-			return this.preprocessors;
-		}
+		public IReadOnlyList<IfPreprocessor> Preprocessors => this.preprocessors;
 
 		public SyntaxTree Run(Snapshot snapshot, LinkedList<Token> tokens)
 		{
@@ -131,7 +129,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseLayoutQualifierID()
 		{
-			this.builder.StartNode(SyntaxType.LayoutQualifierID);
+			this.builder.StartNode(SyntaxType.LayoutQualifierId);
 
 			if (this.AcceptToken(SyntaxType.IdentifierToken))
 			{
@@ -186,7 +184,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.ConstKeyword, SyntaxType.InOutKeyword, SyntaxType.InKeyword, SyntaxType.OutKeyword, SyntaxType.CentroidKeyword, SyntaxType.PatchKeyword, SyntaxType.SampleKeyword, SyntaxType.UniformKeyword, SyntaxType.BufferKeyword, SyntaxType.SharedKeyword, SyntaxType.CoherentKeyword, SyntaxType.VolitileKeyword, SyntaxType.RestrictKeyword, SyntaxType.ReadonlyKeyword, SyntaxType.WriteonlyKeyword);
+				this.RequireToken(SyntaxType.ConstKeyword, SyntaxType.InOutKeyword, SyntaxType.InKeyword, SyntaxType.OutKeyword, SyntaxType.CentroidKeyword, SyntaxType.PatchKeyword, SyntaxType.SampleKeyword, SyntaxType.UniformKeyword, SyntaxType.BufferKeyword, SyntaxType.SharedKeyword, SyntaxType.CoherentKeyword, SyntaxType.VolatileKeyword, SyntaxType.RestrictKeyword, SyntaxType.ReadOnlyKeyword, SyntaxType.WriteOnlyKeyword);
 			}
 
 			this.builder.EndNode();
@@ -229,7 +227,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.IntKeyword, SyntaxType.UIntKeyword, SyntaxType.FloatKeyword, SyntaxType.DoubleKeyword, SyntaxType.Vec2Keyword, SyntaxType.Vec3Keyword, SyntaxType.Vec4Keyword, SyntaxType.UVec2Keyword, SyntaxType.UVec3Keyword, SyntaxType.UVec4Keyword, SyntaxType.IVec2Keyword, SyntaxType.IVec3Keyword, SyntaxType.IVec4Keyword, SyntaxType.DVec2Keyword, SyntaxType.DVec3Keyword, SyntaxType.DVec4Keyword, SyntaxType.BVec2Keyword, SyntaxType.BVec3Keyword, SyntaxType.BVec4Keyword, SyntaxType.Mat2Keyword, SyntaxType.Mat3Keyword, SyntaxType.Mat4Keyword, SyntaxType.Mat2x2Keyword, SyntaxType.Mat2x3Keyword, SyntaxType.Mat2x4Keyword, SyntaxType.Mat3x2Keyword, SyntaxType.Mat3x3Keyword, SyntaxType.Mat3x4Keyword, SyntaxType.Mat4x2Keyword, SyntaxType.Mat4x3Keyword, SyntaxType.Mat4x4Keyword, SyntaxType.DMat2Keyword, SyntaxType.DMat3Keyword, SyntaxType.DMat4Keyword, SyntaxType.DMat2x2Keyword, SyntaxType.DMat2x3Keyword, SyntaxType.DMat2x4Keyword, SyntaxType.DMat3x2Keyword, SyntaxType.DMat3x3Keyword, SyntaxType.DMat3x4Keyword, SyntaxType.DMat4x2Keyword, SyntaxType.DMat4x3Keyword, SyntaxType.DMat4x4Keyword, SyntaxType.Sampler1DKeyword, SyntaxType.Sampler2DKeyword, SyntaxType.Sampler3DKeyword, SyntaxType.SamplerCubeKeyword, SyntaxType.Sampler1DShadowKeyword, SyntaxType.Sampler2DShadowKeyword, SyntaxType.SamplerCubeShadowKeyword, SyntaxType.Sampler1DArrayKeyword, SyntaxType.Sampler2DArrayKeyword, SyntaxType.Sampler1DArrayShadowKeyword, SyntaxType.Sampler2DArrayShadowKeyword, SyntaxType.ISampler1DKeyword, SyntaxType.ISampler2DKeyword, SyntaxType.ISampler3DKeyword, SyntaxType.ISamplerCubeKeyword, SyntaxType.ISampler1DArrayKeyword, SyntaxType.ISampler2DArrayKeyword, SyntaxType.USampler1DKeyword, SyntaxType.USampler2DKeyword, SyntaxType.USampler3DKeyword, SyntaxType.USamplerCubeKeyword, SyntaxType.USampler1DArrayKeyword, SyntaxType.USampler2DArrayKeyword, SyntaxType.Sampler2DRectKeyword, SyntaxType.Sampler2DRectShadowKeyword, SyntaxType.ISampler2DRectKeyword, SyntaxType.USampler2DRectKeyword, SyntaxType.SamplerBufferKeyword, SyntaxType.ISamplerBufferKeyword, SyntaxType.USamplerBufferKeyword, SyntaxType.SamplerCubeArrayKeyword, SyntaxType.SamplerCubeArrayShadowKeyword, SyntaxType.ISamplerCubeArrayKeyword, SyntaxType.USamplerCubeArrayKeyword, SyntaxType.Sampler2DMSKeyword, SyntaxType.ISampler2DMSKeyword, SyntaxType.USampler2DMSKeyword, SyntaxType.Sampler2DMSArrayKeyword, SyntaxType.ISampler2DMSArrayKeyword, SyntaxType.USampler2DMSArrayKeyword, SyntaxType.Image1DKeyword, SyntaxType.Image2DKeyword, SyntaxType.Image3DKeyword, SyntaxType.IImage1DKeyword, SyntaxType.IImage2DKeyword, SyntaxType.IImage3DKeyword, SyntaxType.UImage1DKeyword, SyntaxType.UImage2DKeyword, SyntaxType.UImage3DKeyword, SyntaxType.Image2DRectKeyword, SyntaxType.IImage2DRectKeyword, SyntaxType.UImage2DRectKeyword, SyntaxType.ImageCubeKeyword, SyntaxType.IImageCubeKeyword, SyntaxType.UImageCubeKeyword, SyntaxType.ImageBufferKeyword, SyntaxType.IImageBufferKeyword, SyntaxType.UImageBufferKeyword, SyntaxType.Image1DArrayKeyword, SyntaxType.IImage1DArrayKeyword, SyntaxType.UImage1DArrayKeyword, SyntaxType.Image2DArrayKeyword, SyntaxType.IImage2DArrayKeyword, SyntaxType.UImage2DArrayKeyword, SyntaxType.ImageCubeArrayKeyword, SyntaxType.IImageCubeArrayKeyword, SyntaxType.UImageCubeArrayKeyword, SyntaxType.Image2DMSKeyword, SyntaxType.IImage2DMSKeyword, SyntaxType.UImage2DMSKeyword, SyntaxType.Image2DMSArrayKeyword, SyntaxType.IImage2DMSArrayKeyword, SyntaxType.UImage2DMSArrayKeyword);
+				this.RequireToken(SyntaxType.IntKeyword, SyntaxType.UIntKeyword, SyntaxType.FloatKeyword, SyntaxType.DoubleKeyword, SyntaxType.Vec2Keyword, SyntaxType.Vec3Keyword, SyntaxType.Vec4Keyword, SyntaxType.UVec2Keyword, SyntaxType.UVec3Keyword, SyntaxType.UVec4Keyword, SyntaxType.IVec2Keyword, SyntaxType.IVec3Keyword, SyntaxType.IVec4Keyword, SyntaxType.DVec2Keyword, SyntaxType.DVec3Keyword, SyntaxType.DVec4Keyword, SyntaxType.BVec2Keyword, SyntaxType.BVec3Keyword, SyntaxType.BVec4Keyword, SyntaxType.Mat2Keyword, SyntaxType.Mat3Keyword, SyntaxType.Mat4Keyword, SyntaxType.Mat2X2Keyword, SyntaxType.Mat2X3Keyword, SyntaxType.Mat2X4Keyword, SyntaxType.Mat3X2Keyword, SyntaxType.Mat3X3Keyword, SyntaxType.Mat3X4Keyword, SyntaxType.Mat4X2Keyword, SyntaxType.Mat4X3Keyword, SyntaxType.Mat4X4Keyword, SyntaxType.DMat2Keyword, SyntaxType.DMat3Keyword, SyntaxType.DMat4Keyword, SyntaxType.DMat2X2Keyword, SyntaxType.DMat2X3Keyword, SyntaxType.DMat2X4Keyword, SyntaxType.DMat3X2Keyword, SyntaxType.DMat3X3Keyword, SyntaxType.DMat3X4Keyword, SyntaxType.DMat4X2Keyword, SyntaxType.DMat4X3Keyword, SyntaxType.DMat4X4Keyword, SyntaxType.Sampler1DKeyword, SyntaxType.Sampler2DKeyword, SyntaxType.Sampler3DKeyword, SyntaxType.SamplerCubeKeyword, SyntaxType.Sampler1DShadowKeyword, SyntaxType.Sampler2DShadowKeyword, SyntaxType.SamplerCubeShadowKeyword, SyntaxType.Sampler1DArrayKeyword, SyntaxType.Sampler2DArrayKeyword, SyntaxType.Sampler1DArrayShadowKeyword, SyntaxType.Sampler2DArrayShadowKeyword, SyntaxType.ISampler1DKeyword, SyntaxType.ISampler2DKeyword, SyntaxType.ISampler3DKeyword, SyntaxType.ISamplerCubeKeyword, SyntaxType.ISampler1DArrayKeyword, SyntaxType.ISampler2DArrayKeyword, SyntaxType.USampler1DKeyword, SyntaxType.USampler2DKeyword, SyntaxType.USampler3DKeyword, SyntaxType.USamplerCubeKeyword, SyntaxType.USampler1DArrayKeyword, SyntaxType.USampler2DArrayKeyword, SyntaxType.Sampler2DRectKeyword, SyntaxType.Sampler2DRectShadowKeyword, SyntaxType.ISampler2DRectKeyword, SyntaxType.USampler2DRectKeyword, SyntaxType.SamplerBufferKeyword, SyntaxType.ISamplerBufferKeyword, SyntaxType.USamplerBufferKeyword, SyntaxType.SamplerCubeArrayKeyword, SyntaxType.SamplerCubeArrayShadowKeyword, SyntaxType.ISamplerCubeArrayKeyword, SyntaxType.USamplerCubeArrayKeyword, SyntaxType.Sampler2DMSKeyword, SyntaxType.ISampler2DMSKeyword, SyntaxType.USampler2DMSKeyword, SyntaxType.Sampler2DMSArrayKeyword, SyntaxType.ISampler2DMSArrayKeyword, SyntaxType.USampler2DMSArrayKeyword, SyntaxType.Image1DKeyword, SyntaxType.Image2DKeyword, SyntaxType.Image3DKeyword, SyntaxType.IImage1DKeyword, SyntaxType.IImage2DKeyword, SyntaxType.IImage3DKeyword, SyntaxType.UImage1DKeyword, SyntaxType.UImage2DKeyword, SyntaxType.UImage3DKeyword, SyntaxType.Image2DRectKeyword, SyntaxType.IImage2DRectKeyword, SyntaxType.UImage2DRectKeyword, SyntaxType.ImageCubeKeyword, SyntaxType.IImageCubeKeyword, SyntaxType.UImageCubeKeyword, SyntaxType.ImageBufferKeyword, SyntaxType.IImageBufferKeyword, SyntaxType.UImageBufferKeyword, SyntaxType.Image1DArrayKeyword, SyntaxType.IImage1DArrayKeyword, SyntaxType.UImage1DArrayKeyword, SyntaxType.Image2DArrayKeyword, SyntaxType.IImage2DArrayKeyword, SyntaxType.UImage2DArrayKeyword, SyntaxType.ImageCubeArrayKeyword, SyntaxType.IImageCubeArrayKeyword, SyntaxType.UImageCubeArrayKeyword, SyntaxType.Image2DMSKeyword, SyntaxType.IImage2DMSKeyword, SyntaxType.UImage2DMSKeyword, SyntaxType.Image2DMSArrayKeyword, SyntaxType.IImage2DMSArrayKeyword, SyntaxType.UImage2DMSArrayKeyword);
 			}
 
 			this.builder.EndNode();
@@ -275,7 +273,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseBlock()
 		{
-			BlockSyntax node = this.builder.StartNode(SyntaxType.Block) as BlockSyntax;
+			this.builder.StartNode(SyntaxType.Block);
 
 			if (this.AcceptToken(SyntaxType.LeftBraceToken))
 			{
@@ -288,7 +286,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				this.RequireToken(SyntaxType.SemiColonToken);
+				this.RequireToken(SyntaxType.SemicolonToken);
 			}
 
 			this.builder.EndNode();
@@ -444,7 +442,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightParenToken);
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -469,7 +467,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExpression();
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -486,9 +484,9 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseFunctionHeader();
 
-				this.RequireToken(SyntaxType.SemiColonToken);
+				this.RequireToken(SyntaxType.SemicolonToken);
 			}
-			else if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken)
+			else if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
 			{
 				this.ParseExpressionStatement();
 			}
@@ -502,7 +500,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseCondition();
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
@@ -522,7 +520,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseFunctionHeader();
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -562,7 +560,7 @@ namespace Xannden.GLSL.Parsing
 				}
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -724,7 +722,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseStructDeclarator();
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -766,7 +764,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseStructDeclarator();
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -999,7 +997,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseInclusiveOrExpression()
 		{
-			this.builder.StartNode(SyntaxType.LogicalXOrExpression);
+			this.builder.StartNode(SyntaxType.LogicalXorExpression);
 
 			this.ParseExclusiveOrExpression();
 
@@ -1041,7 +1039,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseLogicalXOrExpression()
 		{
-			this.builder.StartNode(SyntaxType.LogicalXOrExpression);
+			this.builder.StartNode(SyntaxType.LogicalXorExpression);
 
 			this.ParseLogicalAndExpression();
 
@@ -1069,7 +1067,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParsePostFixArrayAccess()
 		{
-			this.builder.StartNode(SyntaxType.PostFixExpressionStart);
+			this.builder.StartNode(SyntaxType.PostfixExpressionStart);
 
 			this.RequireToken(SyntaxType.LeftBracketToken);
 
@@ -1082,7 +1080,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParsePostFixExpression()
 		{
-			this.builder.StartNode(SyntaxType.PostFixExpression);
+			this.builder.StartNode(SyntaxType.PostfixExpression);
 
 			this.ParsePostFixExpressionStart();
 
@@ -1096,7 +1094,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParsePostFixExpressionContinuation()
 		{
-			this.builder.StartNode(SyntaxType.PostFixExpressionContinuation);
+			this.builder.StartNode(SyntaxType.PostfixExpressionContinuation);
 
 			if (this.AcceptToken(SyntaxType.PlusPlusToken, SyntaxType.MinusMinusToken))
 			{
@@ -1115,7 +1113,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParsePostFixExpressionStart()
 		{
-			this.builder.StartNode(SyntaxType.PostFixExpressionStart);
+			this.builder.StartNode(SyntaxType.PostfixExpressionStart);
 
 			if (this.IsFunctionCall())
 			{
@@ -1242,7 +1240,7 @@ namespace Xannden.GLSL.Parsing
 				}
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -1268,7 +1266,7 @@ namespace Xannden.GLSL.Parsing
 				}
 			}
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -1343,7 +1341,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseType();
 
-			this.RequireToken(SyntaxType.SemiColonToken);
+			this.RequireToken(SyntaxType.SemicolonToken);
 
 			this.builder.EndNode();
 		}
@@ -1404,7 +1402,7 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.preprocessorStack.Count > 0)
 			{
-				this.preprocessorStack.Peek().ElsePreprocessors.Add(new Preprocessor(node.ElseIfKeyword, this.GetPreprocessorValue(node.ElseIfKeyword.Span)));
+				this.preprocessorStack.Peek().InternalElsePreprocessors.Add(new Preprocessor(node.ElseIfKeyword, this.GetPreprocessorValue(node.ElseIfKeyword.Span)));
 			}
 		}
 
@@ -1427,7 +1425,7 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.preprocessorStack.Count > 0)
 			{
-				this.preprocessorStack.Peek().ElsePreprocessors.Add(new Preprocessor(node.ElseKeyword, this.GetPreprocessorValue(node.ElseKeyword.Span, true)));
+				this.preprocessorStack.Peek().InternalElsePreprocessors.Add(new Preprocessor(node.ElseKeyword, this.GetPreprocessorValue(node.ElseKeyword.Span, true)));
 			}
 		}
 
@@ -1808,7 +1806,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.builder.MoveNext();
 
-				if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					result = true;
 				}
@@ -1822,12 +1820,12 @@ namespace Xannden.GLSL.Parsing
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.SyntaxType == SyntaxType.EqualToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
+					if (this.builder.CurrentToken.SyntaxType == SyntaxType.EqualToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 					{
 						result = true;
 					}
 				}
-				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemiColonToken)
+				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
 				{
 					result = true;
 				}
@@ -1855,7 +1853,7 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.DoubleConstToken:
 				case SyntaxType.BoolConstToken:
 				case SyntaxType.LeftParenToken:
-				case SyntaxType.SemiColonToken:
+				case SyntaxType.SemicolonToken:
 					return true;
 
 				default:
@@ -1949,7 +1947,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				case SyntaxType.SwitchKeyword:
 				case SyntaxType.PrecisionKeyword:
-				case SyntaxType.SemiColonToken:
+				case SyntaxType.SemicolonToken:
 				case SyntaxType.IfKeyword:
 				case SyntaxType.CaseKeyword:
 				case SyntaxType.DefaultKeyword:
@@ -1990,10 +1988,10 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.BufferKeyword:
 				case SyntaxType.SharedKeyword:
 				case SyntaxType.CoherentKeyword:
-				case SyntaxType.VolitileKeyword:
+				case SyntaxType.VolatileKeyword:
 				case SyntaxType.RestrictKeyword:
-				case SyntaxType.ReadonlyKeyword:
-				case SyntaxType.WriteonlyKeyword:
+				case SyntaxType.ReadOnlyKeyword:
+				case SyntaxType.WriteOnlyKeyword:
 				case SyntaxType.SubroutineKeyword:
 					return true;
 
@@ -2051,29 +2049,29 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.UVec3Keyword:
 				case SyntaxType.UVec4Keyword:
 				case SyntaxType.Mat2Keyword:
-				case SyntaxType.Mat2x2Keyword:
-				case SyntaxType.Mat2x3Keyword:
-				case SyntaxType.Mat2x4Keyword:
+				case SyntaxType.Mat2X2Keyword:
+				case SyntaxType.Mat2X3Keyword:
+				case SyntaxType.Mat2X4Keyword:
 				case SyntaxType.Mat3Keyword:
-				case SyntaxType.Mat3x2Keyword:
-				case SyntaxType.Mat3x3Keyword:
-				case SyntaxType.Mat3x4Keyword:
+				case SyntaxType.Mat3X2Keyword:
+				case SyntaxType.Mat3X3Keyword:
+				case SyntaxType.Mat3X4Keyword:
 				case SyntaxType.Mat4Keyword:
-				case SyntaxType.Mat4x2Keyword:
-				case SyntaxType.Mat4x3Keyword:
-				case SyntaxType.Mat4x4Keyword:
+				case SyntaxType.Mat4X2Keyword:
+				case SyntaxType.Mat4X3Keyword:
+				case SyntaxType.Mat4X4Keyword:
 				case SyntaxType.DMat2Keyword:
-				case SyntaxType.DMat2x2Keyword:
-				case SyntaxType.DMat2x3Keyword:
-				case SyntaxType.DMat2x4Keyword:
+				case SyntaxType.DMat2X2Keyword:
+				case SyntaxType.DMat2X3Keyword:
+				case SyntaxType.DMat2X4Keyword:
 				case SyntaxType.DMat3Keyword:
-				case SyntaxType.DMat3x2Keyword:
-				case SyntaxType.DMat3x3Keyword:
-				case SyntaxType.DMat3x4Keyword:
+				case SyntaxType.DMat3X2Keyword:
+				case SyntaxType.DMat3X3Keyword:
+				case SyntaxType.DMat3X4Keyword:
 				case SyntaxType.DMat4Keyword:
-				case SyntaxType.DMat4x2Keyword:
-				case SyntaxType.DMat4x3Keyword:
-				case SyntaxType.DMat4x4Keyword:
+				case SyntaxType.DMat4X2Keyword:
+				case SyntaxType.DMat4X3Keyword:
+				case SyntaxType.DMat4X4Keyword:
 				case SyntaxType.Sampler1DKeyword:
 				case SyntaxType.Sampler2DKeyword:
 				case SyntaxType.Sampler3DKeyword:
@@ -2180,10 +2178,10 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.BufferKeyword:
 				case SyntaxType.SharedKeyword:
 				case SyntaxType.CoherentKeyword:
-				case SyntaxType.VolitileKeyword:
+				case SyntaxType.VolatileKeyword:
 				case SyntaxType.RestrictKeyword:
-				case SyntaxType.ReadonlyKeyword:
-				case SyntaxType.WriteonlyKeyword:
+				case SyntaxType.ReadOnlyKeyword:
+				case SyntaxType.WriteOnlyKeyword:
 				case SyntaxType.SubroutineKeyword:
 				case SyntaxType.LayoutKeyword:
 				case SyntaxType.LowPrecisionKeyword:
@@ -2301,6 +2299,14 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
+		private void PreprocessorRequireToken(SyntaxType type)
+		{
+			if (!this.AcceptToken(type, true))
+			{
+				this.builder.Error(type);
+			}
+		}
+
 		private void RequireToken(SyntaxType type)
 		{
 			if (!this.AcceptToken(type))
@@ -2314,14 +2320,6 @@ namespace Xannden.GLSL.Parsing
 			if (!this.AcceptToken(types))
 			{
 				this.builder.Error(types[0]);
-			}
-		}
-
-		private void PreprocessorRequireToken(SyntaxType type)
-		{
-			if (!this.AcceptToken(type, true))
-			{
-				this.builder.Error(type);
 			}
 		}
 

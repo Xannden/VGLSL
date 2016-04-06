@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InitPartSyntax : SyntaxNode
 	{
+		private List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
+
 		internal InitPartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitPart, start)
 		{
 		}
@@ -14,7 +16,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<ArraySpecifierSyntax> ArraySpecifiers { get; } = new List<ArraySpecifierSyntax>();
+		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers => this.arraySpecifiers;
 
 		public SyntaxToken Equal { get; private set; }
 
@@ -22,7 +24,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public InitializerSyntax Initializer { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -31,7 +33,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.ArraySpecifier:
-					this.ArraySpecifiers.Add(node as ArraySpecifierSyntax);
+					this.arraySpecifiers.Add(node as ArraySpecifierSyntax);
 					break;
 
 				case SyntaxType.EqualToken:

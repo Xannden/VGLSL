@@ -75,6 +75,9 @@
     <None Include="bin\Debug\test.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="..\GLSL\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
     <Content Include="bin\Debug\tree.xml">
       <SubType>Designer</SubType>
     </Content>

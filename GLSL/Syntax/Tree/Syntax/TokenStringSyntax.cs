@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TokenStringSyntax : SyntaxNode
 	{
+		private List<SyntaxNode> tokens = new List<SyntaxNode>();
+
 		internal TokenStringSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TokenString, start)
 		{
 		}
@@ -14,11 +16,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<SyntaxNode> Tokens { get; } = new List<SyntaxNode>();
+		public IReadOnlyList<SyntaxNode> Tokens => this.tokens;
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
-			this.Tokens.Add(node);
+			this.tokens.Add(node);
 		}
 	}
 }

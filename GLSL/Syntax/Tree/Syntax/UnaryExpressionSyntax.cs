@@ -18,7 +18,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken UnaryOperator { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -35,7 +35,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.UnaryExpression = node as UnaryExpressionSyntax;
 					break;
 
-				case SyntaxType.PostFixExpression:
+				case SyntaxType.PostfixExpression:
 					this.PostfixExpression = node as PostfixExpressionSyntax;
 					break;
 			}

@@ -34,11 +34,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public PragmaPreprocessorSyntax PragmaPreprocessor { get; private set; }
 
-		public UndefinePreprocessorSyntax UnDefinePreprocessor { get; private set; }
+		public UndefinePreprocessorSyntax UndefinePreprocessor { get; private set; }
 
 		public VersionPreprocessorSyntax VersionPreprocessor { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -47,7 +47,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.UndefinePreprocessor:
-					this.UnDefinePreprocessor = node as UndefinePreprocessorSyntax;
+					this.UndefinePreprocessor = node as UndefinePreprocessorSyntax;
 					break;
 
 				case SyntaxType.IfPreprocessor:

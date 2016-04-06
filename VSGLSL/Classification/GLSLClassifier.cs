@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
@@ -33,7 +34,7 @@ namespace Xannden.VSGLSL.Classification
 		{
 			LinkedList<Token> tokens = this.lexer.Run(new VSSnapshot(this.source, span.Snapshot), span.Start.GetContainingLine().ExtentIncludingLineBreak.Span.ToGLSLSpan());
 			List<ClassificationSpan> spans = new List<ClassificationSpan>();
-			List<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
+			IReadOnlyList<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
 			VSSnapshot currentSnapshot = new VSSnapshot(this.source, span.Snapshot);
 
 			SyntaxTree tree = this.source.Tree;
@@ -66,7 +67,7 @@ namespace Xannden.VSGLSL.Classification
 				{
 					classificationName = GLSLConstants.ExcludedCode;
 				}
-				else if (token.SyntaxType.IsPuctuation())
+				else if (token.SyntaxType.IsPunctuation())
 				{
 					classificationName = GLSLConstants.Punctuation;
 				}
@@ -116,7 +117,7 @@ namespace Xannden.VSGLSL.Classification
 					}
 				}
 
-				if (classificationName != string.Empty)
+				if (!string.IsNullOrEmpty(classificationName))
 				{
 					SnapshotSpan snapshotSpan = new SnapshotSpan(span.Snapshot, token.Span.ToVSSpan());
 
@@ -131,7 +132,7 @@ namespace Xannden.VSGLSL.Classification
 
 		private void ColorComments(SnapshotSpan span, List<ClassificationSpan> spans, VSSnapshot snapshot)
 		{
-			List<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
+			IReadOnlyList<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
 
 			for (int i = 0; i < commentSpans.Count; i++)
 			{

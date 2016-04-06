@@ -16,11 +16,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxNode PrecisionQualifier { get; private set; }
 
-		public SyntaxToken SemiColon { get; private set; }
+		public SyntaxToken Semicolon { get; private set; }
 
-		public TypeSyntax Type { get; private set; }
+		public TypeSyntax TypeSyntax { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -33,11 +33,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Type:
-					this.Type = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

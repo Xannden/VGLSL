@@ -8,7 +8,7 @@ namespace Xannden.GLSL.Text
 {
 	public abstract class Source
 	{
-		private List<TrackingSpan> commentSpans = new List<TrackingSpan>();
+		private IReadOnlyList<TrackingSpan> commentSpans = new List<TrackingSpan>();
 		private object lockObject = new object();
 		private SyntaxTree tree;
 
@@ -21,7 +21,7 @@ namespace Xannden.GLSL.Text
 			this.Parser = new GLSLParser(this.ErrorHandler, this.Settings);
 		}
 
-		public List<TrackingSpan> CommentSpans
+		public IReadOnlyList<TrackingSpan> CommentSpans
 		{
 			get
 			{
@@ -31,7 +31,7 @@ namespace Xannden.GLSL.Text
 				}
 			}
 
-			set
+			protected set
 			{
 				lock (this.lockObject)
 				{

@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ExcludedCodeSyntax : SyntaxNode
 	{
+		private List<SyntaxNode> code = new List<SyntaxNode>();
+
 		internal ExcludedCodeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExcludedCode, start)
 		{
 		}
@@ -14,11 +16,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<SyntaxNode> Code { get; } = new List<SyntaxNode>();
+		public IReadOnlyList<SyntaxNode> Code => this.code;
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
-			this.Code.Add(node);
+			this.code.Add(node);
 		}
 	}
 }

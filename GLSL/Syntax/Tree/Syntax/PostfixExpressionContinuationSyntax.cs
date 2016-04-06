@@ -4,11 +4,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionContinuationSyntax : SyntaxNode
 	{
-		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpressionContinuation, start)
+		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostfixExpressionContinuation, start)
 		{
 		}
 
-		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixExpressionContinuation, span)
+		internal PostfixExpressionContinuationSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostfixExpressionContinuation, span)
 		{
 		}
 
@@ -18,7 +18,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken PostfixOperator { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -31,7 +31,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.FieldSelection = node as FieldSelectionSyntax;
 					break;
 
-				case SyntaxType.PostFixArrayAccess:
+				case SyntaxType.PostfixArrayAccess:
 					this.PostfixArrayAccess = node as PostfixArrayAccessSyntax;
 					break;
 			}

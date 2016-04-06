@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -7,6 +8,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -34,6 +36,16 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 		public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
 		{
 			applicableToSpan = null;
+
+			if (session == null)
+			{
+				throw new ArgumentNullException(nameof(session));
+			}
+
+			if (quickInfoContent == null)
+			{
+				throw new ArgumentNullException(nameof(quickInfoContent));
+			}
 
 			VSSnapshot snapshot = this.source.CurrentSnapshot as VSSnapshot;
 
@@ -102,7 +114,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 					if (declaration?.InitDeclaratorList != null)
 					{
-						List<InitPartSyntax> initParts = declaration.InitDeclaratorList.InitParts?.GetNodes();
+						IReadOnlyList<InitPartSyntax> initParts = declaration.InitDeclaratorList.InitParts?.Nodes;
 
 						InitPartSyntax initPart = initParts?.Find(part => part.Identifier.Name == identifier.Name);
 
@@ -156,7 +168,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 						{
 							for (int i = 0; i < declaration.StructDefinition.StructDeclarations.Count; i++)
 							{
-								foreach (StructDeclaratorSyntax declarator in declaration.StructDefinition.StructDeclarations[i].StructDeclarators.GetNodes())
+								foreach (StructDeclaratorSyntax declarator in declaration.StructDefinition.StructDeclarations[i].StructDeclarators.Nodes)
 								{
 									if (declarator.Identifier.Name == identifier.Name)
 									{
@@ -201,7 +213,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				return GLSLConstants.ExcludedCode;
 			}
 
-			if (token.SyntaxType.IsPuctuation())
+			if (token.SyntaxType.IsPunctuation())
 			{
 				return GLSLConstants.Punctuation;
 			}
@@ -355,7 +367,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 						}
 					}
 
-					foreach (SyntaxToken token in declaratorList.Type.SyntaxTokens)
+					foreach (SyntaxToken token in declaratorList.TypeNode.SyntaxTokens)
 					{
 						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
 					}
@@ -432,7 +444,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 						}
 					}
 
-					foreach (SyntaxToken token in declaration.Type.SyntaxTokens)
+					foreach (SyntaxToken token in declaration.TypeSyntax.SyntaxTokens)
 					{
 						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
 					}

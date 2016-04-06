@@ -12,13 +12,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<InitializerSyntax> Initilizers { get; } = new TokenSparatedList<InitializerSyntax>();
+		public TokenSeparatedList<InitializerSyntax> Initializers { get; } = new TokenSeparatedList<InitializerSyntax>();
 
 		public SyntaxToken LeftBrace { get; private set; }
 
 		public SyntaxToken RightBrace { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -27,11 +27,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Initializer:
-					this.Initilizers.AddNode(node as InitializerSyntax);
+					this.Initializers.AddNode(node as InitializerSyntax);
 					break;
 
 				case SyntaxType.CommaToken:
-					this.Initilizers.AddToken(node as SyntaxToken);
+					this.Initializers.AddToken(node as SyntaxToken);
 					break;
 
 				case SyntaxType.RightBraceToken:

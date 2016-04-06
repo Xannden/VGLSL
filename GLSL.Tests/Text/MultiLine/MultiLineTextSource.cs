@@ -22,7 +22,7 @@ namespace Xannden.GLSL.Test.Text
 
 			for (int i = 0; i < lines.Length; i++)
 			{
-				source.AddLine(lines[i] + Environment.NewLine, i);
+				source.AddLine(lines[i] + Environment.NewLine);
 			}
 
 			return source;
@@ -36,18 +36,18 @@ namespace Xannden.GLSL.Test.Text
 			{
 				if (addNewLine)
 				{
-					source.AddLine(lines[i] + Environment.NewLine, i);
+					source.AddLine(lines[i] + Environment.NewLine);
 				}
 				else
 				{
-					source.AddLine(lines[i], i);
+					source.AddLine(lines[i]);
 				}
 			}
 
 			return source;
 		}
 
-		private void AddLine(string text, int line)
+		private void AddLine(string text)
 		{
 			if (this.snapshot.Lines.Count != 0)
 			{

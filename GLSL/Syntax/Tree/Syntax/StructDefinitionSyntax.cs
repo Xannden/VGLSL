@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructDefinitionSyntax : SyntaxNode
 	{
+		private List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
+
 		internal StructDefinitionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructDefinition, start)
 		{
 		}
@@ -18,9 +20,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken RightBrace { get; private set; }
 
-		public SyntaxToken SemiColon { get; private set; }
+		public SyntaxToken Semicolon { get; private set; }
 
-		public List<StructDeclarationSyntax> StructDeclarations { get; } = new List<StructDeclarationSyntax>();
+		public IReadOnlyList<StructDeclarationSyntax> StructDeclarations => this.structDeclarations;
 
 		public StructDeclaratorSyntax StructDeclarator { get; private set; }
 
@@ -28,7 +30,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -45,7 +47,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.StructDeclaration:
-					this.StructDeclarations.Add(node as StructDeclarationSyntax);
+					this.structDeclarations.Add(node as StructDeclarationSyntax);
 					break;
 
 				case SyntaxType.RightBraceToken:
@@ -56,8 +58,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.StructDeclarator = node as StructDeclaratorSyntax;
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

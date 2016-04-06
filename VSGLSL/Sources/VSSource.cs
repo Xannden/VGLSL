@@ -87,11 +87,11 @@ namespace Xannden.VSGLSL.Sources
 
 			LinkedList<Token> tokens = this.lexer.Run(snapshot);
 
-			this.CommentSpans = this.lexer.GetCommentSpans();
+			this.CommentSpans = this.lexer.CommentSpans;
 
 			this.Tree = this.Parser.Run(this.CurrentSnapshot, tokens);
 
-			this.Settings.SetPreprocessors(this.Parser.GetPreprocessors());
+			this.Settings.SetPreprocessors(this.Parser.Preprocessors);
 
 			this.DoneParsing?.Invoke(this, new EventArgs());
 

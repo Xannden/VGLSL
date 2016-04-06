@@ -12,11 +12,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TypeSyntax Type { get; private set; }
+		public TypeSyntax TypeSyntax { get; private set; }
 
 		public SyntaxToken VoidKeyword { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -25,7 +25,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Type:
-					this.Type = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 			}
 		}

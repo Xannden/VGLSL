@@ -20,7 +20,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public ExpressionSyntax Expression { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

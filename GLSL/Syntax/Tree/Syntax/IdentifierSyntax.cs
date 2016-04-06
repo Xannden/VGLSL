@@ -31,7 +31,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					continue;
 				}
 
-				List<InitPartSyntax> initParts = (node as DeclarationSyntax)?.InitDeclaratorList?.InitParts.GetNodes();
+				IReadOnlyList<InitPartSyntax> initParts = (node as DeclarationSyntax)?.InitDeclaratorList?.InitParts.Nodes;
 
 				for (int i = 0; i < (initParts?.Count ?? 0); i++)
 				{
@@ -63,7 +63,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 				foreach (SyntaxNode sibling in ancestor.SiblingsAndSelf)
 				{
-					List<InitPartSyntax> initparts = (sibling as SimpleStatementSyntax)?.Declaration?.InitDeclaratorList?.InitParts.GetNodes();
+					IReadOnlyList<InitPartSyntax> initparts = (sibling as SimpleStatementSyntax)?.Declaration?.InitDeclaratorList?.InitParts.Nodes;
 
 					for (int i = 0; i < (initparts?.Count ?? 0); i++)
 					{
@@ -118,7 +118,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 				{
 					FunctionDefinitionSyntax functionDef = ancestor as FunctionDefinitionSyntax;
 
-					List<ParameterSyntax> parameters = functionDef.FunctionHeader.Parameters;
+					IReadOnlyList<ParameterSyntax> parameters = functionDef.FunctionHeader.Parameters;
 
 					for (int i = 0; i < parameters.Count; i++)
 					{

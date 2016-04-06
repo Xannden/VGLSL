@@ -12,9 +12,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<ShiftExpressionSyntax> ShiftExpressions { get; } = new TokenSparatedList<ShiftExpressionSyntax>();
+		public TokenSeparatedList<ShiftExpressionSyntax> ShiftExpressions { get; } = new TokenSeparatedList<ShiftExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

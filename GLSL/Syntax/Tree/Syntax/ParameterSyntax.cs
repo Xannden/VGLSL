@@ -16,20 +16,20 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public IdentifierSyntax Identifier { get; private set; }
 
-		public TypeSyntax Type { get; private set; }
+		public TypeSyntax TypeSyntax { get; private set; }
 
-		public TypeQualifierSyntax TypeQualifer { get; private set; }
+		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
 				case SyntaxType.TypeQualifier:
-					this.TypeQualifer = node as TypeQualifierSyntax;
+					this.TypeQualifier = node as TypeQualifierSyntax;
 					break;
 
 				case SyntaxType.Type:
-					this.Type = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 
 				case SyntaxType.IdentifierToken:

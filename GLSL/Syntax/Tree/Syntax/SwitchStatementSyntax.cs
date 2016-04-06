@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class SwitchStatementSyntax : SyntaxNode
 	{
+		private List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
+
 		internal SwitchStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SwitchStatement, start)
 		{
 		}
@@ -22,13 +24,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken RightBrace { get; private set; }
 
-		public SyntaxToken RightPrentheses { get; private set; }
+		public SyntaxToken RightParentheses { get; private set; }
 
-		public List<SimpleStatementSyntax> SimpleStatements { get; } = new List<SimpleStatementSyntax>();
+		public IReadOnlyList<SimpleStatementSyntax> SimpleStatements => this.simpleStatements;
 
 		public SyntaxToken SwitchKeyword { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -45,7 +47,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.RightParenToken:
-					this.RightPrentheses = node as SyntaxToken;
+					this.RightParentheses = node as SyntaxToken;
 					break;
 
 				case SyntaxType.LeftBraceToken:
@@ -53,7 +55,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.SimpleStatement:
-					this.SimpleStatements.Add(node as SimpleStatementSyntax);
+					this.simpleStatements.Add(node as SimpleStatementSyntax);
 					break;
 
 				case SyntaxType.RightBraceToken:

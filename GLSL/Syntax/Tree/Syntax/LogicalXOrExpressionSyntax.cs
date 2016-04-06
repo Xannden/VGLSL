@@ -2,19 +2,19 @@
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public sealed class LogicalXOrExpressionSyntax : SyntaxNode
+	public sealed class LogicalXorExpressionSyntax : SyntaxNode
 	{
-		internal LogicalXOrExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.LogicalXOrExpression, start)
+		internal LogicalXorExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.LogicalXorExpression, start)
 		{
 		}
 
-		internal LogicalXOrExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.LogicalXOrExpression, span)
+		internal LogicalXorExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.LogicalXorExpression, span)
 		{
 		}
 
-		public TokenSparatedList<LogicalAndExpressionSyntax> LogicalAndExpressions { get; } = new TokenSparatedList<LogicalAndExpressionSyntax>();
+		public TokenSeparatedList<LogicalAndExpressionSyntax> LogicalAndExpressions { get; } = new TokenSeparatedList<LogicalAndExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

@@ -32,9 +32,22 @@ namespace Xannden.GLSL.Parsing
 
 		public void AddToken()
 		{
-			this.stack.Peek().AddChild(this.CreateNode(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span)));
+			SyntaxNode node = this.CreateNode(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
+
+			this.stack.Peek().AddChild(node);
 
 			this.listNode = this.listNode.Next;
+
+			if (node.SyntaxType == SyntaxType.IdentifierToken)
+			{
+				foreach (SyntaxNode ancestor in node.Ancestors)
+				{
+					if (ancestor.SyntaxType == SyntaxType.Preprocessor)
+					{
+						return;
+					}
+				}
+			}
 		}
 
 		public SyntaxNode EndNode()
@@ -265,8 +278,8 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.LogicalOrExpression:
 					return new LogicalOrExpressionSyntax(this.tree, start);
 
-				case SyntaxType.LogicalXOrExpression:
-					return new LogicalXOrExpressionSyntax(this.tree, start);
+				case SyntaxType.LogicalXorExpression:
+					return new LogicalXorExpressionSyntax(this.tree, start);
 
 				case SyntaxType.LogicalAndExpression:
 					return new LogicalAndExpressionSyntax(this.tree, start);
@@ -298,16 +311,16 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.UnaryExpression:
 					return new UnaryExpressionSyntax(this.tree, start);
 
-				case SyntaxType.PostFixExpression:
+				case SyntaxType.PostfixExpression:
 					return new PostfixExpressionSyntax(this.tree, start);
 
-				case SyntaxType.PostFixExpressionStart:
+				case SyntaxType.PostfixExpressionStart:
 					return new PostfixExpressionStartSyntax(this.tree, start);
 
-				case SyntaxType.PostFixExpressionContinuation:
+				case SyntaxType.PostfixExpressionContinuation:
 					return new PostfixExpressionContinuationSyntax(this.tree, start);
 
-				case SyntaxType.PostFixArrayAccess:
+				case SyntaxType.PostfixArrayAccess:
 					return new PostfixArrayAccessSyntax(this.tree, start);
 
 				case SyntaxType.PrimaryExpression:
@@ -507,8 +520,8 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.LogicalOrExpression:
 					return new LogicalOrExpressionSyntax(this.tree, span);
 
-				case SyntaxType.LogicalXOrExpression:
-					return new LogicalXOrExpressionSyntax(this.tree, span);
+				case SyntaxType.LogicalXorExpression:
+					return new LogicalXorExpressionSyntax(this.tree, span);
 
 				case SyntaxType.LogicalAndExpression:
 					return new LogicalAndExpressionSyntax(this.tree, span);
@@ -540,16 +553,16 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.UnaryExpression:
 					return new UnaryExpressionSyntax(this.tree, span);
 
-				case SyntaxType.PostFixExpression:
+				case SyntaxType.PostfixExpression:
 					return new PostfixExpressionSyntax(this.tree, span);
 
-				case SyntaxType.PostFixExpressionStart:
+				case SyntaxType.PostfixExpressionStart:
 					return new PostfixExpressionStartSyntax(this.tree, span);
 
-				case SyntaxType.PostFixExpressionContinuation:
+				case SyntaxType.PostfixExpressionContinuation:
 					return new PostfixExpressionContinuationSyntax(this.tree, span);
 
-				case SyntaxType.PostFixArrayAccess:
+				case SyntaxType.PostfixArrayAccess:
 					return new PostfixArrayAccessSyntax(this.tree, span);
 
 				case SyntaxType.PrimaryExpression:
@@ -659,7 +672,7 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.AssignmentExpression:
 				case SyntaxType.ConditionalExpression:
 				case SyntaxType.LogicalOrExpression:
-				case SyntaxType.LogicalXOrExpression:
+				case SyntaxType.LogicalXorExpression:
 				case SyntaxType.LogicalAndExpression:
 				case SyntaxType.InclusiveOrExpression:
 				case SyntaxType.ExclusiveOrExpression:
@@ -670,7 +683,7 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.AdditiveExpression:
 				case SyntaxType.MultiplicativeExpression:
 				case SyntaxType.UnaryExpression:
-				case SyntaxType.PostFixExpression:
+				case SyntaxType.PostfixExpression:
 				case SyntaxType.Expression:
 					return true;
 

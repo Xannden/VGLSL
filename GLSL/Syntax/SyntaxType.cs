@@ -19,7 +19,7 @@
 		CommaToken,
 		ColonToken,
 		EqualToken,
-		SemiColonToken,
+		SemicolonToken,
 		ExclamationToken,
 		MinusToken,
 		TildeToken,
@@ -66,10 +66,10 @@
 		BufferKeyword,
 		SharedKeyword,
 		CoherentKeyword,
-		VolitileKeyword,
+		VolatileKeyword,
 		RestrictKeyword,
-		ReadonlyKeyword,
-		WriteonlyKeyword,
+		ReadOnlyKeyword,
+		WriteOnlyKeyword,
 		AtomicUIntKeyword,
 		PreciseKeyword,
 		BreakKeyword,
@@ -126,27 +126,27 @@
 
 		Mat3Keyword,
 		Mat4Keyword,
-		Mat2x2Keyword,
-		Mat2x3Keyword,
-		Mat2x4Keyword,
-		Mat3x2Keyword,
-		Mat3x3Keyword,
-		Mat3x4Keyword,
-		Mat4x2Keyword,
-		Mat4x3Keyword,
-		Mat4x4Keyword,
+		Mat2X2Keyword,
+		Mat2X3Keyword,
+		Mat2X4Keyword,
+		Mat3X2Keyword,
+		Mat3X3Keyword,
+		Mat3X4Keyword,
+		Mat4X2Keyword,
+		Mat4X3Keyword,
+		Mat4X4Keyword,
 		DMat2Keyword,
 		DMat3Keyword,
 		DMat4Keyword,
-		DMat2x2Keyword,
-		DMat2x3Keyword,
-		DMat2x4Keyword,
-		DMat3x2Keyword,
-		DMat3x3Keyword,
-		DMat3x4Keyword,
-		DMat4x2Keyword,
-		DMat4x3Keyword,
-		DMat4x4Keyword,
+		DMat2X2Keyword,
+		DMat2X3Keyword,
+		DMat2X4Keyword,
+		DMat3X2Keyword,
+		DMat3X3Keyword,
+		DMat3X4Keyword,
+		DMat4X2Keyword,
+		DMat4X3Keyword,
+		DMat4X4Keyword,
 
 		// Samplers
 		Sampler1DKeyword,
@@ -325,7 +325,7 @@
 		TypeQualifier,
 		StorageQualifier,
 		LayoutQualifier,
-		LayoutQualifierID,
+		LayoutQualifierId,
 		PrecisionQualifier,
 		InterpolationQualifier,
 		InvariantQualifier,
@@ -359,7 +359,7 @@
 		AssignmentOperator,
 		ConditionalExpression,
 		LogicalOrExpression,
-		LogicalXOrExpression,
+		LogicalXorExpression,
 		LogicalAndExpression,
 		InclusiveOrExpression,
 		ExclusiveOrExpression,
@@ -370,10 +370,10 @@
 		AdditiveExpression,
 		MultiplicativeExpression,
 		UnaryExpression,
-		PostFixExpression,
-		PostFixExpressionStart,
-		PostFixExpressionContinuation,
-		PostFixArrayAccess,
+		PostfixExpression,
+		PostfixExpressionStart,
+		PostfixExpressionContinuation,
+		PostfixArrayAccess,
 		PrimaryExpression,
 		FunctionCall,
 		Constructor,
@@ -407,67 +407,8 @@
 		LineCommentTrivia,
 
 		BlockCommentTrivia,
-		WhitespaceTrivia,
+		WhiteSpaceTrivia,
 		NewLineTrivia,
 		TriviaList,
-	}
-
-#pragma warning disable SA1649 // File name must match first type name
-
-	public static class Extentions
-#pragma warning restore SA1649 // File name must match first type name
-	{
-		public static bool IsComment(this SyntaxType type)
-		{
-			return type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia;
-		}
-
-		public static bool IsPreprocessor(this SyntaxType type)
-		{
-			return type >= SyntaxType.DefinePreprocessorKeyword && type <= SyntaxType.LinePreprocessorKeyword;
-		}
-
-		public static bool IsReserved(this SyntaxType type)
-		{
-			return type >= SyntaxType.CommonKeyword && type <= SyntaxType.UsingKeyword;
-		}
-
-		public static bool IsTrivia(this SyntaxType type)
-		{
-			return type == SyntaxType.WhitespaceTrivia || type == SyntaxType.LineCommentTrivia || type == SyntaxType.BlockCommentTrivia || type == SyntaxType.NewLineTrivia;
-		}
-
-		public static bool IsType(this SyntaxType type)
-		{
-			return type >= SyntaxType.BoolKeyword && type <= SyntaxType.VoidKeyword;
-		}
-
-		public static bool IsPuctuation(this SyntaxType type)
-		{
-			return type >= SyntaxType.LeftParenToken && type <= SyntaxType.MinusEqualToken;
-		}
-
-		public static bool IsKeyword(this SyntaxType type)
-		{
-			return type >= SyntaxType.AttributeKeyword && type <= SyntaxType.FalseKeyword;
-		}
-
-		public static bool IsNumber(this SyntaxType type)
-		{
-			return type >= SyntaxType.FloatConstToken && type <= SyntaxType.UIntConstToken;
-		}
-
-		internal static bool Contains(this SyntaxType[] array, SyntaxType type)
-		{
-			for (int i = 0; i < array.Length; i++)
-			{
-				if (array[i] == type)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
@@ -14,17 +12,15 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<SyntaxToken> Commas { get; } = new List<SyntaxToken>();
+		public SyntaxToken Semicolon { get; private set; }
 
-		public SyntaxToken SemiColon { get; private set; }
-
-		public TokenSparatedList<StructDeclaratorSyntax> StructDeclarators { get; } = new TokenSparatedList<StructDeclaratorSyntax>();
-
-		public TypeSyntax Type { get; private set; }
+		public TokenSeparatedList<StructDeclaratorSyntax> StructDeclarators { get; } = new TokenSeparatedList<StructDeclaratorSyntax>();
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		public TypeSyntax TypeSyntax { get; private set; }
+
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -33,7 +29,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Type:
-					this.Type = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 
 				case SyntaxType.StructDeclarator:
@@ -44,8 +40,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.StructDeclarators.AddToken(node as SyntaxToken);
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

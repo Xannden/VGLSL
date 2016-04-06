@@ -12,9 +12,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<RelationalExpressionSyntax> RelationalExpression { get; } = new TokenSparatedList<RelationalExpressionSyntax>();
+		public TokenSeparatedList<RelationalExpressionSyntax> RelationalExpression { get; } = new TokenSeparatedList<RelationalExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

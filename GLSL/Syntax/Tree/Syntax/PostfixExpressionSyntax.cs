@@ -6,28 +6,30 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionSyntax : SyntaxNode
 	{
-		internal PostfixExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpression, start)
+		private List<PostfixExpressionContinuationSyntax> postfixExpressionContinuations = new List<PostfixExpressionContinuationSyntax>();
+
+		internal PostfixExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostfixExpression, start)
 		{
 		}
 
-		internal PostfixExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixExpression, span)
+		internal PostfixExpressionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostfixExpression, span)
 		{
 		}
 
-		public List<PostfixExpressionContinuationSyntax> PostfixExpressionContinuations { get; } = new List<PostfixExpressionContinuationSyntax>();
+		public IReadOnlyList<PostfixExpressionContinuationSyntax> PostfixExpressionContinuations => this.postfixExpressionContinuations;
 
 		public PostfixExpressionStartSyntax PostfixExpressionStart { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
-				case SyntaxType.PostFixExpressionStart:
+				case SyntaxType.PostfixExpressionStart:
 					this.PostfixExpressionStart = node as PostfixExpressionStartSyntax;
 					break;
 
-				case SyntaxType.PostFixExpressionContinuation:
-					this.PostfixExpressionContinuations.Add(node as PostfixExpressionContinuationSyntax);
+				case SyntaxType.PostfixExpressionContinuation:
+					this.postfixExpressionContinuations.Add(node as PostfixExpressionContinuationSyntax);
 					break;
 			}
 		}

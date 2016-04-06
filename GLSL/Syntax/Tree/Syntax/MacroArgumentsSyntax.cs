@@ -12,9 +12,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<IdentifierSyntax> ArgumentList { get; } = new TokenSparatedList<IdentifierSyntax>();
+		public TokenSeparatedList<IdentifierSyntax> ArgumentList { get; } = new TokenSeparatedList<IdentifierSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

@@ -1,4 +1,5 @@
-﻿using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
@@ -18,7 +19,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TypeNameSyntax TypeName { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

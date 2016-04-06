@@ -2,9 +2,9 @@
 
 namespace Xannden.GLSL.Errors
 {
-	public class Error
+	public class GLSLError
 	{
-		internal Error(string message, Span span)
+		internal GLSLError(string message, Span span)
 		{
 			this.Message = message;
 			this.Span = span;

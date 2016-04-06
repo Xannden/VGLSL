@@ -12,9 +12,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<UnaryExpressionSyntax> UnaryExpressions { get; } = new TokenSparatedList<UnaryExpressionSyntax>();
+		public TokenSeparatedList<UnaryExpressionSyntax> UnaryExpressions { get; } = new TokenSeparatedList<UnaryExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

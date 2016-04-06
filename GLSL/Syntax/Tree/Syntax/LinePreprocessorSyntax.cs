@@ -18,7 +18,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken SourceStringNumber { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

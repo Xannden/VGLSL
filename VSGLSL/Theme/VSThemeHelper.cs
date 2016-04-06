@@ -1,21 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Microsoft.VisualStudio.PlatformUI;
 
 namespace Xannden.VSGLSL.Theme
 {
 	internal static class VSThemeHelper
 	{
-		private static VSTheme currentTheme = VSTheme.Unkown;
-
-		static VSThemeHelper()
-		{
-			currentTheme = GetCurrentTheme();
-			VSColorTheme.ThemeChanged += VSThemeChanged;
-		}
-
-		public static event EventHandler<ThemeChangedEventArgs> ThemeChanged;
-
 		public static VSTheme GetCurrentTheme()
 		{
 			Color color = VSColorTheme.GetThemedColor(EnvironmentColors.EnvironmentBackgroundColorKey);
@@ -39,17 +28,6 @@ namespace Xannden.VSGLSL.Theme
 			else
 			{
 				return VSTheme.Unkown;
-			}
-		}
-
-		private static void VSThemeChanged(Microsoft.VisualStudio.PlatformUI.ThemeChangedEventArgs e)
-		{
-			VSTheme theme = GetCurrentTheme();
-
-			if (theme != currentTheme)
-			{
-				ThemeChanged?.Invoke(e, new ThemeChangedEventArgs(theme));
-				currentTheme = theme;
 			}
 		}
 	}

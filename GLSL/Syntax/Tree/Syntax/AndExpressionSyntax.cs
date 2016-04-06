@@ -12,9 +12,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<EqualityExpressionSyntax> EqualityExpressions { get; } = new TokenSparatedList<EqualityExpressionSyntax>();
+		public TokenSeparatedList<EqualityExpressionSyntax> EqualityExpressions { get; } = new TokenSeparatedList<EqualityExpressionSyntax>();
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

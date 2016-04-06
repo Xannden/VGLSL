@@ -4,11 +4,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixArrayAccessSyntax : SyntaxNode
 	{
-		internal PostfixArrayAccessSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixArrayAccess, start)
+		internal PostfixArrayAccessSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostfixArrayAccess, start)
 		{
 		}
 
-		internal PostfixArrayAccessSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixArrayAccess, span)
+		internal PostfixArrayAccessSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostfixArrayAccess, span)
 		{
 		}
 
@@ -18,7 +18,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken RightBracket { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

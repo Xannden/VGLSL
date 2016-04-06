@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructSpecifierSyntax : SyntaxNode
 	{
+		private List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
+
 		internal StructSpecifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructSpecifier, start)
 		{
 		}
@@ -18,13 +20,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken RightBrace { get; private set; }
 
-		public List<StructDeclarationSyntax> StructDeclarations { get; } = new List<StructDeclarationSyntax>();
+		public IReadOnlyList<StructDeclarationSyntax> StructDeclarations => this.structDeclarations;
 
 		public SyntaxToken StructKeyword { get; private set; }
 
 		public TypeNameSyntax TypeName { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -41,7 +43,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.StructDeclaration:
-					this.StructDeclarations.Add(node as StructDeclarationSyntax);
+					this.structDeclarations.Add(node as StructDeclarationSyntax);
 					break;
 
 				case SyntaxType.RightBraceToken:

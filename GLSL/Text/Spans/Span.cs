@@ -53,6 +53,11 @@ namespace Xannden.GLSL.Text
 
 		public bool Contains(Span span)
 		{
+			if (span == null)
+			{
+				throw new ArgumentNullException(nameof(span));
+			}
+
 			return this.Start <= span.Start && this.End >= span.End;
 		}
 
@@ -75,6 +80,11 @@ namespace Xannden.GLSL.Text
 
 		public bool Overlaps(Span span)
 		{
+			if (span == null)
+			{
+				throw new ArgumentNullException(nameof(span));
+			}
+
 			if (span.Start >= this.Start && span.Start <= this.End)
 			{
 				return true;

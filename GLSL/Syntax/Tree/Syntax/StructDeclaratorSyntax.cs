@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructDeclaratorSyntax : SyntaxNode
 	{
+		private List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
+
 		internal StructDeclaratorSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructDeclarator, start)
 		{
 		}
@@ -14,11 +16,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<ArraySpecifierSyntax> ArraySpecifiers { get; } = new List<ArraySpecifierSyntax>();
+		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers => this.arraySpecifiers;
 
 		public IdentifierSyntax Identifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -27,7 +29,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.ArraySpecifier:
-					this.ArraySpecifiers.Add(node as ArraySpecifierSyntax);
+					this.arraySpecifiers.Add(node as ArraySpecifierSyntax);
 					break;
 			}
 		}

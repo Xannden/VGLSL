@@ -4,11 +4,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionStartSyntax : SyntaxNode
 	{
-		internal PostfixExpressionStartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostFixExpressionStart, start)
+		internal PostfixExpressionStartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostfixExpressionStart, start)
 		{
 		}
 
-		internal PostfixExpressionStartSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostFixExpressionStart, span)
+		internal PostfixExpressionStartSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.PostfixExpressionStart, span)
 		{
 		}
 
@@ -18,7 +18,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public PrimaryExpressionSyntax PrimaryExpression { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

@@ -12,13 +12,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public TokenSparatedList<IdentifierSyntax> Identifiers { get; } = new TokenSparatedList<IdentifierSyntax>();
+		public TokenSeparatedList<IdentifierSyntax> Identifiers { get; } = new TokenSeparatedList<IdentifierSyntax>();
 
-		public SyntaxToken SemiColon { get; private set; }
+		public SyntaxToken Semicolon { get; private set; }
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -34,8 +34,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.Identifiers.AddToken(node as SyntaxToken);
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

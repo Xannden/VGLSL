@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -31,6 +32,11 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 		public void Detach(ITextView textView)
 		{
+			if (textView == null)
+			{
+				throw new ArgumentNullException(nameof(textView));
+			}
+
 			if (textView == this.textView)
 			{
 				this.textView.MouseHover -= this.OnTextViewMouseHover;

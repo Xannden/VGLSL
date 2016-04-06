@@ -89,7 +89,6 @@
     <Compile Include="Tagging\Errors\ErrorTagger.cs" />
     <Compile Include="Tagging\Errors\ErrorTaggerProvider.cs" />
     <Compile Include="Theme\VSTheme.cs" />
-    <Compile Include="Theme\ThemeChangedEventArgs.cs" />
     <Compile Include="Theme\VSThemeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -259,10 +258,13 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="..\GLSL\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
     <Content Include="Resources\GLSLPackage.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IntelliSense\Compleations\" />
+    <Folder Include="IntelliSense\Completions\" />
     <Folder Include="IntelliSense\ParameterHelp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

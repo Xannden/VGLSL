@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ProgramSyntax : SyntaxNode
 	{
+		private List<SyntaxNode> nodes = new List<SyntaxNode>();
+
 		internal ProgramSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Program, start)
 		{
 		}
@@ -14,15 +16,15 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public List<SyntaxNode> Nodes { get; } = new List<SyntaxNode>();
+		public IReadOnlyList<SyntaxNode> Nodes => this.nodes;
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
 				case SyntaxType.Declaration:
 				case SyntaxType.FunctionDefinition:
-					this.Nodes.Add(node);
+					this.nodes.Add(node);
 					break;
 			}
 		}

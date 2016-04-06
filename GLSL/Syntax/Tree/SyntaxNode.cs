@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 
@@ -133,13 +132,6 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		internal int TempStart { get; private set; }
 
-		public SyntaxTrivia GetTrailingTrivia()
-		{
-			SyntaxToken token = (SyntaxToken)this.InternalChildren.FindLast(node => node is SyntaxToken);
-
-			return token?.TrailingTrivia;
-		}
-
 		public bool IsExcludedCode()
 		{
 			return this.Parent?.SyntaxType == SyntaxType.ExcludedCode;
@@ -176,6 +168,15 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.InternalChildren.Add(child);
 
 			this.NewChild(child);
+		}
+
+		internal virtual List<string> GetExtraXmlTagInfo()
+		{
+			return null;
+		}
+
+		internal virtual void NewChild(SyntaxNode node)
+		{
 		}
 
 		internal void SetEnd(Snapshot snapshot, int end)
@@ -222,16 +223,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
-		protected virtual List<string> GetExtraXmlTagInfo()
-		{
-			return null;
-		}
-
-		protected virtual void NewChild(SyntaxNode node)
-		{
-		}
-
-		protected virtual void ToString(StringBuilder builder)
+		internal virtual void ToString(StringBuilder builder)
 		{
 			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{

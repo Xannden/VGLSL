@@ -25,7 +25,7 @@ namespace Xannden.VSGLSL.Tagging.Errors
 
 		public IEnumerable<ITagSpan<ErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
 		{
-			List<Error> errors = this.handler.GetErrors();
+			IReadOnlyList<GLSLError> errors = this.handler.Errors;
 
 			for (int i = 0; i < errors.Count; i++)
 			{

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -16,6 +17,11 @@ namespace Xannden.VSGLSL.Classification
 
 		public IClassifier GetClassifier(ITextBuffer textBuffer)
 		{
+			if (textBuffer == null)
+			{
+				throw new ArgumentNullException(nameof(textBuffer));
+			}
+
 			VSSource source = VSSource.GetOrCreate(textBuffer);
 
 			return textBuffer.Properties.GetOrCreateSingletonProperty(() => new GLSLClassifier(source, this.ClassificationTypeRegistryService));

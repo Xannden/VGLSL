@@ -27,7 +27,7 @@ namespace Xannden.VSGLSL.Preprocessors
 
 			Source source = VSSource.GetOrCreate(textBuffer);
 
-			return new PreprocessorSuggestedActionsSource(this, source, textView, textBuffer);
+			return new PreprocessorSuggestedActionsSource(source, textView);
 		}
 	}
 }

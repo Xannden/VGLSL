@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+	<Words>
+		<Recognized>
+			<Word>Xannden</Word>
+			<Word>Vec</Word>
+			<Word>Lexer</Word>
+			<Word>Lex</Word>
+			<Word>Lexing</Word>
+			<Word>Paren</Word>
+			<Word>Typedef</Word>
+			<Word>Sizeof</Word>
+			<Word>Undefine</Word>
+			<Word>Declarator</Word>
+			<Word>Declarators</Word>
+		</Recognized>
+	</Words>
+	<Acronyms>
+		<CasingExceptions>
+			<Acronym>GLSL</Acronym>
+			<Acronym>VSGLSL</Acronym>
+			<Acronym>DMS</Acronym>
+			<Acronym>EOF</Acronym>
+			<Acronym>ASM</Acronym>
+		</CasingExceptions>
+	</Acronyms>
+</Dictionary>

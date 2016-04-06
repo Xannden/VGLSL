@@ -6,6 +6,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class BlockSyntax : SyntaxNode
 	{
+		private List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
+
 		internal BlockSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Block, start)
 		{
 		}
@@ -18,11 +20,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken RightBrace { get; private set; }
 
-		public SyntaxToken SemiColon { get; private set; }
+		public SyntaxToken Semicolon { get; private set; }
 
-		public List<SimpleStatementSyntax> SimpleStatements { get; } = new List<SimpleStatementSyntax>();
+		public IReadOnlyList<SimpleStatementSyntax> SimpleStatements => this.simpleStatements;
 
-		protected override void NewChild(SyntaxNode node)
+		internal override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -31,15 +33,15 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.SimpleStatement:
-					this.SimpleStatements.Add(node as SimpleStatementSyntax);
+					this.simpleStatements.Add(node as SimpleStatementSyntax);
 					break;
 
 				case SyntaxType.RightBraceToken:
 					this.RightBrace = node as SyntaxToken;
 					break;
 
-				case SyntaxType.SemiColonToken:
-					this.SemiColon = node as SyntaxToken;
+				case SyntaxType.SemicolonToken:
+					this.Semicolon = node as SyntaxToken;
 					break;
 			}
 		}

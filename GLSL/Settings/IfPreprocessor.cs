@@ -11,16 +11,18 @@ namespace Xannden.GLSL.Settings
 		{
 		}
 
-		public List<Preprocessor> ElsePreprocessors { get; } = new List<Preprocessor>();
+		public IReadOnlyList<Preprocessor> ElsePreprocessors => this.InternalElsePreprocessors;
+
+		internal List<Preprocessor> InternalElsePreprocessors { get; } = new List<Preprocessor>();
 
 		public void CheckForElse()
 		{
-			if (this.Value || this.ElsePreprocessors.Find(preproc => preproc.Value) != null)
+			if (this.Value || this.InternalElsePreprocessors.Find(preproc => preproc.Value) != null)
 			{
 				return;
 			}
 
-			Preprocessor preprocessor = this.ElsePreprocessors.Find(preproc => preproc.Keyword.SyntaxType == SyntaxType.ElsePreprocessorKeyword);
+			Preprocessor preprocessor = this.InternalElsePreprocessors.Find(preproc => preproc.Keyword.SyntaxType == SyntaxType.ElsePreprocessorKeyword);
 
 			if (preprocessor != null)
 			{
@@ -53,12 +55,12 @@ namespace Xannden.GLSL.Settings
 				return this;
 			}
 
-			return this.ElsePreprocessors.Find(preprocessor => preprocessor.Keyword.Span.GetSpan(snapshot).Contains(position));
+			return this.InternalElsePreprocessors.Find(preprocessor => preprocessor.Keyword.Span.GetSpan(snapshot).Contains(position));
 		}
 
 		public void SetAllValues(bool value)
 		{
-			this.ElsePreprocessors.ForEach(preprocessor => preprocessor.Value = value);
+			this.InternalElsePreprocessors.ForEach(preprocessor => preprocessor.Value = value);
 
 			this.Value = value;
 		}

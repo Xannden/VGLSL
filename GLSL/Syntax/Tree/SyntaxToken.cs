@@ -72,7 +72,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			return builder.ToString();
 		}
 
-		protected override List<string> GetExtraXmlTagInfo()
+		internal override List<string> GetExtraXmlTagInfo()
 		{
 			List<string> elements = new List<string>();
 
@@ -91,7 +91,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			return elements;
 		}
 
-		protected override void ToString(StringBuilder builder)
+		internal override void ToString(StringBuilder builder)
 		{
 			if (this.HasLeadingTrivia())
 			{

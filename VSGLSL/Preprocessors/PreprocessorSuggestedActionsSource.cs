@@ -11,17 +11,13 @@ namespace Xannden.VSGLSL.Preprocessors
 {
 	internal class PreprocessorSuggestedActionsSource : ISuggestedActionsSource
 	{
-		private PreprocessorSuggestedActionsSourceProvider provider;
 		private Source source;
-		private ITextBuffer textBuffer;
 		private ITextView textView;
 
-		public PreprocessorSuggestedActionsSource(PreprocessorSuggestedActionsSourceProvider provider, Source source, ITextView textView, ITextBuffer buffer)
+		public PreprocessorSuggestedActionsSource(Source source, ITextView textView)
 		{
-			this.provider = provider;
 			this.source = source;
 			this.textView = textView;
-			this.textBuffer = buffer;
 		}
 
 		public event EventHandler<EventArgs> SuggestedActionsChanged;

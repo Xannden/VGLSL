@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using Xannden.GLSL.Errors;
-using Xannden.VSGLSL.Extensions.Text;
+using Xannden.VSGLSL.Extensions;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.Tagging.Errors
+namespace Xannden.VSGLSL.Errors
 {
 	internal sealed class ErrorTagger : ITagger<ErrorTag>
 	{

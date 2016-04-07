@@ -7,7 +7,7 @@ using Xannden.GLSL.Errors;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.Tagging.Errors
+namespace Xannden.VSGLSL.Errors
 {
 	[Export(typeof(ITaggerProvider))]
 	[ContentType(GLSLConstants.ContentType)]

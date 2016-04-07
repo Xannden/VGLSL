@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.Text;
 using Xannden.GLSL.Text;
-using Xannden.VSGLSL.Extensions.Text;
+using Xannden.VSGLSL.Extensions;
 
 namespace Xannden.VSGLSL.Sources
 {

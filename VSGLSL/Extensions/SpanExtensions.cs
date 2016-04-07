@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.Text;
 using GLSLSpan = Xannden.GLSL.Text.Span;
 
-namespace Xannden.VSGLSL.Extensions.Text
+namespace Xannden.VSGLSL.Extensions
 {
 	internal static class SpanExtensions
 	{

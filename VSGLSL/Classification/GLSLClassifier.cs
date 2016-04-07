@@ -9,7 +9,7 @@ using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.VSGLSL.Data;
-using Xannden.VSGLSL.Extensions.Text;
+using Xannden.VSGLSL.Extensions;
 using Xannden.VSGLSL.Sources;
 
 namespace Xannden.VSGLSL.Classification

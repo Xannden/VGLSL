@@ -63,9 +63,9 @@
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
-    <Compile Include="Extensions\Text\SourceExtensions.cs" />
+    <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="Data\GLSLConstants.cs" />
-    <Compile Include="Extensions\Text\SpanExtensions.cs" />
+    <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoController.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoControllerProvider.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSource.cs" />
@@ -86,8 +86,8 @@
     <Compile Include="Sources\VSSource.cs" />
     <Compile Include="Sources\VSSourceLine.cs" />
     <Compile Include="Sources\VSTrackingSpan.cs" />
-    <Compile Include="Tagging\Errors\ErrorTagger.cs" />
-    <Compile Include="Tagging\Errors\ErrorTaggerProvider.cs" />
+    <Compile Include="Errors\ErrorTagger.cs" />
+    <Compile Include="Errors\ErrorTaggerProvider.cs" />
     <Compile Include="Theme\VSTheme.cs" />
     <Compile Include="Theme\VSThemeHelper.cs" />
   </ItemGroup>

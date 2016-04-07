@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Text;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.Extensions.Text
+namespace Xannden.VSGLSL.Extensions
 {
 	internal static class SourceExtensions
 	{

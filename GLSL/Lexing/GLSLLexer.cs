@@ -277,7 +277,7 @@ namespace Xannden.GLSL.Lexing
 
 		private void CreateToken()
 		{
-			if (!this.info.Type.IsTrivia() || (this.trailingTriva.Count > 0 && this.isLeadingTrivia))
+			if (!this.info.SyntaxType.IsTrivia() || (this.trailingTriva.Count > 0 && this.isLeadingTrivia))
 			{
 				if (this.trailingTriva.Count > 0)
 				{
@@ -293,22 +293,22 @@ namespace Xannden.GLSL.Lexing
 
 			Span span = Span.Create(this.info.Start, this.info.End);
 
-			if (this.info.Type == SyntaxType.InvalidToken)
+			if (this.info.SyntaxType == SyntaxType.InvalidToken)
 			{
 				this.invalidTokens++;
 				this.tokens.AddLast(new InvalidToken(this.info.ExtraType, span, this.info.Line, this.info.Text, this.CreateTrivia(this.leadingTriva), this.info.ExtraText));
 			}
-			else if (this.info.Type.IsTrivia())
+			else if (this.info.SyntaxType.IsTrivia())
 			{
 				if (this.isLeadingTrivia || this.tokens.Count <= 0)
 				{
-					this.leadingTriva.Add(new SyntaxTrivia(this.info.Type, this.snapshot.CreateTrackingSpan(span), this.info.Text));
+					this.leadingTriva.Add(new SyntaxTrivia(this.info.SyntaxType, this.snapshot.CreateTrackingSpan(span), this.info.Text));
 				}
 				else
 				{
-					this.trailingTriva.Add(new SyntaxTrivia(this.info.Type, this.snapshot.CreateTrackingSpan(span), this.info.Text));
+					this.trailingTriva.Add(new SyntaxTrivia(this.info.SyntaxType, this.snapshot.CreateTrackingSpan(span), this.info.Text));
 
-					if (this.info.Type == SyntaxType.NewLineTrivia)
+					if (this.info.SyntaxType == SyntaxType.NewLineTrivia)
 					{
 						this.isLeadingTrivia = true;
 					}
@@ -316,17 +316,17 @@ namespace Xannden.GLSL.Lexing
 			}
 			else
 			{
-				this.tokens.AddLast(new Token(this.info.Type, span, this.info.Line, this.info.Text, this.CreateTrivia(this.leadingTriva)));
+				this.tokens.AddLast(new Token(this.info.SyntaxType, span, this.info.Line, this.info.Text, this.CreateTrivia(this.leadingTriva)));
 			}
 
-			if (!this.info.Type.IsTrivia())
+			if (!this.info.SyntaxType.IsTrivia())
 			{
 				this.leadingTriva.Clear();
 				this.trailingTriva.Clear();
 				this.isLeadingTrivia = false;
 			}
 
-			this.info.Type = SyntaxType.None;
+			this.info.SyntaxType = SyntaxType.None;
 			this.info.Start = 0;
 			this.info.End = 0;
 			this.info.Line = null;
@@ -437,7 +437,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.LeftParenToken;
+						this.info.SyntaxType = SyntaxType.LeftParenToken;
 
 						this.End();
 						break;
@@ -447,7 +447,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.RightParenToken;
+						this.info.SyntaxType = SyntaxType.RightParenToken;
 
 						this.End();
 						break;
@@ -457,7 +457,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.LeftBracketToken;
+						this.info.SyntaxType = SyntaxType.LeftBracketToken;
 
 						this.End();
 						break;
@@ -467,7 +467,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.RightBracketToken;
+						this.info.SyntaxType = SyntaxType.RightBracketToken;
 
 						this.End();
 						break;
@@ -477,7 +477,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.LeftBraceToken;
+						this.info.SyntaxType = SyntaxType.LeftBraceToken;
 
 						this.End();
 						break;
@@ -487,7 +487,7 @@ namespace Xannden.GLSL.Lexing
 
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
-						this.info.Type = SyntaxType.RightBraceToken;
+						this.info.SyntaxType = SyntaxType.RightBraceToken;
 
 						this.End();
 						break;
@@ -507,7 +507,7 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(character);
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.DotToken;
+							this.info.SyntaxType = SyntaxType.DotToken;
 
 							this.End();
 						}
@@ -520,7 +520,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.CommaToken;
+						this.info.SyntaxType = SyntaxType.CommaToken;
 
 						this.End();
 						break;
@@ -531,7 +531,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.ColonToken;
+						this.info.SyntaxType = SyntaxType.ColonToken;
 
 						this.End();
 						break;
@@ -547,11 +547,11 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.EqualEqualToken;
+							this.info.SyntaxType = SyntaxType.EqualEqualToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.EqualToken;
+							this.info.SyntaxType = SyntaxType.EqualToken;
 						}
 
 						this.End();
@@ -563,7 +563,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.SemicolonToken;
+						this.info.SyntaxType = SyntaxType.SemicolonToken;
 
 						this.End();
 						break;
@@ -579,11 +579,11 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.ExclamationEqualToken;
+							this.info.SyntaxType = SyntaxType.ExclamationEqualToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.ExclamationToken;
+							this.info.SyntaxType = SyntaxType.ExclamationToken;
 						}
 
 						this.End();
@@ -600,18 +600,18 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.MinusEqualToken;
+							this.info.SyntaxType = SyntaxType.MinusEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '-')
 						{
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.MinusMinusToken;
+							this.info.SyntaxType = SyntaxType.MinusMinusToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.MinusToken;
+							this.info.SyntaxType = SyntaxType.MinusToken;
 						}
 
 						this.End();
@@ -623,7 +623,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.TildeToken;
+						this.info.SyntaxType = SyntaxType.TildeToken;
 
 						this.End();
 						break;
@@ -639,18 +639,18 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.PlusEqualToken;
+							this.info.SyntaxType = SyntaxType.PlusEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '+')
 						{
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.PlusPlusToken;
+							this.info.SyntaxType = SyntaxType.PlusPlusToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.PlusToken;
+							this.info.SyntaxType = SyntaxType.PlusToken;
 						}
 
 						this.End();
@@ -667,11 +667,11 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.StarEqualToken;
+							this.info.SyntaxType = SyntaxType.StarEqualToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.StarToken;
+							this.info.SyntaxType = SyntaxType.StarToken;
 						}
 
 						this.End();
@@ -688,7 +688,7 @@ namespace Xannden.GLSL.Lexing
 								this.tokenBuilder.Append("/=");
 								this.navigator.Advance();
 
-								this.info.Type = SyntaxType.SlashEqualToken;
+								this.info.SyntaxType = SyntaxType.SlashEqualToken;
 								break;
 
 							case '/':
@@ -696,7 +696,7 @@ namespace Xannden.GLSL.Lexing
 
 								this.ScanLineCommentTriva();
 
-								this.info.Type = SyntaxType.LineCommentTrivia;
+								this.info.SyntaxType = SyntaxType.LineCommentTrivia;
 								break;
 
 							case '*':
@@ -704,13 +704,13 @@ namespace Xannden.GLSL.Lexing
 
 								this.ScanBlockCommentTrivia();
 
-								this.info.Type = SyntaxType.BlockCommentTrivia;
+								this.info.SyntaxType = SyntaxType.BlockCommentTrivia;
 								break;
 
 							default:
 								this.tokenBuilder.Append("/");
 
-								this.info.Type = SyntaxType.SlashToken;
+								this.info.SyntaxType = SyntaxType.SlashToken;
 								break;
 						}
 
@@ -728,11 +728,11 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.PercentEqualToken;
+							this.info.SyntaxType = SyntaxType.PercentEqualToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.PercentToken;
+							this.info.SyntaxType = SyntaxType.PercentToken;
 						}
 
 						this.End();
@@ -749,7 +749,7 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.LessThenEqualToken;
+							this.info.SyntaxType = SyntaxType.LessThenEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '<')
 						{
@@ -761,16 +761,16 @@ namespace Xannden.GLSL.Lexing
 								this.tokenBuilder.Append(this.navigator.PeekChar());
 								this.navigator.Advance();
 
-								this.info.Type = SyntaxType.LessThenLessThenEqualToken;
+								this.info.SyntaxType = SyntaxType.LessThenLessThenEqualToken;
 							}
 							else
 							{
-								this.info.Type = SyntaxType.LessThenLessThenToken;
+								this.info.SyntaxType = SyntaxType.LessThenLessThenToken;
 							}
 						}
 						else
 						{
-							this.info.Type = SyntaxType.LessThenToken;
+							this.info.SyntaxType = SyntaxType.LessThenToken;
 						}
 
 						this.End();
@@ -787,7 +787,7 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.GreaterThenEqualToken;
+							this.info.SyntaxType = SyntaxType.GreaterThenEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '>')
 						{
@@ -799,16 +799,16 @@ namespace Xannden.GLSL.Lexing
 								this.tokenBuilder.Append(this.navigator.PeekChar());
 								this.navigator.Advance();
 
-								this.info.Type = SyntaxType.GreaterThenGreaterThenEqualToken;
+								this.info.SyntaxType = SyntaxType.GreaterThenGreaterThenEqualToken;
 							}
 							else
 							{
-								this.info.Type = SyntaxType.GreaterThenGreaterThenToken;
+								this.info.SyntaxType = SyntaxType.GreaterThenGreaterThenToken;
 							}
 						}
 						else
 						{
-							this.info.Type = SyntaxType.GreaterThenToken;
+							this.info.SyntaxType = SyntaxType.GreaterThenToken;
 						}
 
 						this.End();
@@ -825,18 +825,18 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.BarEqualToken;
+							this.info.SyntaxType = SyntaxType.BarEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '|')
 						{
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.BarBarToken;
+							this.info.SyntaxType = SyntaxType.BarBarToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.VerticalBarToken;
+							this.info.SyntaxType = SyntaxType.VerticalBarToken;
 						}
 
 						this.End();
@@ -853,18 +853,18 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.CaretEqualToken;
+							this.info.SyntaxType = SyntaxType.CaretEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '^')
 						{
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.CaretCaretToken;
+							this.info.SyntaxType = SyntaxType.CaretCaretToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.CaretToken;
+							this.info.SyntaxType = SyntaxType.CaretToken;
 						}
 
 						this.End();
@@ -881,18 +881,18 @@ namespace Xannden.GLSL.Lexing
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.AmpersandEqualToken;
+							this.info.SyntaxType = SyntaxType.AmpersandEqualToken;
 						}
 						else if (this.navigator.PeekChar() == '&')
 						{
 							this.tokenBuilder.Append(this.navigator.PeekChar());
 							this.navigator.Advance();
 
-							this.info.Type = SyntaxType.AmpersandAmpersandToken;
+							this.info.SyntaxType = SyntaxType.AmpersandAmpersandToken;
 						}
 						else
 						{
-							this.info.Type = SyntaxType.AmpersandToken;
+							this.info.SyntaxType = SyntaxType.AmpersandToken;
 						}
 
 						this.End();
@@ -904,7 +904,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 
-						this.info.Type = SyntaxType.QuestionToken;
+						this.info.SyntaxType = SyntaxType.QuestionToken;
 
 						this.End();
 						break;
@@ -913,7 +913,7 @@ namespace Xannden.GLSL.Lexing
 					case '\t':
 						this.Start();
 
-						this.info.Type = SyntaxType.WhiteSpaceTrivia;
+						this.info.SyntaxType = SyntaxType.WhiteSpaceTrivia;
 
 						this.ScanWhiteSpaceTriva();
 
@@ -924,7 +924,7 @@ namespace Xannden.GLSL.Lexing
 					case '\r':
 						this.Start();
 
-						this.info.Type = SyntaxType.NewLineTrivia;
+						this.info.SyntaxType = SyntaxType.NewLineTrivia;
 
 						this.ScanNewLineTriva();
 
@@ -947,7 +947,7 @@ namespace Xannden.GLSL.Lexing
 						break;
 				}
 
-				if (this.info.Type != SyntaxType.None)
+				if (this.info.SyntaxType != SyntaxType.None)
 				{
 					this.CreateToken();
 				}
@@ -1045,11 +1045,11 @@ namespace Xannden.GLSL.Lexing
 
 			if (this.keywords.TryGetValue(this.info.Text, out type))
 			{
-				this.info.Type = type;
+				this.info.SyntaxType = type;
 			}
 			else
 			{
-				this.info.Type = SyntaxType.IdentifierToken;
+				this.info.SyntaxType = SyntaxType.IdentifierToken;
 			}
 		}
 
@@ -1160,9 +1160,9 @@ namespace Xannden.GLSL.Lexing
 					}
 					else if (character > '7' && character <= '9')
 					{
-						if (this.info.Type != SyntaxType.InvalidToken)
+						if (this.info.SyntaxType != SyntaxType.InvalidToken)
 						{
-							this.info.Type = SyntaxType.InvalidToken;
+							this.info.SyntaxType = SyntaxType.InvalidToken;
 							this.info.ExtraText = "Octal Literals can only contain the numbers 0-7";
 						}
 
@@ -1173,7 +1173,7 @@ namespace Xannden.GLSL.Lexing
 					{
 						isFloat = true;
 						isOctal = false;
-						this.info.Type = SyntaxType.None;
+						this.info.SyntaxType = SyntaxType.None;
 						this.info.ExtraText = string.Empty;
 					}
 					else
@@ -1214,7 +1214,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(this.navigator.PeekChar(1));
 						this.navigator.Advance(2);
 
-						this.info.Type = SyntaxType.DoubleConstToken;
+						this.info.SyntaxType = SyntaxType.DoubleConstToken;
 						break;
 					}
 					else if (character >= '0' && character <= '9')
@@ -1247,9 +1247,9 @@ namespace Xannden.GLSL.Lexing
 
 			if (isFloat)
 			{
-				if (this.info.Type != SyntaxType.DoubleConstToken)
+				if (this.info.SyntaxType != SyntaxType.DoubleConstToken)
 				{
-					this.info.Type = SyntaxType.FloatConstToken;
+					this.info.SyntaxType = SyntaxType.FloatConstToken;
 				}
 
 				this.End();
@@ -1260,24 +1260,24 @@ namespace Xannden.GLSL.Lexing
 			{
 				this.navigator.Advance();
 
-				if (this.info.Type == SyntaxType.InvalidToken)
+				if (this.info.SyntaxType == SyntaxType.InvalidToken)
 				{
 					this.info.ExtraType = SyntaxType.UIntConstToken;
 				}
 				else
 				{
-					this.info.Type = SyntaxType.UIntConstToken;
+					this.info.SyntaxType = SyntaxType.UIntConstToken;
 				}
 			}
 			else
 			{
-				if (this.info.Type == SyntaxType.InvalidToken)
+				if (this.info.SyntaxType == SyntaxType.InvalidToken)
 				{
 					this.info.ExtraType = SyntaxType.IntConstToken;
 				}
 				else
 				{
-					this.info.Type = SyntaxType.IntConstToken;
+					this.info.SyntaxType = SyntaxType.IntConstToken;
 				}
 			}
 
@@ -1307,15 +1307,15 @@ namespace Xannden.GLSL.Lexing
 			if (this.tokenBuilder.ToString() == "#")
 			{
 				this.tokenBuilder.Clear();
-				this.info.Type = SyntaxType.None;
+				this.info.SyntaxType = SyntaxType.None;
 			}
 			else if (this.preprocessors.TryGetValue(this.tokenBuilder.ToString(), out type))
 			{
-				this.info.Type = type;
+				this.info.SyntaxType = type;
 			}
 			else
 			{
-				this.info.Type = SyntaxType.InvalidToken;
+				this.info.SyntaxType = SyntaxType.InvalidToken;
 				this.info.ExtraType = SyntaxType.PreprocessorToken;
 				this.info.ExtraText = $"{this.tokenBuilder.ToString()} is not a valid preprocessor";
 			}
@@ -1344,7 +1344,7 @@ namespace Xannden.GLSL.Lexing
 			internal SourceLine Line;
 			internal int Start;
 			internal string Text;
-			internal SyntaxType Type;
+			internal SyntaxType SyntaxType;
 
 			public TokenInfo(int start, SourceLine line, string text, SyntaxType type, int end, string extraText, SyntaxType extratype)
 			{
@@ -1354,7 +1354,7 @@ namespace Xannden.GLSL.Lexing
 				this.Line = line;
 				this.Start = start;
 				this.Text = text;
-				this.Type = type;
+				this.SyntaxType = type;
 			}
 		}
 	}

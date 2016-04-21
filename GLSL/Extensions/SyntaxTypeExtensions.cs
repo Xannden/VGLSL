@@ -1,4 +1,6 @@
-﻿using Xannden.GLSL.Syntax;
+﻿using System.Reflection;
+using Xannden.GLSL.Syntax;
+using Xannden.GLSL.Utility;
 
 namespace Xannden.GLSL.Extensions
 {
@@ -55,6 +57,11 @@ namespace Xannden.GLSL.Extensions
 			}
 
 			return false;
+		}
+
+		internal static string GetText(this SyntaxType syntaxType)
+		{
+			return syntaxType.GetType().GetField(syntaxType.ToString())?.GetCustomAttribute<TextAttribute>()?.Text ?? string.Empty;
 		}
 	}
 }

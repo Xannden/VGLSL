@@ -35,6 +35,11 @@ namespace Xannden.GLSL.Test.Text
 
 		public List<TextLine> Lines { get; }
 
+		public override TrackingPoint CreateTrackingPoint(int position)
+		{
+			return new TrackingTextPoint(position);
+		}
+
 		public override TrackingSpan CreateTrackingSpan(Span span)
 		{
 			return new TrackingTextSpan(span);

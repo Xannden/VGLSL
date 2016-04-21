@@ -63,6 +63,7 @@
     <Compile Include="Text\Text\TextLine.cs" />
     <Compile Include="Text\Text\TextSnapshot.cs" />
     <Compile Include="Text\Text\TextSource.cs" />
+    <Compile Include="Text\Text\TrackingTextPoint.cs" />
     <Compile Include="Text\Text\TrackingTextSpan.cs" />
   </ItemGroup>
   <ItemGroup>

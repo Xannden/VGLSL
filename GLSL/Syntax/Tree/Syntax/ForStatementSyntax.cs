@@ -16,7 +16,9 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public ExpressionSyntax Expression { get; private set; }
 
-		public SyntaxNode ForInitStatement { get; private set; }
+		public ExpressionStatementSyntax ExpressionStatement { get; private set; }
+
+		public DeclarationSyntax Declaration { get; private set; }
 
 		public SyntaxToken ForKeyword { get; private set; }
 
@@ -41,9 +43,10 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.ExpressionStatement:
+					this.ExpressionStatement = node as ExpressionStatementSyntax;
+					break;
 				case SyntaxType.Declaration:
-				case SyntaxType.FunctionStatement:
-					this.ForInitStatement = node;
+					this.Declaration = node as DeclarationSyntax;
 					break;
 
 				case SyntaxType.Condition:

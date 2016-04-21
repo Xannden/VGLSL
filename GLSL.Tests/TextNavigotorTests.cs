@@ -7,7 +7,7 @@ using Xannden.GLSL.Text;
 namespace Xannden.GLSL.Tests
 {
 	[TestClass]
-	public class TextNavigatorTests
+	public sealed class TextNavigatorTests
 	{
 
 		[TestMethod]

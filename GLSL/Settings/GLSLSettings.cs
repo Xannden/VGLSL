@@ -4,7 +4,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Settings
 {
-	public class GLSLSettings
+	public sealed class GLSLSettings
 	{
 		private IReadOnlyList<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
 

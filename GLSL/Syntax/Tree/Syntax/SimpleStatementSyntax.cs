@@ -18,8 +18,6 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public ExpressionStatementSyntax ExpressionStatement { get; private set; }
 
-		public FunctionStatementSyntax FunctionStatement { get; private set; }
-
 		public IterationStatementSyntax IterationStatement { get; private set; }
 
 		public JumpStatementSyntax JumpStatement { get; private set; }
@@ -58,10 +56,6 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 				case SyntaxType.ExpressionStatement:
 					this.ExpressionStatement = node as ExpressionStatementSyntax;
-					break;
-
-				case SyntaxType.FunctionStatement:
-					this.FunctionStatement = node as FunctionStatementSyntax;
 					break;
 			}
 		}

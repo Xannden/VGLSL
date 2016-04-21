@@ -22,6 +22,11 @@ namespace Xannden.VSGLSL.Sources
 			return new VSTrackingSpan(this.TextSnapshot.CreateTrackingSpan(span.ToVSSpan(), SpanTrackingMode.EdgeExclusive));
 		}
 
+		public override TrackingPoint CreateTrackingPoint(int position)
+		{
+			return new VSTrackingPoint(this.TextSnapshot.CreateTrackingPoint(position, PointTrackingMode.Positive));
+		}
+
 		public override SourceLine GetLineFromLineNumber(int lineNumber) => new VSSourceLine(this, this.TextSnapshot.GetLineFromLineNumber(lineNumber));
 
 		public override SourceLine GetLineFromPosition(int position) => new VSSourceLine(this, this.TextSnapshot.GetLineFromPosition(position));

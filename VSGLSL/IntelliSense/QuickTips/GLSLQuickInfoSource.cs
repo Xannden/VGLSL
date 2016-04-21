@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
@@ -65,14 +66,21 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			}
 
 			IdentifierSyntax identifier = node as IdentifierSyntax;
-			SyntaxNode declarationNode = this.FindDefinition(identifier);
 
-			if (declarationNode == null)
+			if (identifier == null)
 			{
 				return;
 			}
 
-			quickInfoContent.Add(new QuickTipPanel(this.GetIcon(identifier), this.CreateTextBlock(declarationNode, identifier), null));
+			Definition definition = tree.Definitions.Find(def => def.Scope.GetSpan(snapshot).Contains(identifier.Span.GetSpan(snapshot)) && identifier.Identifier == def.Identifier.Identifier);
+
+			if (definition == null)
+			{
+				return;
+			}
+
+			quickInfoContent.Add(new QuickTipPanel(this.GetIcon(definition), this.CreateTextBlock(definition, snapshot), null));
+
 			applicableToSpan = (identifier.Span as VSTrackingSpan).TrackingSpan;
 		}
 
@@ -80,132 +88,11 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 		{
 		}
 
-		private SyntaxNode FindDefinition(IdentifierSyntax identifier)
-		{
-			if (identifier == null)
-			{
-				return null;
-			}
-
-			for (int i = 0; i < identifier.Tree.MacroDefinitions.Count; i++)
-			{
-				if (identifier.Tree.MacroDefinitions[i].Identifier.Text == identifier.Text)
-				{
-					return identifier.Tree.MacroDefinitions[i];
-				}
-			}
-
-			SyntaxNode node = identifier.Parent;
-
-			while (node != null)
-			{
-				foreach (SyntaxNode sibling in node.SiblingsAndSelf)
-				{
-					DeclarationSyntax declaration;
-
-					if (sibling.SyntaxType == SyntaxType.SimpleStatement)
-					{
-						declaration = (sibling as SimpleStatementSyntax)?.Declaration;
-					}
-					else
-					{
-						declaration = sibling as DeclarationSyntax;
-					}
-
-					if (declaration?.InitDeclaratorList != null)
-					{
-						IReadOnlyList<InitPartSyntax> initParts = declaration.InitDeclaratorList.InitParts?.Nodes;
-
-						InitPartSyntax initPart = initParts?.Find(part => part.Identifier.Name == identifier.Name);
-
-						if (initPart != null)
-						{
-							return initPart;
-						}
-					}
-					else if (sibling.SyntaxType == SyntaxType.StructDeclarator && sibling.Parent?.SyntaxType == SyntaxType.StructDefinition)
-					{
-						StructDefinitionSyntax structDefinition = sibling.Parent as StructDefinitionSyntax;
-
-						if (structDefinition.StructDeclarator?.Identifier.Name == identifier.Name)
-						{
-							return structDefinition;
-						}
-					}
-					else if (sibling.SyntaxType == SyntaxType.FunctionDefinition)
-					{
-						FunctionDefinitionSyntax functionDefinition = sibling as FunctionDefinitionSyntax;
-
-						if (functionDefinition?.FunctionHeader?.Identifier.Name == identifier.Name)
-						{
-							return functionDefinition.FunctionHeader;
-						}
-					}
-					else if (sibling.SyntaxType == SyntaxType.Parameter)
-					{
-						ParameterSyntax parameter = sibling as ParameterSyntax;
-
-						if (parameter.Identifier.Name == identifier.Name)
-						{
-							return parameter;
-						}
-					}
-					else if (sibling.SyntaxType == SyntaxType.Block)
-					{
-						FunctionHeaderSyntax header = (sibling.Parent as FunctionDefinitionSyntax)?.FunctionHeader;
-
-						for (int i = 0; i < header?.Parameters.Count; i++)
-						{
-							if (header.Parameters[i].Identifier.Name == identifier.Name)
-							{
-								return header.Parameters[i];
-							}
-						}
-					}
-					else if (declaration?.StructDefinition != null)
-					{
-						if (identifier.Parent?.SyntaxType == SyntaxType.FieldSelection || identifier.Parent?.SyntaxType == SyntaxType.StructDeclarator)
-						{
-							for (int i = 0; i < declaration.StructDefinition.StructDeclarations.Count; i++)
-							{
-								foreach (StructDeclaratorSyntax declarator in declaration.StructDefinition.StructDeclarations[i].StructDeclarators.Nodes)
-								{
-									if (declarator.Identifier.Name == identifier.Name)
-									{
-										return declarator;
-									}
-								}
-							}
-						}
-
-						if (declaration.StructDefinition.TypeName?.Identifier.Name == identifier.Name)
-						{
-							return declaration.StructDefinition.TypeName;
-						}
-
-						if (declaration.StructDefinition.StructDeclarator?.Identifier.Name == identifier.Name)
-						{
-							return declaration.StructDefinition;
-						}
-					}
-				}
-
-				node = node.Parent;
-			}
-
-			return null;
-		}
-
-		private string GetClassificationName(SyntaxToken token)
+		private string GetClassificationName(SyntaxToken token, Snapshot snapshot)
 		{
 			if (token.SyntaxType.IsPreprocessor())
 			{
 				return GLSLConstants.PreprocessorKeyword;
-			}
-
-			if ((token as IdentifierSyntax)?.IsMacro() ?? false)
-			{
-				return GLSLConstants.Macro;
 			}
 
 			if (token?.IsExcludedCode() ?? false)
@@ -216,6 +103,15 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			if (token.SyntaxType.IsPunctuation())
 			{
 				return GLSLConstants.Punctuation;
+			}
+
+			IdentifierSyntax identifier = token as IdentifierSyntax;
+
+			Definition definition = token.Tree.Definitions.Find(def => def.Scope.GetSpan(snapshot).Contains(token.Span.GetSpan(snapshot)) && identifier?.Identifier == def.Identifier.Identifier);
+
+			if (definition?.Type == DefinitionType.Macro)
+			{
+				return GLSLConstants.Macro;
 			}
 
 			if (token?.IsPreprocessorText() ?? false)
@@ -233,77 +129,56 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				return GLSLConstants.Number;
 			}
 
-			if (token.SyntaxType == SyntaxType.IdentifierToken)
+			if (definition != null)
 			{
-				IdentifierSyntax identifier = token as IdentifierSyntax;
-
-				if (identifier.IsParameter())
+				switch (definition.Type)
 				{
-					return GLSLConstants.Parameter;
+					case DefinitionType.Field:
+						return GLSLConstants.Field;
+					case DefinitionType.Function:
+						return GLSLConstants.Function;
+					case DefinitionType.GlobalVariable:
+						return GLSLConstants.GlobalVariable;
+					case DefinitionType.LocalVariable:
+						return GLSLConstants.LocalVariable;
+					case DefinitionType.Parameter:
+						return GLSLConstants.Parameter;
+					case DefinitionType.TypeName:
+						return GLSLConstants.TypeName;
 				}
+			}
 
-				if (identifier.IsFunction())
-				{
-					return GLSLConstants.Function;
-				}
-
-				if (identifier.IsTypeName())
-				{
-					return GLSLConstants.TypeName;
-				}
-
-				if (identifier.IsField())
-				{
-					return GLSLConstants.Field;
-				}
-
-				if (identifier.IsLocalVariable())
-				{
-					return GLSLConstants.LocalVariable;
-				}
-
-				if (identifier.IsGlobalVariable())
-				{
-					return GLSLConstants.GlobalVariable;
-				}
-
+			if (identifier != null)
+			{
 				return GLSLConstants.Identifier;
 			}
 
 			return PredefinedClassificationTypeNames.FormalLanguage;
 		}
 
-		private FrameworkElement GetIcon(IdentifierSyntax identifier)
+		private FrameworkElement GetIcon(Definition definition)
 		{
 			ImageSource imageSource = null;
 
-			if (identifier.IsField())
+			switch (definition.Type)
 			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsMacro())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsFunction())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMethod, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsGlobalVariable())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsLocalVariable())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsParameter())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
-			}
-			else if (identifier.IsTypeName())
-			{
-				imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupStruct, StandardGlyphItem.GlyphItemPublic);
+				case DefinitionType.Field:
+					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
+					break;
+				case DefinitionType.LocalVariable:
+				case DefinitionType.GlobalVariable:
+				case DefinitionType.Parameter:
+					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
+					break;
+				case DefinitionType.Macro:
+					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro, StandardGlyphItem.GlyphItemPublic);
+					break;
+				case DefinitionType.TypeName:
+					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupStruct, StandardGlyphItem.GlyphItemPublic);
+					break;
+				case DefinitionType.Function:
+					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMethod, StandardGlyphItem.GlyphItemPublic);
+					break;
 			}
 
 			if (imageSource != null)
@@ -317,32 +192,30 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			return null;
 		}
 
-		private List<Run> GetRuns(SyntaxNode node, IClassificationFormatMap formatMap, IdentifierSyntax identifier)
+		private List<Run> GetRuns(Definition definition, IClassificationFormatMap formatMap, Snapshot snapshot)
 		{
 			List<Run> runs = new List<Run>();
 
-			string identifierType = this.GetClassificationName(identifier);
-
 			Run typeRun = null;
 
-			switch (identifierType)
+			switch (definition.Type)
 			{
-				case GLSLConstants.LocalVariable:
+				case DefinitionType.LocalVariable:
 					typeRun = new Run("(local variable) ");
 					break;
-				case GLSLConstants.Field:
+				case DefinitionType.Field:
 					typeRun = new Run("(field) ");
 					break;
-				case GLSLConstants.GlobalVariable:
+				case DefinitionType.GlobalVariable:
 					typeRun = new Run("(global variable) ");
 					break;
-				case GLSLConstants.Macro:
+				case DefinitionType.Macro:
 					typeRun = new Run("(macro) ");
 					break;
-				case GLSLConstants.Parameter:
+				case DefinitionType.Parameter:
 					typeRun = new Run("(parameter) ");
 					break;
-				case GLSLConstants.TypeName:
+				case DefinitionType.TypeName:
 					typeRun = new Run("(struct) ");
 					break;
 			}
@@ -353,119 +226,97 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				runs.Add(typeRun);
 			}
 
-			switch (node.SyntaxType)
+			Run spaceRun = new Run(" ");
+			spaceRun.SetTextProperties(formatMap.GetTextProperties(this.provider.TypeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
+
+			switch (definition.Node.SyntaxType)
 			{
 				case SyntaxType.InitPart:
-					InitPartSyntax initPart = node as InitPartSyntax;
-					InitDeclaratorListSyntax declaratorList = node.Parent as InitDeclaratorListSyntax;
+					InitDeclaratorListSyntax list = definition.Node.Parent as InitDeclaratorListSyntax;
+					InitPartSyntax initPart = definition.Node as InitPartSyntax;
 
-					if (declaratorList.TypeQualifier != null)
+					if (list.TypeQualifier != null)
 					{
-						foreach (SyntaxToken token in declaratorList.TypeQualifier.SyntaxTokens)
-						{
-							runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-						}
+						this.AddTokenRuns(list.TypeQualifier, runs, formatMap, snapshot);
 					}
 
-					foreach (SyntaxToken token in declaratorList.TypeNode.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
+					this.AddTypeRuns(list.TypeNode, runs, formatMap, snapshot);
 
-					runs.Add(initPart.Identifier.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(initPart.Identifier))));
+					this.AddTokenRuns(initPart.Identifier, runs, formatMap, snapshot);
 
-					for (int i = 0; i < initPart.ArraySpecifiers.Count; i++)
+					foreach (SyntaxNode item in initPart.ArraySpecifiers)
 					{
-						foreach (SyntaxToken token in initPart.ArraySpecifiers[i].SyntaxTokens)
-						{
-							runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-						}
+						this.AddTokenRuns(item, runs, formatMap, snapshot);
 					}
 
 					break;
-
-				case SyntaxType.FunctionHeader:
-
-					foreach (SyntaxToken token in node.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
-
-					break;
-
-				case SyntaxType.StructDefinition:
-					StructDefinitionSyntax structDef = node as StructDefinitionSyntax;
-
-					runs.Add(structDef.TypeName.Identifier.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(GLSLConstants.TypeName), " "));
-
-					foreach (SyntaxToken token in structDef.StructDeclarator.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
-
-					break;
-
-				case SyntaxType.DefinePreprocessor:
-					DefinePreprocessorSyntax definePreprocessor = node as DefinePreprocessorSyntax;
-
-					foreach (SyntaxToken token in definePreprocessor.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
-
-					break;
-				case SyntaxType.Parameter:
-
-					foreach (SyntaxToken token in node.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
-
-					break;
-
-				case SyntaxType.TypeName:
-
-					foreach (SyntaxToken token in node.SyntaxTokens)
-					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
-
-					break;
-
 				case SyntaxType.StructDeclarator:
-					StructDeclarationSyntax declaration = node.Parent as StructDeclarationSyntax;
-					StructDeclaratorSyntax declarator = node as StructDeclaratorSyntax;
+					StructDeclaratorSyntax declarator = definition.Node as StructDeclaratorSyntax;
 
-					if (declaration.TypeQualifier != null)
+					if (definition.Type == DefinitionType.Field)
 					{
-						foreach (SyntaxToken token in declaration.TypeQualifier.SyntaxTokens)
+						StructDeclarationSyntax declaration = declarator.Parent as StructDeclarationSyntax;
+
+						if (declaration.TypeQualifier != null)
 						{
-							runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
+							this.AddTokenRuns(declaration.TypeQualifier, runs, formatMap, snapshot);
 						}
+
+						this.AddTypeRuns(declaration.TypeSyntax, runs, formatMap, snapshot);
 					}
-
-					foreach (SyntaxToken token in declaration.TypeSyntax.SyntaxTokens)
+					else
 					{
-						runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
-					}
+						StructDefinitionSyntax structDef = declarator.Parent as StructDefinitionSyntax;
 
-					runs.Add(declarator.Identifier.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(declarator.Identifier))));
-
-					for (int i = 0; i < declarator.ArraySpecifiers.Count; i++)
-					{
-						foreach (SyntaxToken token in declarator.ArraySpecifiers[i].SyntaxTokens)
+						if (structDef.TypeQualifier != null)
 						{
-							runs.Add(token.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(token))));
+							this.AddTokenRuns(structDef.TypeQualifier, runs, formatMap, snapshot);
 						}
+
+						this.AddTokenRuns(structDef.TypeName, runs, formatMap, snapshot);
+
+						runs.Add(spaceRun);
 					}
 
+					this.AddTokenRuns(declarator.Identifier, runs, formatMap, snapshot);
+
+					foreach (SyntaxNode item in declarator.ArraySpecifiers)
+					{
+						this.AddTokenRuns(item, runs, formatMap, snapshot);
+					}
+
+					break;
+				case SyntaxType.StructDefinition:
+					StructDefinitionSyntax structDefinition = definition.Node as StructDefinitionSyntax;
+
+					if (structDefinition.TypeQualifier != null)
+					{
+						this.AddTokenRuns(structDefinition.TypeQualifier, runs, formatMap, snapshot);
+					}
+
+					this.AddTokenRuns(structDefinition.TypeName, runs, formatMap, snapshot);
+
+					runs.Add(spaceRun);
+
+					StructDeclaratorSyntax declaratorNode = structDefinition.StructDeclarator;
+
+					this.AddTokenRuns(declaratorNode.Identifier, runs, formatMap, snapshot);
+
+					foreach (SyntaxNode item in declaratorNode.ArraySpecifiers)
+					{
+						this.AddTokenRuns(item, runs, formatMap, snapshot);
+					}
+
+					break;
+				default:
+					this.AddTokenRuns(definition.Node, runs, formatMap, snapshot);
 					break;
 			}
 
 			return runs;
 		}
 
-		private TextBlock CreateTextBlock(SyntaxNode node, IdentifierSyntax identifier)
+		private TextBlock CreateTextBlock(Definition definition, Snapshot snapshot)
 		{
 			TextBlock block = new TextBlock
 			{
@@ -476,9 +327,60 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 			block.SetTextProperties(formatMap.DefaultTextProperties);
 
-			block.Inlines.AddRange(this.GetRuns(node, formatMap, identifier));
+			block.Inlines.AddRange(this.GetRuns(definition, formatMap, snapshot));
 
 			return block;
+		}
+
+		private IEnumerable<SyntaxToken> GetTokens(SyntaxNode node)
+		{
+			if (node is SyntaxToken)
+			{
+				yield return node as SyntaxToken;
+			}
+			else
+			{
+				for (int i = 0; i < node.Children.Count; i++)
+				{
+					if (node.Children[i].SyntaxType != SyntaxType.Preprocessor)
+					{
+						foreach (SyntaxToken token in this.GetTokens(node.Children[i]))
+						{
+							yield return token;
+						}
+					}
+				}
+			}
+		}
+
+		private void AddTokenRuns(SyntaxNode node, List<Run> runs, IClassificationFormatMap formatMap, Snapshot snapshot)
+		{
+			foreach (var item in this.GetTokens(node))
+			{
+				runs.Add(item.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(item, snapshot))));
+			}
+		}
+
+		private void AddTypeRuns(TypeSyntax type, List<Run> runs, IClassificationFormatMap formatMap, Snapshot snapshot)
+		{
+			if (type.TypeNonArray.StructSpecifier != null)
+			{
+				this.AddTokenRuns(type.TypeNonArray.StructSpecifier.TypeName, runs, formatMap, snapshot);
+
+				Run spaceRun = new Run(" ");
+				spaceRun.SetTextProperties(formatMap.GetTextProperties(this.provider.TypeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
+
+				runs.Add(spaceRun);
+			}
+			else
+			{
+				this.AddTokenRuns(type, runs, formatMap, snapshot);
+			}
+
+			foreach (SyntaxNode item in type.ArraySpecifiers)
+			{
+				this.AddTokenRuns(item, runs, formatMap, snapshot);
+			}
 		}
 	}
 }

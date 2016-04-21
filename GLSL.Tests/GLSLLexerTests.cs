@@ -11,7 +11,7 @@ using Xannden.GLSL.Test.Text;
 namespace Xannden.GLSL.Tests
 {
 	[TestClass]
-	public class GLSLLexerTests
+	public sealed class GLSLLexerTests
 	{
 		[TestMethod]
 		public void LexComment()

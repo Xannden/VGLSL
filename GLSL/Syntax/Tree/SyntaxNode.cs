@@ -15,7 +15,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.Tree = tree;
 		}
 
-		protected SyntaxNode(SyntaxTree tree, SyntaxType type, TrackingSpan span)
+		internal protected SyntaxNode(SyntaxTree tree, SyntaxType type, TrackingSpan span)
 		{
 			this.SyntaxType = type;
 			this.Span = span;
@@ -72,7 +72,7 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		public virtual TrackingSpan FullSpan => this.Span;
 
-		public bool IsMissing { get; protected set; } = false;
+		public bool IsMissing { get; internal set; } = false;
 
 		public SyntaxNode Parent { get; private set; }
 
@@ -102,27 +102,6 @@ namespace Xannden.GLSL.Syntax.Tree
 		}
 
 		public TrackingSpan Span { get; internal set; }
-
-		public IEnumerable<SyntaxToken> SyntaxTokens
-		{
-			get
-			{
-				if (this is SyntaxToken)
-				{
-					yield return this as SyntaxToken;
-				}
-				else
-				{
-					foreach (SyntaxNode decendent in this.Descendants)
-					{
-						if (decendent is SyntaxToken)
-						{
-							yield return decendent as SyntaxToken;
-						}
-					}
-				}
-			}
-		}
 
 		public SyntaxType SyntaxType { get; }
 

@@ -11,7 +11,7 @@ using Xannden.GLSL.Test.Text;
 namespace Xannden.GLSL.Tests
 {
 	[TestClass]
-	public class GLSLParserTests
+	public sealed class GLSLParserTests
 	{
 		[TestMethod]
 		public void FullParse()

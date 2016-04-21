@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -16,6 +18,8 @@ namespace Xannden.GLSL.Parsing
 		private Stack<SyntaxNode> stack = new Stack<SyntaxNode>();
 		private LinkedList<Token> tokens;
 		private SyntaxTree tree = new SyntaxTree();
+		private Stack<Scope> scope = new Stack<Scope>();
+		private List<Definition> definitions = new List<Definition>();
 
 		public TreeBuilder(Snapshot snapshot, LinkedList<Token> tokens, ErrorHandler errorHandler)
 		{
@@ -28,26 +32,33 @@ namespace Xannden.GLSL.Parsing
 
 		public Token CurrentToken => this.listNode?.Value;
 
-		public Token NextToken => this.listNode?.Next?.Value;
-
-		public void AddToken()
+		public SyntaxToken AddToken()
 		{
-			SyntaxNode node = this.CreateNode(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
+			SyntaxToken node = this.CreateToken(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
 
 			this.stack.Peek().AddChild(node);
 
 			this.listNode = this.listNode.Next;
 
-			if (node.SyntaxType == SyntaxType.IdentifierToken)
+			return node;
+		}
+
+		public SyntaxNode StartNode(SyntaxType type)
+		{
+			SyntaxNode node = this.CreateNode(type, this.CurrentToken.FullSpan(this.snapshot).Start);
+
+			if (this.stack.Count != 0)
 			{
-				foreach (SyntaxNode ancestor in node.Ancestors)
-				{
-					if (ancestor.SyntaxType == SyntaxType.Preprocessor)
-					{
-						return;
-					}
-				}
+				this.stack.Peek().AddChild(node);
 			}
+			else
+			{
+				this.tree.Root = node;
+			}
+
+			this.stack.Push(node);
+
+			return node;
 		}
 
 		public SyntaxNode EndNode()
@@ -74,6 +85,17 @@ namespace Xannden.GLSL.Parsing
 			return this.stack.Pop();
 		}
 
+		public void StartScope()
+		{
+			this.scope.Push(new Scope(this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start), this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start)));
+		}
+
+		public void EndScope()
+		{
+			this.scope.Peek().End.SetPosition(this.snapshot, this.listNode?.Previous.Value.Span.End ?? this.tokens.Last.Value.Span.End);
+			this.scope.Pop();
+		}
+
 		public void Error(SyntaxType expected)
 		{
 			Span span;
@@ -87,9 +109,13 @@ namespace Xannden.GLSL.Parsing
 				span = this.CurrentToken.Span;
 			}
 
-			this.errorHandler.AddError($"{expected.ToString().Replace("Token", string.Empty).Replace("Keyword", string.Empty)} expected", span);
+			this.errorHandler.AddError($"{expected.GetText()} expected", span);
 
-			this.stack.Peek().AddChild(this.CreateNode(expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span), true));
+			SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
+
+			node.IsMissing = true;
+
+			this.stack.Peek().AddChild(node);
 		}
 
 		public void Error(string message)
@@ -97,14 +123,9 @@ namespace Xannden.GLSL.Parsing
 			this.errorHandler.AddError(message, this.CurrentToken.Span);
 		}
 
-		public ResetPoint GetResetPoint()
+		public SyntaxTree GetTree()
 		{
-			return new ResetPoint(this.listNode);
-		}
-
-		public SyntaxTree GetTree(List<DefinePreprocessorSyntax> macroDefinitions)
-		{
-			this.tree.SetMacroDefinitions(macroDefinitions);
+			this.tree.Definitions = this.definitions;
 
 			return this.tree;
 		}
@@ -122,7 +143,7 @@ namespace Xannden.GLSL.Parsing
 				{
 					StructDefinitionSyntax structDefinition = (sibling as SimpleStatementSyntax)?.Declaration?.StructDefinition;
 
-					if (structDefinition?.TypeName?.Identifier.Name == token.Text)
+					if (structDefinition?.TypeName?.Identifier.Identifier == token.Text)
 					{
 						return true;
 					}
@@ -137,27 +158,26 @@ namespace Xannden.GLSL.Parsing
 			this.listNode = this.listNode?.Next;
 		}
 
+		public void AddDefinition(SyntaxNode node, IdentifierSyntax identifier, DefinitionType type)
+		{
+			if (identifier == null || node == null)
+			{
+				return;
+			}
+
+			Scope definitionScope = new Scope(this.snapshot.CreateTrackingPoint(identifier.Span.GetSpan(this.snapshot).Start), this.scope.Peek().End);
+
+			this.definitions.Add(new Definition(node, definitionScope, identifier, type));
+		}
+
+		public ResetPoint GetResetPoint()
+		{
+			return new ResetPoint(this.listNode);
+		}
+
 		public void Reset(ResetPoint point)
 		{
 			this.listNode = point.Node;
-		}
-
-		public SyntaxNode StartNode(SyntaxType type)
-		{
-			SyntaxNode node = this.CreateNode(type, this.CurrentToken.FullSpan(this.snapshot).Start);
-
-			if (this.stack.Count != 0)
-			{
-				this.stack.Peek().AddChild(node);
-			}
-			else
-			{
-				this.tree.Root = node;
-			}
-
-			this.stack.Push(node);
-
-			return node;
 		}
 
 		private SyntaxNode CreateNode(SyntaxType type, int start)
@@ -241,9 +261,6 @@ namespace Xannden.GLSL.Parsing
 
 				case SyntaxType.ExpressionStatement:
 					return new ExpressionStatementSyntax(this.tree, start);
-
-				case SyntaxType.FunctionStatement:
-					return new FunctionStatementSyntax(this.tree, start);
 
 				case SyntaxType.Condition:
 					return new ConditionSyntax(this.tree, start);
@@ -397,249 +414,16 @@ namespace Xannden.GLSL.Parsing
 
 				case SyntaxType.ExcludedCode:
 					return new ExcludedCodeSyntax(this.tree, start);
+
 				default:
 					return new SyntaxNode(this.tree, type, start);
 			}
 		}
 
-		private SyntaxNode CreateNode(SyntaxType type, TrackingSpan span, bool isMissing = false)
+		private SyntaxToken CreateToken(SyntaxType type, TrackingSpan span, bool isMissing = false)
 		{
 			switch (type)
 			{
-				case SyntaxType.Program:
-					return new ProgramSyntax(this.tree, span);
-
-				case SyntaxType.Declaration:
-					return new DeclarationSyntax(this.tree, span);
-
-				case SyntaxType.PrecisionDeclaration:
-					return new PrecisionDeclarationSyntax(this.tree, span);
-
-				case SyntaxType.DeclarationList:
-					return new DeclarationListSyntax(this.tree, span);
-
-				case SyntaxType.ArraySpecifier:
-					return new ArraySpecifierSyntax(this.tree, span);
-
-				case SyntaxType.Type:
-					return new TypeSyntax(this.tree, span);
-
-				case SyntaxType.TypeNonArray:
-					return new TypeNonArraySyntax(this.tree, span);
-
-				case SyntaxType.TypeName:
-					return new TypeNameSyntax(this.tree, span);
-
-				case SyntaxType.TypeQualifier:
-					return new TypeQualifierSyntax(this.tree, span);
-
-				case SyntaxType.FunctionDefinition:
-					return new FunctionDefinitionSyntax(this.tree, span);
-
-				case SyntaxType.Block:
-					return new BlockSyntax(this.tree, span);
-
-				case SyntaxType.FunctionHeader:
-					return new FunctionHeaderSyntax(this.tree, span);
-
-				case SyntaxType.Parameter:
-					return new ParameterSyntax(this.tree, span);
-
-				case SyntaxType.ReturnType:
-					return new ReturnTypeSyntax(this.tree, span);
-
-				case SyntaxType.Statement:
-					return new StatementSyntax(this.tree, span);
-
-				case SyntaxType.SimpleStatement:
-					return new SimpleStatementSyntax(this.tree, span);
-
-				case SyntaxType.SelectionStatement:
-					return new SelectionStatementSyntax(this.tree, span);
-
-				case SyntaxType.ElseStatement:
-					return new ElseStatementSyntax(this.tree, span);
-
-				case SyntaxType.SwitchStatement:
-					return new SwitchStatementSyntax(this.tree, span);
-
-				case SyntaxType.CaseLabel:
-					return new CaseLabelSyntax(this.tree, span);
-
-				case SyntaxType.IterationStatement:
-					return new IterationStatementSyntax(this.tree, span);
-
-				case SyntaxType.WhileStatement:
-					return new WhileStatementSyntax(this.tree, span);
-
-				case SyntaxType.DoWhileStatement:
-					return new DoWhileStatementSyntax(this.tree, span);
-
-				case SyntaxType.ForStatement:
-					return new ForStatementSyntax(this.tree, span);
-
-				case SyntaxType.JumpStatement:
-					return new JumpStatementSyntax(this.tree, span);
-
-				case SyntaxType.ExpressionStatement:
-					return new ExpressionStatementSyntax(this.tree, span);
-
-				case SyntaxType.FunctionStatement:
-					return new FunctionStatementSyntax(this.tree, span);
-
-				case SyntaxType.Condition:
-					return new ConditionSyntax(this.tree, span);
-
-				case SyntaxType.StructDefinition:
-					return new StructDefinitionSyntax(this.tree, span);
-
-				case SyntaxType.StructSpecifier:
-					return new StructSpecifierSyntax(this.tree, span);
-
-				case SyntaxType.StructDeclaration:
-					return new StructDeclarationSyntax(this.tree, span);
-
-				case SyntaxType.StructDeclarator:
-					return new StructDeclaratorSyntax(this.tree, span);
-
-				case SyntaxType.Expression:
-					return new ExpressionSyntax(this.tree, span);
-
-				case SyntaxType.ConstantExpression:
-					return new ConstantExpressionSyntax(this.tree, span);
-
-				case SyntaxType.AssignmentExpression:
-					return new AssignmentExpressionSyntax(this.tree, span);
-
-				case SyntaxType.AssignmentOperator:
-					return new AssignmentOperatorSyntax(this.tree, span);
-
-				case SyntaxType.ConditionalExpression:
-					return new ConditionalExpressionSyntax(this.tree, span);
-
-				case SyntaxType.LogicalOrExpression:
-					return new LogicalOrExpressionSyntax(this.tree, span);
-
-				case SyntaxType.LogicalXorExpression:
-					return new LogicalXorExpressionSyntax(this.tree, span);
-
-				case SyntaxType.LogicalAndExpression:
-					return new LogicalAndExpressionSyntax(this.tree, span);
-
-				case SyntaxType.InclusiveOrExpression:
-					return new InclusiveOrExpressionSyntax(this.tree, span);
-
-				case SyntaxType.ExclusiveOrExpression:
-					return new ExclusiveOrExpressionSyntax(this.tree, span);
-
-				case SyntaxType.AndExpression:
-					return new AndExpressionSyntax(this.tree, span);
-
-				case SyntaxType.EqualityExpression:
-					return new EqualityExpressionSyntax(this.tree, span);
-
-				case SyntaxType.RelationalExpression:
-					return new RelationalExpressionSyntax(this.tree, span);
-
-				case SyntaxType.ShiftExpression:
-					return new ShiftExpressionSyntax(this.tree, span);
-
-				case SyntaxType.AdditiveExpression:
-					return new AdditiveExpressionSyntax(this.tree, span);
-
-				case SyntaxType.MultiplicativeExpression:
-					return new MultiplicativeExpressionSyntax(this.tree, span);
-
-				case SyntaxType.UnaryExpression:
-					return new UnaryExpressionSyntax(this.tree, span);
-
-				case SyntaxType.PostfixExpression:
-					return new PostfixExpressionSyntax(this.tree, span);
-
-				case SyntaxType.PostfixExpressionStart:
-					return new PostfixExpressionStartSyntax(this.tree, span);
-
-				case SyntaxType.PostfixExpressionContinuation:
-					return new PostfixExpressionContinuationSyntax(this.tree, span);
-
-				case SyntaxType.PostfixArrayAccess:
-					return new PostfixArrayAccessSyntax(this.tree, span);
-
-				case SyntaxType.PrimaryExpression:
-					return new PrimaryExpressionSyntax(this.tree, span);
-
-				case SyntaxType.FunctionCall:
-					return new FunctionCallSyntax(this.tree, span);
-
-				case SyntaxType.Constructor:
-					return new ConstructorSyntax(this.tree, span);
-
-				case SyntaxType.FieldSelection:
-					return new FieldSelectionSyntax(this.tree, span);
-
-				case SyntaxType.InitDeclaratorList:
-					return new InitDeclaratorListSyntax(this.tree, span);
-
-				case SyntaxType.InitPart:
-					return new InitPartSyntax(this.tree, span);
-
-				case SyntaxType.Initializer:
-					return new InitializerSyntax(this.tree, span);
-
-				case SyntaxType.InitList:
-					return new InitListSyntax(this.tree, span);
-
-				case SyntaxType.Preprocessor:
-					return new PreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.DefinePreprocessor:
-					return new DefinePreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.UndefinePreprocessor:
-					return new UndefinePreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.IfPreprocessor:
-					return new IfPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.IfDefinedPreprocessor:
-					return new IfDefinedPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.IfNotDefinedPreprocessor:
-					return new IfNotDefinedPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.ElsePreprocessor:
-					return new ElsePreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.ElseIfPreprocessor:
-					return new ElseIfPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.EndIfPreprocessor:
-					return new EndIfPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.ErrorPreprocessor:
-					return new ErrorPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.PragmaPreprocessor:
-					return new PragmaPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.ExtensionPreprocessor:
-					return new ExtensionPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.VersionPreprocessor:
-					return new VersionPreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.LinePreprocessor:
-					return new LinePreprocessorSyntax(this.tree, span);
-
-				case SyntaxType.TokenString:
-					return new TokenStringSyntax(this.tree, span);
-
-				case SyntaxType.MacroArguments:
-					return new MacroArgumentsSyntax(this.tree, span);
-
-				case SyntaxType.ExcludedCode:
-					return new ExcludedCodeSyntax(this.tree, span);
-
 				case SyntaxType.IdentifierToken:
 					if (isMissing)
 					{
@@ -649,19 +433,12 @@ namespace Xannden.GLSL.Parsing
 					return new IdentifierSyntax(this.tree, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
 
 				default:
-					if ((type >= SyntaxType.LeftParenToken && type <= SyntaxType.PreprocessorToken) || type == SyntaxType.EOF)
+					if (isMissing)
 					{
-						if (isMissing)
-						{
-							return new SyntaxToken(this.tree, type, span, string.Empty, null, null, this.snapshot, isMissing);
-						}
+						return new SyntaxToken(this.tree, type, span, string.Empty, null, null, this.snapshot, isMissing);
+					}
 
-						return new SyntaxToken(this.tree, type, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot);
-					}
-					else
-					{
-						return new SyntaxNode(this.tree, type, this.CurrentToken.FullSpan(this.snapshot).Start);
-					}
+					return new SyntaxToken(this.tree, type, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot);
 			}
 		}
 

@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Xannden.GLSL.Syntax.Tree.Syntax;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 
 namespace Xannden.GLSL.Syntax.Tree
 {
-	public class SyntaxTree
+	public sealed class SyntaxTree
 	{
-		public IReadOnlyList<DefinePreprocessorSyntax> MacroDefinitions { get; private set; }
+		internal SyntaxTree()
+		{
+		}
+
+		public IReadOnlyList<Definition> Definitions { get; internal set; }
 
 		public SyntaxNode Root { get; internal set; }
 
@@ -53,11 +57,6 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 
 			return node;
-		}
-
-		internal void SetMacroDefinitions(List<DefinePreprocessorSyntax> macros)
-		{
-			this.MacroDefinitions = macros;
 		}
 
 		internal void WriteToXML(string file, Snapshot snapshot)

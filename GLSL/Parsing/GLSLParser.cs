@@ -3,6 +3,7 @@ using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -10,11 +11,10 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Parsing
 {
-	public class GLSLParser
+	public sealed class GLSLParser
 	{
 		private TreeBuilder builder;
 		private ErrorHandler errorHandler;
-		private List<DefinePreprocessorSyntax> macroDefinitions;
 		private List<IfPreprocessor> preprocessors;
 		private Stack<IfPreprocessor> preprocessorStack;
 		private GLSLSettings settings;
@@ -34,15 +34,16 @@ namespace Xannden.GLSL.Parsing
 			this.builder = new TreeBuilder(snapshot, tokens, this.errorHandler);
 			this.preprocessors = new List<IfPreprocessor>();
 			this.preprocessorStack = new Stack<IfPreprocessor>();
-			this.macroDefinitions = new List<DefinePreprocessorSyntax>();
 
 			this.ParseProgram();
 
-			return this.builder.GetTree(this.macroDefinitions);
+			return this.builder.GetTree();
 		}
 
 		private void ParseProgram()
 		{
+			this.builder.StartScope();
+
 			this.builder.StartNode(SyntaxType.Program);
 
 			while (this.builder.CurrentToken.SyntaxType != SyntaxType.EOF)
@@ -64,11 +65,13 @@ namespace Xannden.GLSL.Parsing
 			this.RequireToken(SyntaxType.EOF);
 
 			this.builder.EndNode();
+
+			this.builder.EndScope();
 		}
 
 		#region Type
 
-		private void ParseArraySpecifier()
+		private ArraySpecifierSyntax ParseArraySpecifier()
 		{
 			while (this.IsPreprocessor())
 			{
@@ -86,28 +89,28 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightBracketToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ArraySpecifierSyntax;
 		}
 
-		private void ParseInterpolationQualifier()
+		private SyntaxNode ParseInterpolationQualifier()
 		{
 			this.builder.StartNode(SyntaxType.InterpolationQualifier);
 
 			this.RequireToken(SyntaxType.SmoothKeyword, SyntaxType.FlatKeyword, SyntaxType.NoPerspectiveKeyword);
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParseInvariantQualifier()
+		private SyntaxNode ParseInvariantQualifier()
 		{
 			this.builder.StartNode(SyntaxType.InvariantQualifier);
 
 			this.RequireToken(SyntaxType.InvariantKeyword);
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParseLayoutQualifier()
+		private SyntaxNode ParseLayoutQualifier()
 		{
 			this.builder.StartNode(SyntaxType.LayoutQualifier);
 
@@ -124,10 +127,10 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightParenToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParseLayoutQualifierID()
+		private SyntaxNode ParseLayoutQualifierID()
 		{
 			this.builder.StartNode(SyntaxType.LayoutQualifierId);
 
@@ -143,28 +146,28 @@ namespace Xannden.GLSL.Parsing
 				this.RequireToken(SyntaxType.SharedKeyword);
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParsePreciseQualifier()
+		private SyntaxNode ParsePreciseQualifier()
 		{
 			this.builder.StartNode(SyntaxType.PreciseQualifier);
 
 			this.RequireToken(SyntaxType.PreciseKeyword);
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParsePrecisionQualifier()
+		private SyntaxNode ParsePrecisionQualifier()
 		{
 			this.builder.StartNode(SyntaxType.PrecisionQualifier);
 
 			this.RequireToken(SyntaxType.LowPrecisionKeyword, SyntaxType.MediumPrecisionKeyword, SyntaxType.HighPrecisionKeyword);
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParseStorageQualifier()
+		private SyntaxNode ParseStorageQualifier()
 		{
 			this.builder.StartNode(SyntaxType.StorageQualifier);
 
@@ -187,10 +190,10 @@ namespace Xannden.GLSL.Parsing
 				this.RequireToken(SyntaxType.ConstKeyword, SyntaxType.InOutKeyword, SyntaxType.InKeyword, SyntaxType.OutKeyword, SyntaxType.CentroidKeyword, SyntaxType.PatchKeyword, SyntaxType.SampleKeyword, SyntaxType.UniformKeyword, SyntaxType.BufferKeyword, SyntaxType.SharedKeyword, SyntaxType.CoherentKeyword, SyntaxType.VolatileKeyword, SyntaxType.RestrictKeyword, SyntaxType.ReadOnlyKeyword, SyntaxType.WriteOnlyKeyword);
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode();
 		}
 
-		private void ParseType()
+		private TypeSyntax ParseType()
 		{
 			this.builder.StartNode(SyntaxType.Type);
 
@@ -201,19 +204,19 @@ namespace Xannden.GLSL.Parsing
 				this.ParseArraySpecifier();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as TypeSyntax;
 		}
 
-		private void ParseTypeName()
+		private TypeNameSyntax ParseTypeName()
 		{
 			this.builder.StartNode(SyntaxType.TypeName);
 
 			this.RequireToken(SyntaxType.IdentifierToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as TypeNameSyntax;
 		}
 
-		private void ParseTypeNonArray()
+		private TypeNonArraySyntax ParseTypeNonArray()
 		{
 			this.builder.StartNode(SyntaxType.TypeNonArray);
 
@@ -230,10 +233,10 @@ namespace Xannden.GLSL.Parsing
 				this.RequireToken(SyntaxType.IntKeyword, SyntaxType.UIntKeyword, SyntaxType.FloatKeyword, SyntaxType.DoubleKeyword, SyntaxType.Vec2Keyword, SyntaxType.Vec3Keyword, SyntaxType.Vec4Keyword, SyntaxType.UVec2Keyword, SyntaxType.UVec3Keyword, SyntaxType.UVec4Keyword, SyntaxType.IVec2Keyword, SyntaxType.IVec3Keyword, SyntaxType.IVec4Keyword, SyntaxType.DVec2Keyword, SyntaxType.DVec3Keyword, SyntaxType.DVec4Keyword, SyntaxType.BVec2Keyword, SyntaxType.BVec3Keyword, SyntaxType.BVec4Keyword, SyntaxType.Mat2Keyword, SyntaxType.Mat3Keyword, SyntaxType.Mat4Keyword, SyntaxType.Mat2X2Keyword, SyntaxType.Mat2X3Keyword, SyntaxType.Mat2X4Keyword, SyntaxType.Mat3X2Keyword, SyntaxType.Mat3X3Keyword, SyntaxType.Mat3X4Keyword, SyntaxType.Mat4X2Keyword, SyntaxType.Mat4X3Keyword, SyntaxType.Mat4X4Keyword, SyntaxType.DMat2Keyword, SyntaxType.DMat3Keyword, SyntaxType.DMat4Keyword, SyntaxType.DMat2X2Keyword, SyntaxType.DMat2X3Keyword, SyntaxType.DMat2X4Keyword, SyntaxType.DMat3X2Keyword, SyntaxType.DMat3X3Keyword, SyntaxType.DMat3X4Keyword, SyntaxType.DMat4X2Keyword, SyntaxType.DMat4X3Keyword, SyntaxType.DMat4X4Keyword, SyntaxType.Sampler1DKeyword, SyntaxType.Sampler2DKeyword, SyntaxType.Sampler3DKeyword, SyntaxType.SamplerCubeKeyword, SyntaxType.Sampler1DShadowKeyword, SyntaxType.Sampler2DShadowKeyword, SyntaxType.SamplerCubeShadowKeyword, SyntaxType.Sampler1DArrayKeyword, SyntaxType.Sampler2DArrayKeyword, SyntaxType.Sampler1DArrayShadowKeyword, SyntaxType.Sampler2DArrayShadowKeyword, SyntaxType.ISampler1DKeyword, SyntaxType.ISampler2DKeyword, SyntaxType.ISampler3DKeyword, SyntaxType.ISamplerCubeKeyword, SyntaxType.ISampler1DArrayKeyword, SyntaxType.ISampler2DArrayKeyword, SyntaxType.USampler1DKeyword, SyntaxType.USampler2DKeyword, SyntaxType.USampler3DKeyword, SyntaxType.USamplerCubeKeyword, SyntaxType.USampler1DArrayKeyword, SyntaxType.USampler2DArrayKeyword, SyntaxType.Sampler2DRectKeyword, SyntaxType.Sampler2DRectShadowKeyword, SyntaxType.ISampler2DRectKeyword, SyntaxType.USampler2DRectKeyword, SyntaxType.SamplerBufferKeyword, SyntaxType.ISamplerBufferKeyword, SyntaxType.USamplerBufferKeyword, SyntaxType.SamplerCubeArrayKeyword, SyntaxType.SamplerCubeArrayShadowKeyword, SyntaxType.ISamplerCubeArrayKeyword, SyntaxType.USamplerCubeArrayKeyword, SyntaxType.Sampler2DMSKeyword, SyntaxType.ISampler2DMSKeyword, SyntaxType.USampler2DMSKeyword, SyntaxType.Sampler2DMSArrayKeyword, SyntaxType.ISampler2DMSArrayKeyword, SyntaxType.USampler2DMSArrayKeyword, SyntaxType.Image1DKeyword, SyntaxType.Image2DKeyword, SyntaxType.Image3DKeyword, SyntaxType.IImage1DKeyword, SyntaxType.IImage2DKeyword, SyntaxType.IImage3DKeyword, SyntaxType.UImage1DKeyword, SyntaxType.UImage2DKeyword, SyntaxType.UImage3DKeyword, SyntaxType.Image2DRectKeyword, SyntaxType.IImage2DRectKeyword, SyntaxType.UImage2DRectKeyword, SyntaxType.ImageCubeKeyword, SyntaxType.IImageCubeKeyword, SyntaxType.UImageCubeKeyword, SyntaxType.ImageBufferKeyword, SyntaxType.IImageBufferKeyword, SyntaxType.UImageBufferKeyword, SyntaxType.Image1DArrayKeyword, SyntaxType.IImage1DArrayKeyword, SyntaxType.UImage1DArrayKeyword, SyntaxType.Image2DArrayKeyword, SyntaxType.IImage2DArrayKeyword, SyntaxType.UImage2DArrayKeyword, SyntaxType.ImageCubeArrayKeyword, SyntaxType.IImageCubeArrayKeyword, SyntaxType.UImageCubeArrayKeyword, SyntaxType.Image2DMSKeyword, SyntaxType.IImage2DMSKeyword, SyntaxType.UImage2DMSKeyword, SyntaxType.Image2DMSArrayKeyword, SyntaxType.IImage2DMSArrayKeyword, SyntaxType.UImage2DMSArrayKeyword);
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as TypeNonArraySyntax;
 		}
 
-		private void ParseTypeQualifier()
+		private TypeQualifierSyntax ParseTypeQualifier()
 		{
 			this.builder.StartNode(SyntaxType.TypeQualifier);
 
@@ -264,14 +267,14 @@ namespace Xannden.GLSL.Parsing
 				this.ParseStorageQualifier();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as TypeQualifierSyntax;
 		}
 
 		#endregion Type
 
 		#region Function
 
-		private void ParseBlock()
+		private BlockSyntax ParseBlock()
 		{
 			this.builder.StartNode(SyntaxType.Block);
 
@@ -289,10 +292,10 @@ namespace Xannden.GLSL.Parsing
 				this.RequireToken(SyntaxType.SemicolonToken);
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as BlockSyntax;
 		}
 
-		private void ParseFunctionDefinition()
+		private FunctionDefinitionSyntax ParseFunctionDefinition()
 		{
 			this.builder.StartNode(SyntaxType.FunctionDefinition);
 
@@ -300,12 +303,14 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseBlock();
 
-			this.builder.EndNode();
+			this.builder.EndScope();
+
+			return this.builder.EndNode() as FunctionDefinitionSyntax;
 		}
 
-		private void ParseFunctionHeader()
+		private FunctionHeaderSyntax ParseFunctionHeader()
 		{
-			this.builder.StartNode(SyntaxType.FunctionHeader);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.FunctionHeader);
 
 			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
@@ -314,7 +319,11 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseReturnType();
 
-			this.RequireToken(SyntaxType.IdentifierToken);
+			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
+
+			this.builder.AddDefinition(node, identifier, DefinitionType.Function);
+
+			this.builder.StartScope();
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
@@ -334,12 +343,12 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightParenToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as FunctionHeaderSyntax;
 		}
 
-		private void ParseParameter()
+		private ParameterSyntax ParseParameter()
 		{
-			this.builder.StartNode(SyntaxType.Parameter);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.Parameter);
 
 			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
@@ -348,13 +357,11 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseType();
 
-			if (this.IsType(this.builder.CurrentToken.SyntaxType))
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
-				this.ParseType();
-			}
-			else
-			{
-				this.RequireToken(SyntaxType.IdentifierToken);
+				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
+
+				this.builder.AddDefinition(node, identifier, DefinitionType.Parameter);
 
 				while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 				{
@@ -362,10 +369,10 @@ namespace Xannden.GLSL.Parsing
 				}
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ParameterSyntax;
 		}
 
-		private void ParseReturnType()
+		private ReturnTypeSyntax ParseReturnType()
 		{
 			this.builder.StartNode(SyntaxType.ReturnType);
 
@@ -374,14 +381,14 @@ namespace Xannden.GLSL.Parsing
 				this.ParseType();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ReturnTypeSyntax;
 		}
 
 		#endregion Function
 
 		#region Statement
 
-		private void ParseCaseLabel()
+		private CaseLabelSyntax ParseCaseLabel()
 		{
 			this.builder.StartNode(SyntaxType.CaseLabel);
 
@@ -396,12 +403,12 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.ColonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as CaseLabelSyntax;
 		}
 
-		private void ParseCondition()
+		private ConditionSyntax ParseCondition()
 		{
-			this.builder.StartNode(SyntaxType.Condition);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.Condition);
 
 			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))
 			{
@@ -416,25 +423,31 @@ namespace Xannden.GLSL.Parsing
 
 				this.ParseType();
 
-				this.RequireToken(SyntaxType.IdentifierToken);
+				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
+
+				this.builder.AddDefinition(node, identifier, DefinitionType.LocalVariable);
 
 				this.RequireToken(SyntaxType.EqualToken);
 
 				this.ParseInitializer();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ConditionSyntax;
 		}
 
-		private void ParseDoWhileStatement()
+		private DoWhileStatementSyntax ParseDoWhileStatement()
 		{
 			this.builder.StartNode(SyntaxType.WhileStatement);
 
+			this.builder.StartScope();
+
 			this.RequireToken(SyntaxType.DoKeyword);
 
-			this.ParseStatement();
+			this.ParseStatementNoNewScope();
 
 			this.RequireToken(SyntaxType.WhileKeyword);
+
+			this.builder.EndScope();
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
@@ -444,10 +457,10 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.SemicolonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as DoWhileStatementSyntax;
 		}
 
-		private void ParseElseStatement()
+		private ElseStatementSyntax ParseElseStatement()
 		{
 			this.builder.StartNode(SyntaxType.ElseStatement);
 
@@ -455,10 +468,10 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseStatement();
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ElseStatementSyntax;
 		}
 
-		private void ParseExpressionStatement()
+		private ExpressionStatementSyntax ParseExpressionStatement()
 		{
 			this.builder.StartNode(SyntaxType.ExpressionStatement);
 
@@ -469,10 +482,10 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.SemicolonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as ExpressionStatementSyntax;
 		}
 
-		private void ParseForStatement()
+		private ForStatementSyntax ParseForStatement()
 		{
 			this.builder.StartNode(SyntaxType.ForStatement);
 
@@ -480,13 +493,9 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.LeftParenToken);
 
-			if (this.IsFunctionHeader())
-			{
-				this.ParseFunctionHeader();
+			this.builder.StartScope();
 
-				this.RequireToken(SyntaxType.SemicolonToken);
-			}
-			else if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
+			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType) || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
 			{
 				this.ParseExpressionStatement();
 			}
@@ -509,23 +518,14 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightParenToken);
 
-			this.ParseStatement();
+			this.ParseStatementNoNewScope();
 
-			this.builder.EndNode();
+			this.builder.EndScope();
+
+			return this.builder.EndNode() as ForStatementSyntax;
 		}
 
-		private void ParseFunctionStatement()
-		{
-			this.builder.StartNode(SyntaxType.FunctionStatement);
-
-			this.ParseFunctionHeader();
-
-			this.RequireToken(SyntaxType.SemicolonToken);
-
-			this.builder.EndNode();
-		}
-
-		private void ParseIterationStatement()
+		private IterationStatementSyntax ParseIterationStatement()
 		{
 			this.builder.StartNode(SyntaxType.IterationStatement);
 			switch (this.builder.CurrentToken.SyntaxType)
@@ -543,10 +543,10 @@ namespace Xannden.GLSL.Parsing
 					break;
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as IterationStatementSyntax;
 		}
 
-		private void ParseJumpStatement()
+		private JumpStatementSyntax ParseJumpStatement()
 		{
 			this.builder.StartNode(SyntaxType.JumpStatement);
 
@@ -562,10 +562,10 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.SemicolonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as JumpStatementSyntax;
 		}
 
-		private void ParseSelectionStatement()
+		private SelectionStatementSyntax ParseSelectionStatement()
 		{
 			this.builder.StartNode(SyntaxType.SelectionStatement);
 
@@ -584,10 +584,10 @@ namespace Xannden.GLSL.Parsing
 				this.ParseElseStatement();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as SelectionStatementSyntax;
 		}
 
-		private void ParseSimpleStatement()
+		private SimpleStatementSyntax ParseSimpleStatement()
 		{
 			this.builder.StartNode(SyntaxType.SimpleStatement);
 
@@ -617,10 +617,6 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseDeclaration();
 			}
-			else if (this.IsFunctionHeader())
-			{
-				this.ParseFunctionStatement();
-			}
 			else if (this.IsDeclaration())
 			{
 				this.ParseDeclaration();
@@ -635,10 +631,83 @@ namespace Xannden.GLSL.Parsing
 				this.builder.MoveNext();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as SimpleStatementSyntax;
 		}
 
-		private void ParseStatement()
+		private StatementSyntax ParseStatement()
+		{
+			this.builder.StartScope();
+			this.builder.StartNode(SyntaxType.Statement);
+
+			if (this.AcceptToken(SyntaxType.LeftBraceToken))
+			{
+				while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
+				{
+					this.ParseSimpleStatement();
+				}
+
+				this.RequireToken(SyntaxType.RightBraceToken);
+			}
+			else
+			{
+				this.ParseSimpleStatement();
+			}
+
+			this.builder.EndScope();
+
+			return this.builder.EndNode() as StatementSyntax;
+		}
+
+		private SwitchStatementSyntax ParseSwitchStatement()
+		{
+			this.builder.StartNode(SyntaxType.SwitchStatement);
+
+			this.RequireToken(SyntaxType.SwitchKeyword);
+
+			this.RequireToken(SyntaxType.LeftParenToken);
+
+			this.ParseExpression();
+
+			this.RequireToken(SyntaxType.RightParenToken);
+
+			this.builder.StartScope();
+
+			this.RequireToken(SyntaxType.LeftBraceToken);
+
+			while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
+			{
+				this.ParseSimpleStatement();
+			}
+
+			this.RequireToken(SyntaxType.RightBraceToken);
+
+			this.builder.EndScope();
+
+			return this.builder.EndNode() as SwitchStatementSyntax;
+		}
+
+		private WhileStatementSyntax ParseWhileStatement()
+		{
+			this.builder.StartNode(SyntaxType.WhileStatement);
+
+			this.RequireToken(SyntaxType.WhileKeyword);
+
+			this.RequireToken(SyntaxType.LeftParenToken);
+
+			this.builder.StartScope();
+
+			this.ParseCondition();
+
+			this.RequireToken(SyntaxType.RightParenToken);
+
+			this.ParseStatementNoNewScope();
+
+			this.builder.EndScope();
+
+			return this.builder.EndNode() as WhileStatementSyntax;
+		}
+
+		private StatementSyntax ParseStatementNoNewScope()
 		{
 			this.builder.StartNode(SyntaxType.Statement);
 
@@ -656,55 +725,14 @@ namespace Xannden.GLSL.Parsing
 				this.ParseSimpleStatement();
 			}
 
-			this.builder.EndNode();
-		}
-
-		private void ParseSwitchStatement()
-		{
-			this.builder.StartNode(SyntaxType.SwitchStatement);
-
-			this.RequireToken(SyntaxType.SwitchKeyword);
-
-			this.RequireToken(SyntaxType.LeftParenToken);
-
-			this.ParseExpression();
-
-			this.RequireToken(SyntaxType.RightParenToken);
-
-			this.RequireToken(SyntaxType.LeftBraceToken);
-
-			while (this.IsSimpleStatement(this.builder.CurrentToken.SyntaxType))
-			{
-				this.ParseSimpleStatement();
-			}
-
-			this.RequireToken(SyntaxType.RightBraceToken);
-
-			this.builder.EndNode();
-		}
-
-		private void ParseWhileStatement()
-		{
-			this.builder.StartNode(SyntaxType.WhileStatement);
-
-			this.RequireToken(SyntaxType.WhileKeyword);
-
-			this.RequireToken(SyntaxType.LeftParenToken);
-
-			this.ParseCondition();
-
-			this.RequireToken(SyntaxType.RightParenToken);
-
-			this.ParseStatement();
-
-			this.builder.EndNode();
+			return this.builder.EndNode() as StatementSyntax;
 		}
 
 		#endregion Statement
 
 		#region Struct
 
-		private void ParseStructDeclaration()
+		private StructDeclarationSyntax ParseStructDeclaration()
 		{
 			this.builder.StartNode(SyntaxType.StructDeclaration);
 
@@ -715,19 +743,20 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseType();
 
-			this.ParseStructDeclarator();
-
-			while (this.AcceptToken(SyntaxType.CommaToken))
+			do
 			{
-				this.ParseStructDeclarator();
+				StructDeclaratorSyntax declarator = this.ParseStructDeclarator();
+
+				this.builder.AddDefinition(declarator, declarator.Identifier, DefinitionType.Field);
 			}
+			while (this.AcceptToken(SyntaxType.CommaToken));
 
 			this.RequireToken(SyntaxType.SemicolonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as StructDeclarationSyntax;
 		}
 
-		private void ParseStructDeclarator()
+		private StructDeclaratorSyntax ParseStructDeclarator()
 		{
 			this.builder.StartNode(SyntaxType.StructDeclarator);
 
@@ -738,16 +767,18 @@ namespace Xannden.GLSL.Parsing
 				this.ParseArraySpecifier();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as StructDeclaratorSyntax;
 		}
 
-		private void ParseStructDefinition()
+		private StructDefinitionSyntax ParseStructDefinition()
 		{
-			this.builder.StartNode(SyntaxType.StructDefinition);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.StructDefinition);
 
 			this.ParseTypeQualifier();
 
-			this.ParseTypeName();
+			TypeNameSyntax typeName = this.ParseTypeName();
+
+			this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
 
 			this.RequireToken(SyntaxType.LeftBraceToken);
 
@@ -761,15 +792,17 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
-				this.ParseStructDeclarator();
+				StructDeclaratorSyntax declarator = this.ParseStructDeclarator();
+
+				this.builder.AddDefinition(node, declarator.Identifier, this.GetVariableType(declarator));
 			}
 
 			this.RequireToken(SyntaxType.SemicolonToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as StructDefinitionSyntax;
 		}
 
-		private void ParseStructSpecifier()
+		private StructSpecifierSyntax ParseStructSpecifier()
 		{
 			this.builder.StartNode(SyntaxType.StructSpecifier);
 
@@ -777,7 +810,9 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
-				this.ParseTypeName();
+				TypeNameSyntax typeName = this.ParseTypeName();
+
+				this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
 			}
 
 			this.RequireToken(SyntaxType.LeftBraceToken);
@@ -790,7 +825,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightBraceToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as StructSpecifierSyntax;
 		}
 
 		#endregion Struct
@@ -1247,7 +1282,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseInitDeclaratorList()
 		{
-			this.builder.StartNode(SyntaxType.InitDeclaratorList);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.InitDeclaratorList);
 
 			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
@@ -1258,12 +1293,11 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 			{
-				this.ParseInitPart();
-
-				while (this.AcceptToken(SyntaxType.CommaToken))
+				do
 				{
 					this.ParseInitPart();
 				}
+				while (this.AcceptToken(SyntaxType.CommaToken));
 			}
 
 			this.RequireToken(SyntaxType.SemicolonToken);
@@ -1312,11 +1346,13 @@ namespace Xannden.GLSL.Parsing
 			this.builder.EndNode();
 		}
 
-		private void ParseInitPart()
+		private InitPartSyntax ParseInitPart()
 		{
-			this.builder.StartNode(SyntaxType.InitPart);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.InitPart);
 
-			this.RequireToken(SyntaxType.IdentifierToken);
+			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
+
+			this.builder.AddDefinition(node, identifier, this.GetVariableType(node));
 
 			while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
@@ -1328,7 +1364,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseInitializer();
 			}
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as InitPartSyntax;
 		}
 
 		private void ParsePrecisionDeclaration()
@@ -1352,15 +1388,17 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseDefinePreprocessor()
 		{
-			this.builder.StartNode(SyntaxType.DefinePreprocessor);
+			SyntaxNode node = this.builder.StartNode(SyntaxType.DefinePreprocessor);
 
 			int line = this.builder.CurrentToken.Line.LineNumber;
 
 			this.PreprocessorRequireToken(SyntaxType.DefinePreprocessorKeyword);
 
-			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
+			IdentifierSyntax identifier = this.PreprocessorRequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			if (this.AcceptToken(SyntaxType.LeftParenToken, true))
+			this.builder.AddDefinition(node, identifier, DefinitionType.Macro);
+
+			if (this.AcceptTokenPreprocessor(SyntaxType.LeftParenToken))
 			{
 				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
 				{
@@ -1376,9 +1414,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseTokenString(line);
 			}
 
-			DefinePreprocessorSyntax node = this.builder.EndNode() as DefinePreprocessorSyntax;
-
-			this.macroDefinitions.Add(node);
+			this.builder.EndNode();
 		}
 
 		private void ParseElseIfPreprocessor()
@@ -1419,7 +1455,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExcludedCode();
 			}
 
-			this.AcceptToken(SyntaxType.EndIfPreprocessorKeyword, true);
+			this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword);
 
 			ElsePreprocessorSyntax node = this.builder.EndNode() as ElsePreprocessorSyntax;
 
@@ -1473,7 +1509,7 @@ namespace Xannden.GLSL.Parsing
 					depth--;
 				}
 
-				this.AcceptToken(SyntaxType.Any, true);
+				this.AcceptTokenPreprocessor(SyntaxType.Any);
 			}
 
 			this.builder.EndNode();
@@ -1509,7 +1545,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExcludedCode();
 			}
 
-			if (this.AcceptToken(SyntaxType.EndIfPreprocessorKeyword, true))
+			if (this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword))
 			{
 				if (this.preprocessorStack.Count > 0)
 				{
@@ -1544,7 +1580,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExcludedCode();
 			}
 
-			this.AcceptToken(SyntaxType.EndIfPreprocessorKeyword, true);
+			this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword);
 
 			IfNotDefinedPreprocessorSyntax node = this.builder.EndNode() as IfNotDefinedPreprocessorSyntax;
 
@@ -1575,7 +1611,7 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExcludedCode();
 			}
 
-			this.AcceptToken(SyntaxType.EndIfPreprocessorKeyword, true);
+			this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword);
 
 			IfPreprocessorSyntax node = this.builder.EndNode() as IfPreprocessorSyntax;
 
@@ -1597,7 +1633,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.PreprocessorRequireToken(SyntaxType.IntConstToken);
 
-			this.AcceptToken(SyntaxType.IntConstToken, true);
+			this.AcceptTokenPreprocessor(SyntaxType.IntConstToken);
 
 			this.builder.EndNode();
 		}
@@ -1608,7 +1644,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 
-			while (this.AcceptToken(SyntaxType.CommaToken, true))
+			while (this.AcceptTokenPreprocessor(SyntaxType.CommaToken))
 			{
 				this.PreprocessorRequireToken(SyntaxType.IdentifierToken);
 			}
@@ -1701,7 +1737,7 @@ namespace Xannden.GLSL.Parsing
 
 			while (line == this.builder.CurrentToken.Line.LineNumber)
 			{
-				this.AcceptToken(SyntaxType.Any, true);
+				this.AcceptTokenPreprocessor(SyntaxType.Any);
 			}
 
 			this.builder.EndNode();
@@ -1726,7 +1762,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.PreprocessorRequireToken(SyntaxType.IntConstToken);
 
-			this.AcceptToken(SyntaxType.IdentifierToken, true);
+			this.AcceptTokenPreprocessor(SyntaxType.IdentifierToken);
 
 			this.builder.EndNode();
 		}
@@ -1840,24 +1876,11 @@ namespace Xannden.GLSL.Parsing
 		{
 			switch (type)
 			{
-				case SyntaxType.PlusPlusToken:
-				case SyntaxType.MinusMinusToken:
-				case SyntaxType.PlusToken:
-				case SyntaxType.MinusToken:
-				case SyntaxType.ExclamationToken:
-				case SyntaxType.TildeToken:
-				case SyntaxType.IdentifierToken:
-				case SyntaxType.IntConstToken:
-				case SyntaxType.UIntConstToken:
-				case SyntaxType.FloatConstToken:
-				case SyntaxType.DoubleConstToken:
-				case SyntaxType.BoolConstToken:
-				case SyntaxType.LeftParenToken:
 				case SyntaxType.SemicolonToken:
 					return true;
 
 				default:
-					return this.IsType(type);
+					return this.IsUnaryExpression(type);
 			}
 		}
 
@@ -2247,13 +2270,80 @@ namespace Xannden.GLSL.Parsing
 			}
 		}
 
+		private DefinitionType GetVariableType(SyntaxNode node)
+		{
+			foreach (SyntaxNode ancestor in node.Ancestors)
+			{
+				if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
+				{
+					return DefinitionType.LocalVariable;
+				}
+			}
+
+			return DefinitionType.GlobalVariable;
+		}
+
 		#endregion Helpers
 
 		#region Token Helpers
 
-		private bool AcceptToken(SyntaxType type, bool skipPreprocessor = false)
+		private bool AcceptTokenPreprocessor(SyntaxType type)
 		{
-			while (!skipPreprocessor && this.IsPreprocessor())
+			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			{
+				this.builder.AddToken();
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private bool AcceptTokenPreprocessor(SyntaxType type, out SyntaxToken token)
+		{
+			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			{
+				token = this.builder.AddToken();
+
+				return true;
+			}
+
+			token = null;
+
+			return false;
+		}
+
+		private bool AcceptToken(SyntaxType type, out SyntaxToken token)
+		{
+			while (this.IsPreprocessor())
+			{
+				this.ParsePreprocessor();
+			}
+
+			bool result = false;
+
+			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			{
+				token = this.builder.AddToken();
+
+				result = true;
+			}
+			else
+			{
+				token = null;
+			}
+
+			while (this.IsPreprocessor())
+			{
+				this.ParsePreprocessor();
+			}
+
+			return result;
+		}
+
+		private bool AcceptToken(SyntaxType type)
+		{
+			while (this.IsPreprocessor())
 			{
 				this.ParsePreprocessor();
 			}
@@ -2266,8 +2356,11 @@ namespace Xannden.GLSL.Parsing
 
 				result = true;
 			}
+			else
+			{
+			}
 
-			while (!skipPreprocessor && this.IsPreprocessor())
+			while (this.IsPreprocessor())
 			{
 				this.ParsePreprocessor();
 			}
@@ -2299,20 +2392,28 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private void PreprocessorRequireToken(SyntaxType type)
+		private SyntaxNode PreprocessorRequireToken(SyntaxType type)
 		{
-			if (!this.AcceptToken(type, true))
+			SyntaxToken result;
+
+			if (!this.AcceptTokenPreprocessor(type, out result))
 			{
 				this.builder.Error(type);
 			}
+
+			return result;
 		}
 
-		private void RequireToken(SyntaxType type)
+		private SyntaxToken RequireToken(SyntaxType type)
 		{
-			if (!this.AcceptToken(type))
+			SyntaxToken token;
+
+			if (!this.AcceptToken(type, out token))
 			{
 				this.builder.Error(type);
 			}
+
+			return token;
 		}
 
 		private void RequireToken(params SyntaxType[] types)

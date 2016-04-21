@@ -88,6 +88,9 @@
     <Compile Include="Settings\GLSLSettings.cs" />
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
+    <Compile Include="Syntax\Semantics\Definition.cs" />
+    <Compile Include="Syntax\Semantics\DefinitionType.cs" />
+    <Compile Include="Syntax\Semantics\Scope.cs" />
     <Compile Include="Syntax\SyntaxType.cs" />
     <Compile Include="Syntax\Tokens\InvalidToken.cs" />
     <Compile Include="Syntax\Tokens\Token.cs" />
@@ -127,7 +130,6 @@
     <Compile Include="Syntax\Tree\Syntax\FunctionCallSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\FunctionDefinitionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\FunctionHeaderSyntax.cs" />
-    <Compile Include="Syntax\Tree\Syntax\FunctionStatementSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\IdentifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\IfDefinedPreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\IfNotDefinedPreprocessorSyntax.cs" />
@@ -179,12 +181,14 @@
     <Compile Include="Syntax\Trivia\SyntaxTrivia.cs" />
     <Compile Include="Syntax\Trivia\SyntaxTriviaList.cs" />
     <Compile Include="Text\Spans\Span.cs" />
+    <Compile Include="Text\Spans\TrackingPoint.cs" />
     <Compile Include="Text\Spans\TrackingSpan.cs" />
     <Compile Include="Text\Sources\Snapshot.cs" />
     <Compile Include="Text\Sources\Source.cs" />
     <Compile Include="Text\Sources\SourceLine.cs" />
     <Compile Include="Lexing\TextNavigator.cs" />
     <Compile Include="Text\Utility\IndentedTextWriter.cs" />
+    <Compile Include="Utility\TextAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -216,9 +220,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
   </ItemGroup>

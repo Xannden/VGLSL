@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Sources;
@@ -61,14 +63,18 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 					return;
 				}
 
-				IdentifierSyntax identifier = this.source.Tree.GetNodeFromPosition(this.source.CurrentSnapshot, point.Value.Position) as IdentifierSyntax;
+				Snapshot snapshot = this.source.CurrentSnapshot;
+
+				IdentifierSyntax identifier = this.source.Tree.GetNodeFromPosition(snapshot, point.Value.Position) as IdentifierSyntax;
 
 				if (identifier == null)
 				{
 					return;
 				}
 
-				if (identifier.IsField() || identifier.IsFunction() || identifier.IsGlobalVariable() || identifier.IsLocalVariable() || identifier.IsMacro() || identifier.IsParameter() || identifier.IsTypeName())
+				Definition definition = this.source.Tree.Definitions.Find(def => def.Scope.GetSpan(snapshot).Contains(identifier.Span.GetSpan(snapshot)) && identifier.Identifier == def.Identifier.Identifier);
+
+				if (definition != null)
 				{
 					this.provider.QuickInfoBroker.TriggerQuickInfo(this.textView, triggerPoint, true);
 				}

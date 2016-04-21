@@ -2,7 +2,7 @@
 
 namespace Xannden.GLSL.Errors
 {
-	public class GLSLError
+	public sealed class GLSLError
 	{
 		internal GLSLError(string message, Span span)
 		{

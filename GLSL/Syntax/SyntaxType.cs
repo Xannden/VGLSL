@@ -1,4 +1,6 @@
-﻿namespace Xannden.GLSL.Syntax
+﻿using Xannden.GLSL.Utility;
+
+namespace Xannden.GLSL.Syntax
 {
 	public enum SyntaxType
 	{
@@ -8,89 +10,234 @@
 		Any,
 
 		// punctuation
+		[Text("(")]
 		LeftParenToken,
 
+		[Text(")")]
 		RightParenToken,
+
+		[Text("[")]
 		LeftBracketToken,
+
+		[Text("]")]
 		RightBracketToken,
+
+		[Text("{")]
 		LeftBraceToken,
+
+		[Text("}")]
 		RightBraceToken,
+
+		[Text(".")]
 		DotToken,
+
+		[Text(",")]
 		CommaToken,
+
+		[Text(":")]
 		ColonToken,
+
+		[Text("=")]
 		EqualToken,
+
+		[Text(";")]
 		SemicolonToken,
+
+		[Text("!")]
 		ExclamationToken,
+
+		[Text("-")]
 		MinusToken,
+
+		[Text("~")]
 		TildeToken,
+
+		[Text("+")]
 		PlusToken,
+
+		[Text("*")]
 		StarToken,
+
+		[Text("/")]
 		SlashToken,
+
+		[Text("%")]
 		PercentToken,
+
+		[Text("<")]
 		LessThenToken,
+
+		[Text(">")]
 		GreaterThenToken,
+
+		[Text("|")]
 		VerticalBarToken,
+
+		[Text("^")]
 		CaretToken,
+
+		[Text("&")]
 		AmpersandToken,
+
+		[Text("?")]
 		QuestionToken,
 
 		// compound punctuation
+		[Text("<<")]
 		LessThenLessThenToken,
 
+		[Text(">>")]
 		GreaterThenGreaterThenToken,
+
+		[Text("++")]
 		PlusPlusToken,
+
+		[Text("--")]
 		MinusMinusToken,
+
+		[Text("<=")]
 		LessThenEqualToken,
+
+		[Text(">=")]
 		GreaterThenEqualToken,
+
+		[Text("==")]
 		EqualEqualToken,
+
+		[Text("!=")]
 		ExclamationEqualToken,
+
+		[Text("&&")]
 		AmpersandAmpersandToken,
+
+		[Text("||")]
 		BarBarToken,
+
+		[Text("^^")]
 		CaretCaretToken,
+
+		[Text("*=")]
 		StarEqualToken,
+
+		[Text("/=")]
 		SlashEqualToken,
+
+		[Text("+=")]
 		PlusEqualToken,
+
+		[Text("%=")]
 		PercentEqualToken,
+
+		[Text("<<=")]
 		LessThenLessThenEqualToken,
+
+		[Text(">>=")]
 		GreaterThenGreaterThenEqualToken,
+
+		[Text("&=")]
 		AmpersandEqualToken,
+
+		[Text("^=")]
 		CaretEqualToken,
+
+		[Text("|=")]
 		BarEqualToken,
+
+		[Text("-=")]
 		MinusEqualToken,
 
 		// keywords
+		[Text("attribute")]
 		AttributeKeyword,
 
+		[Text("const")]
 		ConstKeyword,
+
+		[Text("uniform")]
 		UniformKeyword,
+
+		[Text("buffer")]
 		BufferKeyword,
+
+		[Text("shared")]
 		SharedKeyword,
+
+		[Text("coherent")]
 		CoherentKeyword,
+
+		[Text("volatile")]
 		VolatileKeyword,
+
+		[Text("restrict")]
 		RestrictKeyword,
+
+		[Text("readonly")]
 		ReadOnlyKeyword,
+
+		[Text("writeonly")]
 		WriteOnlyKeyword,
+
+		[Text("atomic_uint")]
 		AtomicUIntKeyword,
+
+		[Text("precise")]
 		PreciseKeyword,
+
+		[Text("break")]
 		BreakKeyword,
+
+		[Text("continue")]
 		ContinueKeyword,
+
+		[Text("do")]
 		DoKeyword,
+
+		[Text("else")]
 		ElseKeyword,
+
+		[Text("for")]
 		ForKeyword,
+
+		[Text("if")]
 		IfKeyword,
+
+		[Text("discard")]
 		DiscardKeyword,
+
+		[Text("return")]
 		ReturnKeyword,
+
+		[Text("switch")]
 		SwitchKeyword,
+
+		[Text("case")]
 		CaseKeyword,
+
+		[Text("default")]
 		DefaultKeyword,
+
+		[Text("subroutine")]
 		SubroutineKeyword,
+
+		[Text("centroid")]
 		CentroidKeyword,
+
+		[Text("in")]
 		InKeyword,
+
+		[Text("out")]
 		OutKeyword,
+
+		[Text("inout")]
 		InOutKeyword,
 
+		[Text("varying")]
 		VaryingKeyword,
+
+		[Text("patch")]
 		PatchKeyword,
+
+		[Text("sample")]
 		SampleKeyword,
 
 		// Types
@@ -347,7 +494,6 @@
 		ForStatement,
 		JumpStatement,
 		ExpressionStatement,
-		FunctionStatement,
 		Condition,
 		StructDefinition,
 		StructSpecifier,

@@ -3,7 +3,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tokens
 {
-	internal class InvalidToken : Token
+	internal sealed class InvalidToken : Token
 	{
 		public InvalidToken(SyntaxType type, Span span, SourceLine line, string text, SyntaxTrivia leadingTrivia, string message) : base(SyntaxType.InvalidToken, span, line, text, leadingTrivia)
 		{

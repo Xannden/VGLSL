@@ -17,6 +17,8 @@
 
 		public abstract TrackingSpan CreateTrackingSpan(Span span);
 
+		public abstract TrackingPoint CreateTrackingPoint(int position);
+
 		public abstract SourceLine GetLineFromLineNumber(int lineNumber);
 
 		public abstract SourceLine GetLineFromPosition(int position);

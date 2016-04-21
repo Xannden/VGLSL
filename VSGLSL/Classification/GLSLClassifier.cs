@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Syntax;
+using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -53,13 +54,15 @@ namespace Xannden.VSGLSL.Classification
 
 				SyntaxNode node = tree?.GetNodeFromPosition(this.source.CurrentSnapshot, token.Span.Start);
 
+				Definition definition = tree.Definitions.Find(def => def.Scope.GetSpan(currentSnapshot).Contains(node.Span.GetSpan(currentSnapshot)) && def.Identifier.Identifier == (node as IdentifierSyntax)?.Identifier);
+
 				string classificationName = string.Empty;
 
 				if (token.SyntaxType.IsPreprocessor())
 				{
 					classificationName = GLSLConstants.PreprocessorKeyword;
 				}
-				else if ((node as IdentifierSyntax)?.IsMacro() ?? false)
+				else if (definition?.Type == DefinitionType.Macro)
 				{
 					classificationName = GLSLConstants.Macro;
 				}
@@ -83,38 +86,39 @@ namespace Xannden.VSGLSL.Classification
 				{
 					classificationName = GLSLConstants.Number;
 				}
-				else if (node.SyntaxType == SyntaxType.IdentifierToken)
+				else if (definition != null)
 				{
-					IdentifierSyntax identifier = node as IdentifierSyntax;
-
-					if (identifier.IsParameter())
+					switch (definition.Type)
 					{
-						classificationName = GLSLConstants.Parameter;
+						case DefinitionType.Field:
+							classificationName = GLSLConstants.Field;
+							break;
+						case DefinitionType.Function:
+							classificationName = GLSLConstants.Function;
+							break;
+						case DefinitionType.GlobalVariable:
+							classificationName = GLSLConstants.GlobalVariable;
+							break;
+						case DefinitionType.LocalVariable:
+							classificationName = GLSLConstants.LocalVariable;
+							break;
+						case DefinitionType.Macro:
+							classificationName = GLSLConstants.Macro;
+							break;
+						case DefinitionType.Parameter:
+							classificationName = GLSLConstants.Parameter;
+							break;
+						case DefinitionType.TypeName:
+							classificationName = GLSLConstants.TypeName;
+							break;
+						default:
+							classificationName = GLSLConstants.Identifier;
+							break;
 					}
-					else if (identifier.IsFunction())
-					{
-						classificationName = GLSLConstants.Function;
-					}
-					else if (identifier.IsTypeName())
-					{
-						classificationName = GLSLConstants.TypeName;
-					}
-					else if (identifier.IsField())
-					{
-						classificationName = GLSLConstants.Field;
-					}
-					else if (identifier.IsLocalVariable())
-					{
-						classificationName = GLSLConstants.LocalVariable;
-					}
-					else if (identifier.IsGlobalVariable())
-					{
-						classificationName = GLSLConstants.GlobalVariable;
-					}
-					else
-					{
-						classificationName = GLSLConstants.Identifier;
-					}
+				}
+				else if (token.SyntaxType == SyntaxType.IdentifierToken)
+				{
+					classificationName = GLSLConstants.Identifier;
 				}
 
 				if (!string.IsNullOrEmpty(classificationName))

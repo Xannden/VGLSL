@@ -85,6 +85,7 @@
     <Compile Include="Sources\VSSnapshot.cs" />
     <Compile Include="Sources\VSSource.cs" />
     <Compile Include="Sources\VSSourceLine.cs" />
+    <Compile Include="Sources\VSTrackingPoint.cs" />
     <Compile Include="Sources\VSTrackingSpan.cs" />
     <Compile Include="Errors\ErrorTagger.cs" />
     <Compile Include="Errors\ErrorTaggerProvider.cs" />

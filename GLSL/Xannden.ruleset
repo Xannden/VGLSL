@@ -195,6 +195,7 @@
     <Rule Id="RECS0092" Action="None" />
     <Rule Id="RECS0122" Action="None" />
     <Rule Id="RECS0129" Action="None" />
+    <Rule Id="RECS0135" Action="None" />
     <Rule Id="RECS0145" Action="None" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">

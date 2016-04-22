@@ -46,6 +46,11 @@ namespace Xannden.GLSL.Extensions
 			return type >= SyntaxType.FloatConstToken && type <= SyntaxType.UIntConstToken;
 		}
 
+		public static string GetText(this SyntaxType syntaxType)
+		{
+			return syntaxType.GetType().GetField(syntaxType.ToString())?.GetCustomAttribute<TextAttribute>()?.Text ?? string.Empty;
+		}
+
 		internal static bool Contains(this SyntaxType[] array, SyntaxType type)
 		{
 			for (int i = 0; i < array.Length; i++)
@@ -57,11 +62,6 @@ namespace Xannden.GLSL.Extensions
 			}
 
 			return false;
-		}
-
-		internal static string GetText(this SyntaxType syntaxType)
-		{
-			return syntaxType.GetType().GetField(syntaxType.ToString())?.GetCustomAttribute<TextAttribute>()?.Text ?? string.Empty;
 		}
 	}
 }

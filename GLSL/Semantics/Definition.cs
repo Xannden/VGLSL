@@ -1,7 +1,7 @@
 ﻿using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 
-namespace Xannden.GLSL.Syntax.Semantics
+namespace Xannden.GLSL.Semantics
 {
 	public sealed class Definition
 	{
@@ -10,7 +10,7 @@ namespace Xannden.GLSL.Syntax.Semantics
 			this.Node = node;
 			this.Scope = scope;
 			this.Identifier = identifier;
-			this.Type = type;
+			this.DefinitionType = type;
 		}
 
 		public SyntaxNode Node { get; }
@@ -19,11 +19,11 @@ namespace Xannden.GLSL.Syntax.Semantics
 
 		public IdentifierSyntax Identifier { get; }
 
-		public DefinitionType Type { get; }
+		public DefinitionType DefinitionType { get; }
 
 		public override string ToString()
 		{
-			return $"Identifier = {this.Identifier.ToString()}, Type = {this.Type.ToString()}, Scope = [{this.Scope.Start.ToString()},{this.Scope.End.ToString()}]";
+			return $"Identifier = {this.Identifier.ToString()}, Type = {this.DefinitionType.ToString()}, Scope = [{this.Scope.Start.ToString()},{this.Scope.End.ToString()}]";
 		}
 	}
 }

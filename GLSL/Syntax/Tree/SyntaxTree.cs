@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Xannden.GLSL.Syntax.Semantics;
+using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 

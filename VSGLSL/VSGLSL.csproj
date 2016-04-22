@@ -61,11 +61,17 @@
     <Compile Include="Classification\GLSLClassifierProvider.cs" />
     <Compile Include="Classification\ClassificationTypes.cs" />
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
+    <Compile Include="Extensions\DefinitionExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
     <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\SpanExtensions.cs" />
+    <Compile Include="Extensions\TextExtensions.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandler.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletionSource.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletionSourceProvider.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoController.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoControllerProvider.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSource.cs" />
@@ -118,8 +124,13 @@
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.CoreUtility.14.1.24720\lib\net45\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.CoreUtility.14.2.25123\lib\net45\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Editor, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Editor.14.2.25123\lib\net45\Microsoft.VisualStudio.Editor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Imaging, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -187,19 +198,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.Data, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.Data.14.1.24720\lib\net45\Microsoft.VisualStudio.Text.Data.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.Data.14.2.25123\lib\net45\Microsoft.VisualStudio.Text.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.Logic.14.1.24720\lib\net45\Microsoft.VisualStudio.Text.Logic.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.Logic.14.2.25123\lib\net45\Microsoft.VisualStudio.Text.Logic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.UI, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.14.1.24720\lib\net45\Microsoft.VisualStudio.Text.UI.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.14.2.25123\lib\net45\Microsoft.VisualStudio.Text.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.Wpf.14.1.24720\lib\net45\Microsoft.VisualStudio.Text.UI.Wpf.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.Wpf.14.2.25123\lib\net45\Microsoft.VisualStudio.Text.UI.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -265,7 +276,6 @@
     <Content Include="Resources\GLSLPackage.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IntelliSense\Completions\" />
     <Folder Include="IntelliSense\ParameterHelp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
-using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
@@ -20,7 +19,6 @@ using Xannden.VSGLSL.Sources;
 
 namespace Xannden.VSGLSL.IntelliSense.QuickTips
 {
-	// TODO: rework how this works
 	internal class GLSLQuickInfoSource : IQuickInfoSource
 	{
 		private GLSLQuickInfoSourceProvider provider;
@@ -58,28 +56,14 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			int triggerPosition = session.GetTriggerPoint(this.textBuffer).GetPosition(snapshot.TextSnapshot);
 
 			SyntaxTree tree = this.source.Tree;
-			SyntaxNode node = tree.GetNodeFromPosition(snapshot, triggerPosition);
+			IdentifierSyntax identifier = tree.GetNodeFromPosition(snapshot, triggerPosition) as IdentifierSyntax;
 
-			if (node == null || node.SyntaxType != SyntaxType.IdentifierToken)
+			if (identifier?.Definition == null)
 			{
 				return;
 			}
 
-			IdentifierSyntax identifier = node as IdentifierSyntax;
-
-			if (identifier == null)
-			{
-				return;
-			}
-
-			Definition definition = tree.Definitions.Find(def => def.Scope.GetSpan(snapshot).Contains(identifier.Span.GetSpan(snapshot)) && identifier.Identifier == def.Identifier.Identifier);
-
-			if (definition == null)
-			{
-				return;
-			}
-
-			quickInfoContent.Add(new QuickTipPanel(this.GetIcon(definition), this.CreateTextBlock(definition, snapshot), null));
+			quickInfoContent.Add(new QuickTipPanel(identifier.Definition.GetIcon(this.provider.GlyphService), this.CreateTextBlock(identifier.Definition, snapshot), null));
 
 			applicableToSpan = (identifier.Span as VSTrackingSpan).TrackingSpan;
 		}
@@ -90,48 +74,39 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 		private string GetClassificationName(SyntaxToken token, Snapshot snapshot)
 		{
+			IdentifierSyntax identifier = token as IdentifierSyntax;
+
 			if (token.SyntaxType.IsPreprocessor())
 			{
 				return GLSLConstants.PreprocessorKeyword;
 			}
-
-			if (token?.IsExcludedCode() ?? false)
-			{
-				return GLSLConstants.ExcludedCode;
-			}
-
-			if (token.SyntaxType.IsPunctuation())
-			{
-				return GLSLConstants.Punctuation;
-			}
-
-			IdentifierSyntax identifier = token as IdentifierSyntax;
-
-			Definition definition = token.Tree.Definitions.Find(def => def.Scope.GetSpan(snapshot).Contains(token.Span.GetSpan(snapshot)) && identifier?.Identifier == def.Identifier.Identifier);
-
-			if (definition?.Type == DefinitionType.Macro)
+			else if (identifier?.Definition?.DefinitionType == DefinitionType.Macro)
 			{
 				return GLSLConstants.Macro;
 			}
-
-			if (token?.IsPreprocessorText() ?? false)
+			else if (token?.IsExcludedCode() ?? false)
+			{
+				return GLSLConstants.ExcludedCode;
+			}
+			else if (token.SyntaxType.IsPunctuation())
+			{
+				return GLSLConstants.Punctuation;
+			}
+			else if (token?.IsPreprocessorText() ?? false)
 			{
 				return GLSLConstants.PreprocessorText;
 			}
-
-			if (token.SyntaxType.IsKeyword())
+			else if (token.SyntaxType.IsKeyword())
 			{
 				return GLSLConstants.Keyword;
 			}
-
-			if (token.SyntaxType.IsNumber())
+			else if (token.SyntaxType.IsNumber())
 			{
 				return GLSLConstants.Number;
 			}
-
-			if (definition != null)
+			else if (identifier?.Definition != null)
 			{
-				switch (definition.Type)
+				switch (identifier.Definition.DefinitionType)
 				{
 					case DefinitionType.Field:
 						return GLSLConstants.Field;
@@ -141,55 +116,22 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 						return GLSLConstants.GlobalVariable;
 					case DefinitionType.LocalVariable:
 						return GLSLConstants.LocalVariable;
+					case DefinitionType.Macro:
+						return GLSLConstants.Macro;
 					case DefinitionType.Parameter:
 						return GLSLConstants.Parameter;
 					case DefinitionType.TypeName:
 						return GLSLConstants.TypeName;
+					default:
+						return GLSLConstants.Identifier;
 				}
 			}
-
-			if (identifier != null)
+			else if (token.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				return GLSLConstants.Identifier;
 			}
 
 			return PredefinedClassificationTypeNames.FormalLanguage;
-		}
-
-		private FrameworkElement GetIcon(Definition definition)
-		{
-			ImageSource imageSource = null;
-
-			switch (definition.Type)
-			{
-				case DefinitionType.Field:
-					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
-					break;
-				case DefinitionType.LocalVariable:
-				case DefinitionType.GlobalVariable:
-				case DefinitionType.Parameter:
-					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
-					break;
-				case DefinitionType.Macro:
-					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro, StandardGlyphItem.GlyphItemPublic);
-					break;
-				case DefinitionType.TypeName:
-					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupStruct, StandardGlyphItem.GlyphItemPublic);
-					break;
-				case DefinitionType.Function:
-					imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMethod, StandardGlyphItem.GlyphItemPublic);
-					break;
-			}
-
-			if (imageSource != null)
-			{
-				return new Image
-				{
-					Source = imageSource
-				};
-			}
-
-			return null;
 		}
 
 		private List<Run> GetRuns(Definition definition, IClassificationFormatMap formatMap, Snapshot snapshot)
@@ -198,7 +140,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 			Run typeRun = null;
 
-			switch (definition.Type)
+			switch (definition.DefinitionType)
 			{
 				case DefinitionType.LocalVariable:
 					typeRun = new Run("(local variable) ");
@@ -253,7 +195,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				case SyntaxType.StructDeclarator:
 					StructDeclaratorSyntax declarator = definition.Node as StructDeclaratorSyntax;
 
-					if (definition.Type == DefinitionType.Field)
+					if (definition.DefinitionType == DefinitionType.Field)
 					{
 						StructDeclarationSyntax declaration = declarator.Parent as StructDeclarationSyntax;
 
@@ -323,7 +265,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				TextWrapping = TextWrapping.Wrap
 			};
 
-			IClassificationFormatMap formatMap = this.provider.FormatMap.GetClassificationFormatMap("tooltip");
+			IClassificationFormatMap formatMap = this.provider.FormatMap.GetClassificationFormatMap("text");
 
 			block.SetTextProperties(formatMap.DefaultTextProperties);
 

@@ -88,9 +88,9 @@
     <Compile Include="Settings\GLSLSettings.cs" />
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
-    <Compile Include="Syntax\Semantics\Definition.cs" />
-    <Compile Include="Syntax\Semantics\DefinitionType.cs" />
-    <Compile Include="Syntax\Semantics\Scope.cs" />
+    <Compile Include="Semantics\Definition.cs" />
+    <Compile Include="Semantics\DefinitionType.cs" />
+    <Compile Include="Semantics\Scope.cs" />
     <Compile Include="Syntax\SyntaxType.cs" />
     <Compile Include="Syntax\Tokens\InvalidToken.cs" />
     <Compile Include="Syntax\Tokens\Token.cs" />

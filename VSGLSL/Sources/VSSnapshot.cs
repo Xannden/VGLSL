@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using System;
+using Microsoft.VisualStudio.Text;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Extensions;
 
@@ -19,6 +20,11 @@ namespace Xannden.VSGLSL.Sources
 
 		public override TrackingSpan CreateTrackingSpan(GLSL.Text.Span span)
 		{
+			if (span == null)
+			{
+				throw new ArgumentNullException(nameof(span));
+			}
+
 			return new VSTrackingSpan(this.TextSnapshot.CreateTrackingSpan(span.ToVSSpan(), SpanTrackingMode.EdgeExclusive));
 		}
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
-using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -87,7 +87,7 @@ namespace Xannden.GLSL.Parsing
 
 		public void StartScope()
 		{
-			this.scope.Push(new Scope(this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start), this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start)));
+			this.scope.Push(new Scope(this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start), this.snapshot.CreateTrackingPoint(this.snapshot.Length)));
 		}
 
 		public void EndScope()
@@ -158,16 +158,19 @@ namespace Xannden.GLSL.Parsing
 			this.listNode = this.listNode?.Next;
 		}
 
-		public void AddDefinition(SyntaxNode node, IdentifierSyntax identifier, DefinitionType type)
+		public Definition AddDefinition(SyntaxNode node, IdentifierSyntax identifier, DefinitionType type)
 		{
 			if (identifier == null || node == null)
 			{
-				return;
+				return null;
 			}
 
 			Scope definitionScope = new Scope(this.snapshot.CreateTrackingPoint(identifier.Span.GetSpan(this.snapshot).Start), this.scope.Peek().End);
+			Definition definition = new Definition(node, definitionScope, identifier, type);
 
-			this.definitions.Add(new Definition(node, definitionScope, identifier, type));
+			this.definitions.Add(definition);
+
+			return definition;
 		}
 
 		public ResetPoint GetResetPoint()

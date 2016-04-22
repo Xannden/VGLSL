@@ -89,7 +89,7 @@ namespace Xannden.VSGLSL.Sources
 
 			this.CommentSpans = this.lexer.CommentSpans;
 
-			this.Tree = this.Parser.Run(this.CurrentSnapshot, tokens);
+			this.Tree = this.Parser.Run(snapshot, tokens);
 
 			this.Settings.SetPreprocessors(this.Parser.Preprocessors);
 

@@ -3,7 +3,7 @@
 namespace Xannden.GLSL.Utility
 {
 	[AttributeUsage(AttributeTargets.Field)]
-	internal class TextAttribute : Attribute
+	internal sealed class TextAttribute : Attribute
 	{
 		public TextAttribute(string text)
 		{

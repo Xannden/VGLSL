@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
-using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -321,7 +321,7 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			this.builder.AddDefinition(node, identifier, DefinitionType.Function);
+			identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionType.Function);
 
 			this.builder.StartScope();
 
@@ -361,7 +361,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-				this.builder.AddDefinition(node, identifier, DefinitionType.Parameter);
+				identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionType.Parameter);
 
 				while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 				{
@@ -425,7 +425,7 @@ namespace Xannden.GLSL.Parsing
 
 				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-				this.builder.AddDefinition(node, identifier, DefinitionType.LocalVariable);
+				identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionType.LocalVariable);
 
 				this.RequireToken(SyntaxType.EqualToken);
 
@@ -747,7 +747,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				StructDeclaratorSyntax declarator = this.ParseStructDeclarator();
 
-				this.builder.AddDefinition(declarator, declarator.Identifier, DefinitionType.Field);
+				declarator.Identifier.Definition = this.builder.AddDefinition(declarator, declarator.Identifier, DefinitionType.Field);
 			}
 			while (this.AcceptToken(SyntaxType.CommaToken));
 
@@ -778,7 +778,7 @@ namespace Xannden.GLSL.Parsing
 
 			TypeNameSyntax typeName = this.ParseTypeName();
 
-			this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
+			typeName.Identifier.Definition = this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
 
 			this.RequireToken(SyntaxType.LeftBraceToken);
 
@@ -794,7 +794,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				StructDeclaratorSyntax declarator = this.ParseStructDeclarator();
 
-				this.builder.AddDefinition(node, declarator.Identifier, this.GetVariableType(declarator));
+				declarator.Identifier.Definition = this.builder.AddDefinition(node, declarator.Identifier, this.GetVariableType(declarator));
 			}
 
 			this.RequireToken(SyntaxType.SemicolonToken);
@@ -812,7 +812,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				TypeNameSyntax typeName = this.ParseTypeName();
 
-				this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
+				typeName.Identifier.Definition = this.builder.AddDefinition(typeName, typeName.Identifier, DefinitionType.TypeName);
 			}
 
 			this.RequireToken(SyntaxType.LeftBraceToken);
@@ -1282,7 +1282,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseInitDeclaratorList()
 		{
-			SyntaxNode node = this.builder.StartNode(SyntaxType.InitDeclaratorList);
+			this.builder.StartNode(SyntaxType.InitDeclaratorList);
 
 			if (this.IsTypeQualifier(this.builder.CurrentToken.SyntaxType))
 			{
@@ -1352,7 +1352,7 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			this.builder.AddDefinition(node, identifier, this.GetVariableType(node));
+			identifier.Definition = this.builder.AddDefinition(node, identifier, this.GetVariableType(node));
 
 			while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
@@ -1396,7 +1396,7 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.PreprocessorRequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			this.builder.AddDefinition(node, identifier, DefinitionType.Macro);
+			identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionType.Macro);
 
 			if (this.AcceptTokenPreprocessor(SyntaxType.LeftParenToken))
 			{

@@ -4,8 +4,8 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Lexing;
+using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
-using Xannden.GLSL.Syntax.Semantics;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -54,7 +54,7 @@ namespace Xannden.VSGLSL.Classification
 
 				SyntaxNode node = tree?.GetNodeFromPosition(this.source.CurrentSnapshot, token.Span.Start);
 
-				Definition definition = tree.Definitions.Find(def => def.Scope.GetSpan(currentSnapshot).Contains(node.Span.GetSpan(currentSnapshot)) && def.Identifier.Identifier == (node as IdentifierSyntax)?.Identifier);
+				IdentifierSyntax identifier = node as IdentifierSyntax;
 
 				string classificationName = string.Empty;
 
@@ -62,7 +62,7 @@ namespace Xannden.VSGLSL.Classification
 				{
 					classificationName = GLSLConstants.PreprocessorKeyword;
 				}
-				else if (definition?.Type == DefinitionType.Macro)
+				else if (identifier?.Definition?.DefinitionType == DefinitionType.Macro)
 				{
 					classificationName = GLSLConstants.Macro;
 				}
@@ -86,9 +86,9 @@ namespace Xannden.VSGLSL.Classification
 				{
 					classificationName = GLSLConstants.Number;
 				}
-				else if (definition != null)
+				else if (identifier?.Definition != null)
 				{
-					switch (definition.Type)
+					switch (identifier.Definition.DefinitionType)
 					{
 						case DefinitionType.Field:
 							classificationName = GLSLConstants.Field;

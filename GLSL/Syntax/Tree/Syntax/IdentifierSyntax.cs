@@ -1,4 +1,5 @@
-﻿using Xannden.GLSL.Syntax.Trivia;
+﻿using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
@@ -10,5 +11,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		}
 
 		public string Identifier => this.Text;
+
+		public Definition Definition { get; internal set; }
 	}
 }

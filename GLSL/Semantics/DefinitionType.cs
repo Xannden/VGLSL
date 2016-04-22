@@ -1,4 +1,4 @@
-﻿namespace Xannden.GLSL.Syntax.Semantics
+﻿namespace Xannden.GLSL.Semantics
 {
 	public enum DefinitionType
 	{

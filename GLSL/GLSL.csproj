@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltIn\BuiltInFunctions.cs" />
     <Compile Include="Errors\ErrorHandler.cs" />
     <Compile Include="Errors\GLSLError.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
@@ -85,11 +86,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Semantics\FieldDefinition.cs" />
+    <Compile Include="Semantics\FunctionDefinition.cs" />
+    <Compile Include="Semantics\InterfaceBlockDefinition.cs" />
+    <Compile Include="Semantics\MacroDefinition.cs" />
+    <Compile Include="Semantics\ParameterDefinition.cs" />
+    <Compile Include="Semantics\TypeDefinition.cs" />
+    <Compile Include="Semantics\TypeNameDefinition.cs" />
+    <Compile Include="Semantics\VariableDefinition.cs" />
     <Compile Include="Settings\GLSLSettings.cs" />
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
     <Compile Include="Semantics\Definition.cs" />
-    <Compile Include="Semantics\DefinitionType.cs" />
+    <Compile Include="Semantics\DefinitionKind.cs" />
     <Compile Include="Semantics\Scope.cs" />
     <Compile Include="Syntax\SyntaxType.cs" />
     <Compile Include="Syntax\Tokens\InvalidToken.cs" />
@@ -110,7 +119,6 @@
     <Compile Include="Syntax\Tree\Syntax\ConditionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\ConstantExpressionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\ConstructorSyntax.cs" />
-    <Compile Include="Syntax\Tree\Syntax\DeclarationListSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\DeclarationSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\DefinePreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\DoWhileStatementSyntax.cs" />
@@ -139,8 +147,13 @@
     <Compile Include="Syntax\Tree\Syntax\InitializerSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InitListSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\InitPartSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\InterfaceBlockSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\InterpolationQualifierSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\InvariantQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\IterationStatementSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\JumpStatementSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\LayoutQualifierIdSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\LayoutQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\LinePreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\LogicalAndExpressionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\LogicalOrExpressionSyntax.cs" />
@@ -153,7 +166,9 @@
     <Compile Include="Syntax\Tree\Syntax\PostfixExpressionStartSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\PostfixExpressionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\PragmaPreprocessorSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\PreciseQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\PrecisionDeclarationSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\PrecisionQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\PreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\PrimaryExpressionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\ProgramSyntax.cs" />
@@ -162,10 +177,11 @@
     <Compile Include="Syntax\Tree\Syntax\SelectionStatementSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\ShiftExpressionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\SimpleStatementSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\SingleTypeQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\StatementSyntax.cs" />
+    <Compile Include="Syntax\Tree\Syntax\StorageQualifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\StructDeclarationSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\StructDeclaratorSyntax.cs" />
-    <Compile Include="Syntax\Tree\Syntax\StructDefinitionSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\StructSpecifierSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\SwitchStatementSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\TokenSeparatedList.cs" />

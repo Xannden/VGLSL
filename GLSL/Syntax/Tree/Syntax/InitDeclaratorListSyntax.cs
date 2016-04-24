@@ -14,13 +14,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TokenSeparatedList<InitPartSyntax> InitParts { get; } = new TokenSeparatedList<InitPartSyntax>();
 
-		public TypeSyntax TypeNode { get; private set; }
+		public TypeSyntax TypeSyntax { get; private set; }
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
 		public SyntaxToken Semicolon { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -29,7 +29,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Type:
-					this.TypeNode = node as TypeSyntax;
+					this.TypeSyntax = node as TypeSyntax;
 					break;
 
 				case SyntaxType.InitPart:

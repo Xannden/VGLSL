@@ -4,15 +4,15 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
-	public sealed class StructDefinitionSyntax : SyntaxNode
+	public sealed class InterfaceBlockSyntax : SyntaxNode
 	{
 		private List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
 
-		internal StructDefinitionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructDefinition, start)
+		internal InterfaceBlockSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InterfaceBlock, start)
 		{
 		}
 
-		internal StructDefinitionSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.StructDefinition, span)
+		internal InterfaceBlockSyntax(SyntaxTree tree, TrackingSpan span) : base(tree, SyntaxType.InterfaceBlock, span)
 		{
 		}
 
@@ -26,11 +26,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public StructDeclaratorSyntax StructDeclarator { get; private set; }
 
-		public TypeNameSyntax TypeName { get; private set; }
+		public IdentifierSyntax Identifier { get; private set; }
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -38,8 +38,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.TypeQualifier = node as TypeQualifierSyntax;
 					break;
 
-				case SyntaxType.TypeName:
-					this.TypeName = node as TypeNameSyntax;
+				case SyntaxType.IdentifierToken:
+					this.Identifier = node as IdentifierSyntax;
 					break;
 
 				case SyntaxType.LeftBraceToken:

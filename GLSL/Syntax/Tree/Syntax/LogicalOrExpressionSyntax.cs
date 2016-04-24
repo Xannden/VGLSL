@@ -14,7 +14,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TokenSeparatedList<LogicalXorExpressionSyntax> LogicalXorExpressions { get; } = new TokenSeparatedList<LogicalXorExpressionSyntax>();
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

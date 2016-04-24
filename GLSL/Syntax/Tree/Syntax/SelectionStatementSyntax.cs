@@ -24,7 +24,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public StatementSyntax Statement { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

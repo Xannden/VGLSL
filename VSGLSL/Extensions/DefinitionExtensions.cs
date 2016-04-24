@@ -11,23 +11,23 @@ namespace Xannden.VSGLSL.Extensions
 		{
 			ImageSource imageSource = null;
 
-			switch (definition.DefinitionType)
+			switch (definition.Kind)
 			{
-				case DefinitionType.Field:
+				case DefinitionKind.Field:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
 					break;
-				case DefinitionType.LocalVariable:
-				case DefinitionType.GlobalVariable:
-				case DefinitionType.Parameter:
+				case DefinitionKind.LocalVariable:
+				case DefinitionKind.GlobalVariable:
+				case DefinitionKind.Parameter:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
 					break;
-				case DefinitionType.Macro:
+				case DefinitionKind.Macro:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro, StandardGlyphItem.GlyphItemPublic);
 					break;
-				case DefinitionType.TypeName:
+				case DefinitionKind.TypeName:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupStruct, StandardGlyphItem.GlyphItemPublic);
 					break;
-				case DefinitionType.Function:
+				case DefinitionKind.Function:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMethod, StandardGlyphItem.GlyphItemPublic);
 					break;
 			}

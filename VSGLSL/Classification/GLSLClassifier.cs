@@ -62,7 +62,7 @@ namespace Xannden.VSGLSL.Classification
 				{
 					classificationName = GLSLConstants.PreprocessorKeyword;
 				}
-				else if (identifier?.Definition?.DefinitionType == DefinitionType.Macro)
+				else if (identifier?.Definition?.Kind == DefinitionKind.Macro)
 				{
 					classificationName = GLSLConstants.Macro;
 				}
@@ -88,27 +88,28 @@ namespace Xannden.VSGLSL.Classification
 				}
 				else if (identifier?.Definition != null)
 				{
-					switch (identifier.Definition.DefinitionType)
+					switch (identifier.Definition.Kind)
 					{
-						case DefinitionType.Field:
+						case DefinitionKind.Field:
 							classificationName = GLSLConstants.Field;
 							break;
-						case DefinitionType.Function:
+						case DefinitionKind.Function:
 							classificationName = GLSLConstants.Function;
 							break;
-						case DefinitionType.GlobalVariable:
+						case DefinitionKind.GlobalVariable:
 							classificationName = GLSLConstants.GlobalVariable;
 							break;
-						case DefinitionType.LocalVariable:
+						case DefinitionKind.LocalVariable:
 							classificationName = GLSLConstants.LocalVariable;
 							break;
-						case DefinitionType.Macro:
+						case DefinitionKind.Macro:
 							classificationName = GLSLConstants.Macro;
 							break;
-						case DefinitionType.Parameter:
+						case DefinitionKind.Parameter:
 							classificationName = GLSLConstants.Parameter;
 							break;
-						case DefinitionType.TypeName:
+						case DefinitionKind.TypeName:
+						case DefinitionKind.InterfaceBlock:
 							classificationName = GLSLConstants.TypeName;
 							break;
 						default:

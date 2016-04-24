@@ -14,7 +14,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TokenSeparatedList<AdditiveExpressionSyntax> AdditiveExpressionSyntax { get; } = new TokenSeparatedList<AdditiveExpressionSyntax>();
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

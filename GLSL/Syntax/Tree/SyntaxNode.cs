@@ -15,7 +15,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.Tree = tree;
 		}
 
-		internal protected SyntaxNode(SyntaxTree tree, SyntaxType type, TrackingSpan span)
+		internal SyntaxNode(SyntaxTree tree, SyntaxType type, TrackingSpan span)
 		{
 			this.SyntaxType = type;
 			this.Span = span;
@@ -154,10 +154,6 @@ namespace Xannden.GLSL.Syntax.Tree
 			return null;
 		}
 
-		internal virtual void NewChild(SyntaxNode node)
-		{
-		}
-
 		internal void SetEnd(Snapshot snapshot, int end)
 		{
 			this.Span = snapshot.CreateTrackingSpan(Text.Span.Create(this.TempStart, end));
@@ -208,6 +204,10 @@ namespace Xannden.GLSL.Syntax.Tree
 			{
 				this.InternalChildren[i].ToString(builder);
 			}
+		}
+
+		protected virtual void NewChild(SyntaxNode node)
+		{
 		}
 
 		private void GetFormatedTagInfo(StringBuilder builder)

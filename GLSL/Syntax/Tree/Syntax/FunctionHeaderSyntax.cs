@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class FunctionHeaderSyntax : SyntaxNode
 	{
-		private List<ParameterSyntax> parameters = new List<ParameterSyntax>();
-
 		internal FunctionHeaderSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.FunctionHeader, start)
 		{
 		}
@@ -20,7 +16,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public SyntaxToken LeftParentheses { get; private set; }
 
-		public IReadOnlyList<ParameterSyntax> Parameters => this.parameters;
+		public TokenSeparatedList<ParameterSyntax> Parameters { get; } = new TokenSeparatedList<ParameterSyntax>();
 
 		public ReturnTypeSyntax ReturnType { get; private set; }
 
@@ -28,7 +24,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -49,7 +45,11 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.Parameter:
-					this.parameters.Add(node as ParameterSyntax);
+					this.Parameters.AddNode(node as ParameterSyntax);
+					break;
+
+				case SyntaxType.CommaToken:
+					this.Parameters.AddToken(node as SyntaxToken);
 					break;
 
 				case SyntaxType.RightParenToken:

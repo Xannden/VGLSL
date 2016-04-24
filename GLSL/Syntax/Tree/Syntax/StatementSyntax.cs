@@ -22,7 +22,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public IReadOnlyList<SimpleStatementSyntax> SimpleStatements => this.simpleStatements;
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{

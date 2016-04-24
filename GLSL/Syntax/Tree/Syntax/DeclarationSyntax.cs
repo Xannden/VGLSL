@@ -12,15 +12,13 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public DeclarationListSyntax DeclarationList { get; private set; }
-
 		public InitDeclaratorListSyntax InitDeclaratorList { get; private set; }
 
 		public PrecisionDeclarationSyntax PrecisionDeclaration { get; private set; }
 
-		public StructDefinitionSyntax StructDefinition { get; private set; }
+		public InterfaceBlockSyntax InterfaceBlock { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -32,12 +30,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					this.PrecisionDeclaration = node as PrecisionDeclarationSyntax;
 					break;
 
-				case SyntaxType.StructDefinition:
-					this.StructDefinition = node as StructDefinitionSyntax;
-					break;
-
-				case SyntaxType.DeclarationList:
-					this.DeclarationList = node as DeclarationListSyntax;
+				case SyntaxType.InterfaceBlock:
+					this.InterfaceBlock = node as InterfaceBlockSyntax;
 					break;
 			}
 		}

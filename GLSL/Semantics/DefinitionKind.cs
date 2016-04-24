@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Semantics
 {
-	public enum DefinitionType
+	public enum DefinitionKind
 	{
 		Function,
 		TypeName,
@@ -8,6 +8,7 @@
 		GlobalVariable,
 		Macro,
 		Parameter,
-		Field
+		Field,
+		InterfaceBlock,
 	}
 }

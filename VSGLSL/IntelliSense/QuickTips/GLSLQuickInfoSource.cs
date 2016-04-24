@@ -80,7 +80,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			{
 				return GLSLConstants.PreprocessorKeyword;
 			}
-			else if (identifier?.Definition?.DefinitionType == DefinitionType.Macro)
+			else if (identifier?.Definition?.Kind == DefinitionKind.Macro)
 			{
 				return GLSLConstants.Macro;
 			}
@@ -106,21 +106,22 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			}
 			else if (identifier?.Definition != null)
 			{
-				switch (identifier.Definition.DefinitionType)
+				switch (identifier.Definition.Kind)
 				{
-					case DefinitionType.Field:
+					case DefinitionKind.Field:
 						return GLSLConstants.Field;
-					case DefinitionType.Function:
+					case DefinitionKind.Function:
 						return GLSLConstants.Function;
-					case DefinitionType.GlobalVariable:
+					case DefinitionKind.GlobalVariable:
 						return GLSLConstants.GlobalVariable;
-					case DefinitionType.LocalVariable:
+					case DefinitionKind.LocalVariable:
 						return GLSLConstants.LocalVariable;
-					case DefinitionType.Macro:
+					case DefinitionKind.Macro:
 						return GLSLConstants.Macro;
-					case DefinitionType.Parameter:
+					case DefinitionKind.Parameter:
 						return GLSLConstants.Parameter;
-					case DefinitionType.TypeName:
+					case DefinitionKind.TypeName:
+					case DefinitionKind.InterfaceBlock:
 						return GLSLConstants.TypeName;
 					default:
 						return GLSLConstants.Identifier;
@@ -140,24 +141,24 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 			Run typeRun = null;
 
-			switch (definition.DefinitionType)
+			switch (definition.Kind)
 			{
-				case DefinitionType.LocalVariable:
+				case DefinitionKind.LocalVariable:
 					typeRun = new Run("(local variable) ");
 					break;
-				case DefinitionType.Field:
+				case DefinitionKind.Field:
 					typeRun = new Run("(field) ");
 					break;
-				case DefinitionType.GlobalVariable:
+				case DefinitionKind.GlobalVariable:
 					typeRun = new Run("(global variable) ");
 					break;
-				case DefinitionType.Macro:
+				case DefinitionKind.Macro:
 					typeRun = new Run("(macro) ");
 					break;
-				case DefinitionType.Parameter:
+				case DefinitionKind.Parameter:
 					typeRun = new Run("(parameter) ");
 					break;
-				case DefinitionType.TypeName:
+				case DefinitionKind.TypeName:
 					typeRun = new Run("(struct) ");
 					break;
 			}
@@ -168,91 +169,11 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 				runs.Add(typeRun);
 			}
 
-			Run spaceRun = new Run(" ");
-			spaceRun.SetTextProperties(formatMap.GetTextProperties(this.provider.TypeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
+			List<SyntaxToken> tokens = definition.GetTokens();
 
-			switch (definition.Node.SyntaxType)
+			for (int i = 0; i < tokens.Count; i++)
 			{
-				case SyntaxType.InitPart:
-					InitDeclaratorListSyntax list = definition.Node.Parent as InitDeclaratorListSyntax;
-					InitPartSyntax initPart = definition.Node as InitPartSyntax;
-
-					if (list.TypeQualifier != null)
-					{
-						this.AddTokenRuns(list.TypeQualifier, runs, formatMap, snapshot);
-					}
-
-					this.AddTypeRuns(list.TypeNode, runs, formatMap, snapshot);
-
-					this.AddTokenRuns(initPart.Identifier, runs, formatMap, snapshot);
-
-					foreach (SyntaxNode item in initPart.ArraySpecifiers)
-					{
-						this.AddTokenRuns(item, runs, formatMap, snapshot);
-					}
-
-					break;
-				case SyntaxType.StructDeclarator:
-					StructDeclaratorSyntax declarator = definition.Node as StructDeclaratorSyntax;
-
-					if (definition.DefinitionType == DefinitionType.Field)
-					{
-						StructDeclarationSyntax declaration = declarator.Parent as StructDeclarationSyntax;
-
-						if (declaration.TypeQualifier != null)
-						{
-							this.AddTokenRuns(declaration.TypeQualifier, runs, formatMap, snapshot);
-						}
-
-						this.AddTypeRuns(declaration.TypeSyntax, runs, formatMap, snapshot);
-					}
-					else
-					{
-						StructDefinitionSyntax structDef = declarator.Parent as StructDefinitionSyntax;
-
-						if (structDef.TypeQualifier != null)
-						{
-							this.AddTokenRuns(structDef.TypeQualifier, runs, formatMap, snapshot);
-						}
-
-						this.AddTokenRuns(structDef.TypeName, runs, formatMap, snapshot);
-
-						runs.Add(spaceRun);
-					}
-
-					this.AddTokenRuns(declarator.Identifier, runs, formatMap, snapshot);
-
-					foreach (SyntaxNode item in declarator.ArraySpecifiers)
-					{
-						this.AddTokenRuns(item, runs, formatMap, snapshot);
-					}
-
-					break;
-				case SyntaxType.StructDefinition:
-					StructDefinitionSyntax structDefinition = definition.Node as StructDefinitionSyntax;
-
-					if (structDefinition.TypeQualifier != null)
-					{
-						this.AddTokenRuns(structDefinition.TypeQualifier, runs, formatMap, snapshot);
-					}
-
-					this.AddTokenRuns(structDefinition.TypeName, runs, formatMap, snapshot);
-
-					runs.Add(spaceRun);
-
-					StructDeclaratorSyntax declaratorNode = structDefinition.StructDeclarator;
-
-					this.AddTokenRuns(declaratorNode.Identifier, runs, formatMap, snapshot);
-
-					foreach (SyntaxNode item in declaratorNode.ArraySpecifiers)
-					{
-						this.AddTokenRuns(item, runs, formatMap, snapshot);
-					}
-
-					break;
-				default:
-					this.AddTokenRuns(definition.Node, runs, formatMap, snapshot);
-					break;
+				runs.Add(tokens[i].ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(tokens[i], snapshot))));
 			}
 
 			return runs;
@@ -272,57 +193,6 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			block.Inlines.AddRange(this.GetRuns(definition, formatMap, snapshot));
 
 			return block;
-		}
-
-		private IEnumerable<SyntaxToken> GetTokens(SyntaxNode node)
-		{
-			if (node is SyntaxToken)
-			{
-				yield return node as SyntaxToken;
-			}
-			else
-			{
-				for (int i = 0; i < node.Children.Count; i++)
-				{
-					if (node.Children[i].SyntaxType != SyntaxType.Preprocessor)
-					{
-						foreach (SyntaxToken token in this.GetTokens(node.Children[i]))
-						{
-							yield return token;
-						}
-					}
-				}
-			}
-		}
-
-		private void AddTokenRuns(SyntaxNode node, List<Run> runs, IClassificationFormatMap formatMap, Snapshot snapshot)
-		{
-			foreach (var item in this.GetTokens(node))
-			{
-				runs.Add(item.ToRun(formatMap, this.provider.TypeRegistry.GetClassificationType(this.GetClassificationName(item, snapshot))));
-			}
-		}
-
-		private void AddTypeRuns(TypeSyntax type, List<Run> runs, IClassificationFormatMap formatMap, Snapshot snapshot)
-		{
-			if (type.TypeNonArray.StructSpecifier != null)
-			{
-				this.AddTokenRuns(type.TypeNonArray.StructSpecifier.TypeName, runs, formatMap, snapshot);
-
-				Run spaceRun = new Run(" ");
-				spaceRun.SetTextProperties(formatMap.GetTextProperties(this.provider.TypeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
-
-				runs.Add(spaceRun);
-			}
-			else
-			{
-				this.AddTokenRuns(type, runs, formatMap, snapshot);
-			}
-
-			foreach (SyntaxNode item in type.ArraySpecifiers)
-			{
-				this.AddTokenRuns(item, runs, formatMap, snapshot);
-			}
 		}
 	}
 }

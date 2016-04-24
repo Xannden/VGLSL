@@ -1,9 +1,12 @@
-﻿using Xannden.GLSL.Text;
+﻿using System.Collections.Generic;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TypeQualifierSyntax : SyntaxNode
 	{
+		private List<SingleTypeQualifierSyntax> singleTypeQualifiers = new List<SingleTypeQualifierSyntax>();
+
 		internal TypeQualifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeQualifier, start)
 		{
 		}
@@ -12,19 +15,14 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public SyntaxNode Qualifier { get; private set; }
+		public IReadOnlyList<SingleTypeQualifierSyntax> SingleTypeQualifiers => this.singleTypeQualifiers;
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
-				case SyntaxType.StorageQualifier:
-				case SyntaxType.LayoutQualifier:
-				case SyntaxType.PrecisionQualifier:
-				case SyntaxType.InterpolationQualifier:
-				case SyntaxType.InvariantQualifier:
-				case SyntaxType.PreciseQualifier:
-					this.Qualifier = node;
+				case SyntaxType.SingleTypeQualifier:
+					this.singleTypeQualifiers.Add(node as SingleTypeQualifierSyntax);
 					break;
 			}
 		}

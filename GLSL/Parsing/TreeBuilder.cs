@@ -20,6 +20,7 @@ namespace Xannden.GLSL.Parsing
 		private SyntaxTree tree = new SyntaxTree();
 		private Stack<Scope> scope = new Stack<Scope>();
 		private List<Definition> definitions = new List<Definition>();
+		private int testModeLayer = 0;
 
 		public TreeBuilder(Snapshot snapshot, LinkedList<Token> tokens, ErrorHandler errorHandler)
 		{
@@ -34,93 +35,127 @@ namespace Xannden.GLSL.Parsing
 
 		public SyntaxToken AddToken()
 		{
-			SyntaxToken node = this.CreateToken(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
+			if (this.testModeLayer <= 0)
+			{
+				SyntaxToken node = this.CreateToken(this.CurrentToken.SyntaxType, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
 
-			this.stack.Peek().AddChild(node);
+				this.stack.Peek().AddChild(node);
 
-			this.listNode = this.listNode.Next;
+				this.listNode = this.listNode.Next;
 
-			return node;
+				return node;
+			}
+			else
+			{
+				this.listNode = this.listNode.Next;
+				return null;
+			}
 		}
 
 		public SyntaxNode StartNode(SyntaxType type)
 		{
-			SyntaxNode node = this.CreateNode(type, this.CurrentToken.FullSpan(this.snapshot).Start);
-
-			if (this.stack.Count != 0)
+			if (this.testModeLayer <= 0)
 			{
-				this.stack.Peek().AddChild(node);
+				SyntaxNode node = this.CreateNode(type, this.CurrentToken.FullSpan(this.snapshot).Start);
+
+				if (this.stack.Count != 0)
+				{
+					this.stack.Peek().AddChild(node);
+				}
+				else
+				{
+					this.tree.Root = node;
+				}
+
+				this.stack.Push(node);
+
+				return node;
 			}
 			else
 			{
-				this.tree.Root = node;
+				return null;
 			}
-
-			this.stack.Push(node);
-
-			return node;
 		}
 
 		public SyntaxNode EndNode()
 		{
-			int end = this.listNode?.Previous?.Value.FullSpan(this.snapshot).End ?? this.tokens.Last.Value.FullSpan(this.snapshot).End;
-
-			if (end < this.stack.Peek().TempStart)
+			if (this.testModeLayer <= 0)
 			{
-				this.stack.Peek().SetEnd(this.snapshot, this.stack.Peek().TempStart);
+				int end = this.listNode?.Previous?.Value.FullSpan(this.snapshot).End ?? this.tokens.Last.Value.FullSpan(this.snapshot).End;
+
+				if (end < this.stack.Peek().TempStart)
+				{
+					this.stack.Peek().SetEnd(this.snapshot, this.stack.Peek().TempStart);
+				}
+				else
+				{
+					this.stack.Peek().SetEnd(this.snapshot, end);
+				}
+
+				SyntaxNode node = this.stack.Peek();
+
+				if (node.Children.Count == 1 && this.IsExpressionNode(node.SyntaxType))
+				{
+					node.Parent.InternalChildren.Remove(node);
+					node.Parent.AddChild(node.Children[0]);
+				}
+
+				return this.stack.Pop();
 			}
 			else
 			{
-				this.stack.Peek().SetEnd(this.snapshot, end);
+				return null;
 			}
-
-			SyntaxNode node = this.stack.Peek();
-
-			if (node.Children.Count == 1 && this.IsExpressionNode(node.SyntaxType))
-			{
-				node.Parent.InternalChildren.Remove(node);
-				node.Parent.AddChild(node.Children[0]);
-			}
-
-			return this.stack.Pop();
 		}
 
 		public void StartScope()
 		{
-			this.scope.Push(new Scope(this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start), this.snapshot.CreateTrackingPoint(this.snapshot.Length)));
+			if (this.testModeLayer <= 0)
+			{
+				this.scope.Push(new Scope(this.snapshot.CreateTrackingPoint(this.CurrentToken.Span.Start), this.snapshot.CreateTrackingPoint(this.snapshot.Length)));
+			}
 		}
 
 		public void EndScope()
 		{
-			this.scope.Peek().End.SetPosition(this.snapshot, this.listNode?.Previous.Value.Span.End ?? this.tokens.Last.Value.Span.End);
-			this.scope.Pop();
+			if (this.testModeLayer <= 0)
+			{
+				this.scope.Peek().End.SetPosition(this.snapshot, this.listNode?.Previous.Value.Span.End ?? this.tokens.Last.Value.Span.End);
+				this.scope.Pop();
+			}
 		}
 
 		public void Error(SyntaxType expected)
 		{
-			Span span;
-
-			if (this.stack.Count > 0)
+			if (this.testModeLayer <= 0)
 			{
-				span = Span.Create(this.stack.Peek().TempStart);
+				Span span;
+
+				if (this.stack.Count > 0)
+				{
+					span = Span.Create(this.stack.Peek().TempStart);
+				}
+				else
+				{
+					span = this.CurrentToken.Span;
+				}
+
+				this.errorHandler.AddError($"{expected.GetText()} expected", span);
+
+				SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
+
+				node.IsMissing = true;
+
+				this.stack.Peek().AddChild(node);
 			}
-			else
-			{
-				span = this.CurrentToken.Span;
-			}
-
-			this.errorHandler.AddError($"{expected.GetText()} expected", span);
-
-			SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
-
-			node.IsMissing = true;
-
-			this.stack.Peek().AddChild(node);
 		}
 
 		public void Error(string message)
 		{
-			this.errorHandler.AddError(message, this.CurrentToken.Span);
+			if (this.testModeLayer <= 0)
+			{
+				this.errorHandler.AddError(message, this.CurrentToken.Span);
+			}
 		}
 
 		public SyntaxTree GetTree()
@@ -141,9 +176,9 @@ namespace Xannden.GLSL.Parsing
 
 				foreach (SyntaxNode sibling in ancestor.Siblings)
 				{
-					StructDefinitionSyntax structDefinition = (sibling as SimpleStatementSyntax)?.Declaration?.StructDefinition;
+					InterfaceBlockSyntax interfaceBlock = (sibling as SimpleStatementSyntax)?.Declaration?.InterfaceBlock;
 
-					if (structDefinition?.TypeName?.Identifier.Identifier == token.Text)
+					if (interfaceBlock?.Identifier?.Identifier == token.Text)
 					{
 						return true;
 					}
@@ -158,19 +193,62 @@ namespace Xannden.GLSL.Parsing
 			this.listNode = this.listNode?.Next;
 		}
 
-		public Definition AddDefinition(SyntaxNode node, IdentifierSyntax identifier, DefinitionType type)
+		public Definition AddDefinition(SyntaxNode node, IdentifierSyntax identifier, DefinitionKind type)
 		{
+			if (this.testModeLayer > 0)
+			{
+				return null;
+			}
+
 			if (identifier == null || node == null)
 			{
 				return null;
 			}
 
 			Scope definitionScope = new Scope(this.snapshot.CreateTrackingPoint(identifier.Span.GetSpan(this.snapshot).Start), this.scope.Peek().End);
-			Definition definition = new Definition(node, definitionScope, identifier, type);
+			Definition definition = null;
+
+			switch (type)
+			{
+				case DefinitionKind.Function:
+					definition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier);
+					break;
+				case DefinitionKind.Parameter:
+					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier);
+					(this.definitions.FindLast(def => def.Kind == DefinitionKind.Function) as FunctionDefinition)?.AddParameter(definition as ParameterDefinition);
+					break;
+				case DefinitionKind.Field:
+					definition = new FieldDefinition(node as StructDeclaratorSyntax, definitionScope, identifier);
+					(this.definitions.FindLast(def => def.Kind == DefinitionKind.TypeName) as TypeNameDefinition)?.AddField(definition as FieldDefinition);
+					break;
+				case DefinitionKind.GlobalVariable:
+				case DefinitionKind.LocalVariable:
+					definition = new VariableDefinition(node, definitionScope, identifier, type);
+					break;
+				case DefinitionKind.Macro:
+					definition = new MacroDefinition(node as DefinePreprocessorSyntax, definitionScope, identifier);
+					break;
+				case DefinitionKind.TypeName:
+					definition = new TypeNameDefinition(definitionScope, identifier);
+					break;
+				case DefinitionKind.InterfaceBlock:
+					definition = new InterfaceBlockDefinition(node as InterfaceBlockSyntax, definitionScope, identifier);
+					break;
+			}
 
 			this.definitions.Add(definition);
 
 			return definition;
+		}
+
+		public Definition FindDefinition(IdentifierSyntax identifier)
+		{
+			if (this.testModeLayer > 0)
+			{
+				return null;
+			}
+
+			return this.definitions.FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span) && def.Identifier.Identifier == identifier.Identifier);
 		}
 
 		public ResetPoint GetResetPoint()
@@ -181,6 +259,16 @@ namespace Xannden.GLSL.Parsing
 		public void Reset(ResetPoint point)
 		{
 			this.listNode = point.Node;
+		}
+
+		public void StartTestMode()
+		{
+			this.testModeLayer++;
+		}
+
+		public void EndTestMode()
+		{
+			this.testModeLayer--;
 		}
 
 		private SyntaxNode CreateNode(SyntaxType type, int start)
@@ -196,9 +284,6 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.PrecisionDeclaration:
 					return new PrecisionDeclarationSyntax(this.tree, start);
 
-				case SyntaxType.DeclarationList:
-					return new DeclarationListSyntax(this.tree, start);
-
 				case SyntaxType.ArraySpecifier:
 					return new ArraySpecifierSyntax(this.tree, start);
 
@@ -213,6 +298,30 @@ namespace Xannden.GLSL.Parsing
 
 				case SyntaxType.TypeQualifier:
 					return new TypeQualifierSyntax(this.tree, start);
+
+				case SyntaxType.SingleTypeQualifier:
+					return new SingleTypeQualifierSyntax(this.tree, start);
+
+				case SyntaxType.StorageQualifier:
+					return new StorageQualifierSyntax(this.tree, start);
+
+				case SyntaxType.LayoutQualifier:
+					return new LayoutQualifierSyntax(this.tree, start);
+
+				case SyntaxType.LayoutQualifierId:
+					return new LayoutQualifierIdSyntax(this.tree, start);
+
+				case SyntaxType.PrecisionQualifier:
+					return new PrecisionQualifierSyntax(this.tree, start);
+
+				case SyntaxType.InterpolationQualifier:
+					return new InterpolationQualifierSyntax(this.tree, start);
+
+				case SyntaxType.InvariantQualifier:
+					return new InvariantQualifierSyntax(this.tree, start);
+
+				case SyntaxType.PreciseQualifier:
+					return new PreciseQualifierSyntax(this.tree, start);
 
 				case SyntaxType.FunctionDefinition:
 					return new FunctionDefinitionSyntax(this.tree, start);
@@ -268,8 +377,8 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.Condition:
 					return new ConditionSyntax(this.tree, start);
 
-				case SyntaxType.StructDefinition:
-					return new StructDefinitionSyntax(this.tree, start);
+				case SyntaxType.InterfaceBlock:
+					return new InterfaceBlockSyntax(this.tree, start);
 
 				case SyntaxType.StructSpecifier:
 					return new StructSpecifierSyntax(this.tree, start);

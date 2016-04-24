@@ -1,9 +1,12 @@
-﻿using Xannden.GLSL.Text;
+﻿using System.Collections.Generic;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ParameterSyntax : SyntaxNode
 	{
+		private List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
+
 		internal ParameterSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Parameter, start)
 		{
 		}
@@ -12,7 +15,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
-		public ArraySpecifierSyntax ArraySpecifier { get; private set; }
+		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers => this.arraySpecifiers;
 
 		public IdentifierSyntax Identifier { get; private set; }
 
@@ -20,7 +23,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 
 		public TypeQualifierSyntax TypeQualifier { get; private set; }
 
-		internal override void NewChild(SyntaxNode node)
+		protected override void NewChild(SyntaxNode node)
 		{
 			switch (node.SyntaxType)
 			{
@@ -37,7 +40,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 					break;
 
 				case SyntaxType.ArraySpecifier:
-					this.ArraySpecifier = node as ArraySpecifierSyntax;
+					this.arraySpecifiers.Add(node as ArraySpecifierSyntax);
 					break;
 			}
 		}

@@ -41,6 +41,10 @@ namespace Xannden.GLSL.Syntax.Trivia
 			{
 				builder.Append(this.text.Trim('\t'));
 			}
+			else if (this.SyntaxType == SyntaxType.NewLineTrivia)
+			{
+				builder.Append(" ");
+			}
 		}
 	}
 }

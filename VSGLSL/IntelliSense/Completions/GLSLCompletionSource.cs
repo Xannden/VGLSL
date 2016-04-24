@@ -35,8 +35,6 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 				this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
 			}
-
-			"Correctly"
 		}
 
 		public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)

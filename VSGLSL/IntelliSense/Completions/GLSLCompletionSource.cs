@@ -3,6 +3,7 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Operations;
+using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
@@ -17,7 +18,8 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 	{
 		private ITextBuffer textBuffer;
 		private GLSLCompletionSourceProvider provider;
-		private List<Completion> keywords;
+		private List<Completion> keywords = new List<Completion>();
+		private List<Completion> builtInCompleations = new List<Completion>();
 		private VSSource source;
 
 		internal GLSLCompletionSource(ITextBuffer textBuffer, GLSLCompletionSourceProvider provider, VSSource source)
@@ -25,7 +27,6 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 			this.textBuffer = textBuffer;
 			this.provider = provider;
 			this.source = source;
-			this.keywords = new List<Completion>();
 
 			ImageSource imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword, StandardGlyphItem.GlyphItemPublic);
 
@@ -34,6 +35,14 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 				string text = type.GetText();
 
 				this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
+			}
+
+			foreach (BuiltInDefinition item in BuiltInData.Instance.Definitions)
+			{
+				if (!this.builtInCompleations.Contains(com => com.DisplayText == item.Name))
+				{
+					this.builtInCompleations.Add(new Completion(item.Name, item.Name, item.Documentation, item.GetImageSource(this.provider.GlyphService), null));
+				}
 			}
 		}
 
@@ -51,7 +60,15 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 				foreach (Definition definition in definitions)
 				{
-					completions.Add(new Completion(definition.Identifier.Identifier, definition.Identifier.Identifier, string.Empty, definition.GetImageSource(this.provider.GlyphService), string.Empty));
+					completions.Add(new Completion(definition.Name, definition.Name, string.Empty, definition.GetImageSource(this.provider.GlyphService), string.Empty));
+				}
+			}
+
+			for (int i = 0; i < this.builtInCompleations.Count; i++)
+			{
+				if (!completions.Contains(comp => comp.DisplayText == this.builtInCompleations[i].DisplayText))
+				{
+					completions.Add(this.builtInCompleations[i]);
 				}
 			}
 

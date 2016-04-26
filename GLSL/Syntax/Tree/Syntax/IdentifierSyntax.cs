@@ -10,6 +10,10 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 		{
 		}
 
+		internal IdentifierSyntax(string text) : this(null, null, text, null, null, null, false)
+		{
+		}
+
 		public string Identifier => this.Text;
 
 		public Definition Definition { get; internal set; }

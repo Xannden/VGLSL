@@ -49,11 +49,11 @@ namespace Xannden.GLSL.Syntax.Trivia
 			return syntaxTriviaList;
 		}
 
-		internal override void ToStringWithoutNewLines(StringBuilder builder)
+		internal override void ToStringWithoutNewLines(StringBuilder builder, bool isLeadingTrivia)
 		{
 			for (int i = 0; i < this.List.Count; i++)
 			{
-				this.List[i].ToStringWithoutNewLines(builder);
+				this.List[i].ToStringWithoutNewLines(builder, isLeadingTrivia);
 			}
 		}
 	}

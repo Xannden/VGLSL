@@ -16,8 +16,6 @@ namespace Xannden.GLSL.Text
 		{
 			this.ErrorHandler = errorHandler;
 
-			this.Settings = new GLSLSettings();
-
 			this.Parser = new GLSLParser(this.ErrorHandler, this.Settings);
 		}
 
@@ -44,7 +42,7 @@ namespace Xannden.GLSL.Text
 
 		public ErrorHandler ErrorHandler { get; }
 
-		public GLSLSettings Settings { get; }
+		public GLSLSettings Settings { get; } = new GLSLSettings();
 
 		public SyntaxTree Tree
 		{

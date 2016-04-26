@@ -4,9 +4,9 @@ using Xannden.GLSL.Syntax.Tree.Syntax;
 
 namespace Xannden.GLSL.Semantics
 {
-	public class ParameterDefinition : Definition
+	public class ParameterDefinition : UserDefinition
 	{
-		internal ParameterDefinition(ParameterSyntax parameter, Scope scope, IdentifierSyntax identifier) : base(scope, identifier, DefinitionKind.Parameter)
+		internal ParameterDefinition(ParameterSyntax parameter, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.Parameter)
 		{
 			this.TypeQualfier = parameter.TypeQualifier;
 			this.Type = new TypeDefinition(parameter.TypeSyntax);

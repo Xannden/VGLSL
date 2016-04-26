@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DegreesDoc" xml:space="preserve">
+    <value>Converts radians to degrees.</value>
+  </data>
+  <data name="RadiansDoc" xml:space="preserve">
+    <value>Converts degrees to radians.</value>
+  </data>
+  <data name="SinDoc" xml:space="preserve">
+    <value>The standard trigonometric sine function.</value>
+  </data>
 </root>

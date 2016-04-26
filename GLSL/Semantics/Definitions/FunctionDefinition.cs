@@ -4,12 +4,12 @@ using Xannden.GLSL.Syntax.Tree.Syntax;
 
 namespace Xannden.GLSL.Semantics
 {
-	public sealed class FunctionDefinition : Definition
+	public sealed class FunctionDefinition : UserDefinition
 	{
 		private List<ParameterDefinition> parameters = new List<ParameterDefinition>();
 		private FunctionHeaderSyntax header;
 
-		internal FunctionDefinition(FunctionHeaderSyntax header, Scope scope, IdentifierSyntax identifier) : base(scope, identifier, DefinitionKind.Function)
+		internal FunctionDefinition(FunctionHeaderSyntax header, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.Function)
 		{
 			this.header = header;
 			this.TypeQualifier = header.TypeQualifier;

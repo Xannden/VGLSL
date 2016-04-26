@@ -5,9 +5,9 @@ using Xannden.GLSL.Syntax.Tree.Syntax;
 
 namespace Xannden.GLSL.Semantics
 {
-	public sealed class InterfaceBlockDefinition : Definition
+	public sealed class InterfaceBlockDefinition : UserDefinition
 	{
-		internal InterfaceBlockDefinition(InterfaceBlockSyntax interfaceBlock, Scope scope, IdentifierSyntax identifier) : base(scope, identifier, DefinitionKind.InterfaceBlock)
+		internal InterfaceBlockDefinition(InterfaceBlockSyntax interfaceBlock, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.InterfaceBlock)
 		{
 			this.TypeQualifier = interfaceBlock.TypeQualifier;
 		}

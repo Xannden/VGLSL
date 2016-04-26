@@ -5,9 +5,9 @@ using Xannden.GLSL.Syntax.Tree.Syntax;
 
 namespace Xannden.GLSL.Semantics
 {
-	public sealed class VariableDefinition : Definition
+	public sealed class VariableDefinition : UserDefinition
 	{
-		internal VariableDefinition(SyntaxNode node, Scope scope, IdentifierSyntax identifier, DefinitionKind kind) : base(scope, identifier, kind)
+		internal VariableDefinition(SyntaxNode node, Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier, documentation, kind)
 		{
 			switch (node.SyntaxType)
 			{

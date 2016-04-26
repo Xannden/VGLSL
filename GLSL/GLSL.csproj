@@ -73,7 +73,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuiltIn\BuiltInFunctions.cs" />
+    <Compile Include="BuiltIn\BuiltInData.cs" />
+    <Compile Include="BuiltIn\BuiltInDefinition.cs" />
+    <Compile Include="BuiltIn\BuiltInFunction.cs" />
+    <Compile Include="BuiltIn\Parameter.cs" />
+    <Compile Include="BuiltIn\Variable.cs" />
     <Compile Include="Errors\ErrorHandler.cs" />
     <Compile Include="Errors\GLSLError.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
@@ -86,19 +90,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Semantics\FieldDefinition.cs" />
-    <Compile Include="Semantics\FunctionDefinition.cs" />
-    <Compile Include="Semantics\InterfaceBlockDefinition.cs" />
-    <Compile Include="Semantics\MacroDefinition.cs" />
-    <Compile Include="Semantics\ParameterDefinition.cs" />
-    <Compile Include="Semantics\TypeDefinition.cs" />
-    <Compile Include="Semantics\TypeNameDefinition.cs" />
-    <Compile Include="Semantics\VariableDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Definition.cs" />
+    <Compile Include="Semantics\Definitions\DefinitionKind.cs" />
+    <Compile Include="Semantics\Definitions\FieldDefinition.cs" />
+    <Compile Include="Semantics\Definitions\FunctionDefinition.cs" />
+    <Compile Include="Semantics\Definitions\InterfaceBlockDefinition.cs" />
+    <Compile Include="Semantics\Definitions\MacroDefinition.cs" />
+    <Compile Include="Semantics\Definitions\ParameterDefinition.cs" />
+    <Compile Include="Semantics\Definitions\TypeDefinition.cs" />
+    <Compile Include="Semantics\Definitions\TypeNameDefinition.cs" />
+    <Compile Include="Semantics\Definitions\UserDefinition.cs" />
+    <Compile Include="Semantics\Definitions\VariableDefinition.cs" />
     <Compile Include="Settings\GLSLSettings.cs" />
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
-    <Compile Include="Semantics\Definition.cs" />
-    <Compile Include="Semantics\DefinitionKind.cs" />
     <Compile Include="Semantics\Scope.cs" />
     <Compile Include="Syntax\SyntaxType.cs" />
     <Compile Include="Syntax\Tokens\InvalidToken.cs" />

@@ -35,13 +35,13 @@ namespace Xannden.GLSL.Syntax.Trivia
 			return this.Text.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
 		}
 
-		internal virtual void ToStringWithoutNewLines(StringBuilder builder)
+		internal virtual void ToStringWithoutNewLines(StringBuilder builder, bool isLeadingTrivia)
 		{
 			if (this.SyntaxType != SyntaxType.NewLineTrivia && this.SyntaxType != SyntaxType.LineCommentTrivia && this.SyntaxType != SyntaxType.BlockCommentTrivia)
 			{
 				builder.Append(this.text.Trim('\t'));
 			}
-			else if (this.SyntaxType == SyntaxType.NewLineTrivia)
+			else if (this.SyntaxType == SyntaxType.NewLineTrivia && !isLeadingTrivia)
 			{
 				builder.Append(" ");
 			}

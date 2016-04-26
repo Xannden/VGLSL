@@ -1014,8 +1014,11 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			// TODO: fix this
-			// identifier.Definition = this.builder.FindDefinition(identifier);
+			if (identifier != null)
+			{
+				identifier.Definition = this.builder.FindDefinition(identifier);
+			}
+
 			this.RequireToken(SyntaxType.LeftParenToken);
 
 			if (this.IsUnaryExpression(this.builder.CurrentToken.SyntaxType))

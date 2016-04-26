@@ -13,7 +13,9 @@
 
 		public Source Source { get; }
 
+#pragma warning disable SA1101
 		public Span Span => Span.Create(0, this.Length - 1);
+#pragma warning restore SA1101
 
 		public abstract TrackingSpan CreateTrackingSpan(Span span);
 

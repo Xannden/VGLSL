@@ -59,5 +59,32 @@ namespace Xannden.GLSL.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converts radians to degrees..
+        /// </summary>
+        internal static string DegreesDoc {
+            get {
+                return ResourceManager.GetString("DegreesDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converts degrees to radians..
+        /// </summary>
+        internal static string RadiansDoc {
+            get {
+                return ResourceManager.GetString("RadiansDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The standard trigonometric sine function..
+        /// </summary>
+        internal static string SinDoc {
+            get {
+                return ResourceManager.GetString("SinDoc", resourceCulture);
+            }
+        }
     }
 }

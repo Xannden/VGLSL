@@ -40,14 +40,14 @@ namespace Xannden.GLSL.Syntax.Tree
 
 			if (this.HasLeadingTrivia())
 			{
-				this.LeadingTrivia.ToStringWithoutNewLines(builder);
+				this.LeadingTrivia.ToStringWithoutNewLines(builder, true);
 			}
 
 			builder.Append(this.Text);
 
 			if (this.HasTrailingTrivia())
 			{
-				this.TrailingTrivia.ToStringWithoutNewLines(builder);
+				this.TrailingTrivia.ToStringWithoutNewLines(builder, false);
 			}
 
 			return builder.ToString();

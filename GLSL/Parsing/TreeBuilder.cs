@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
@@ -211,28 +212,27 @@ namespace Xannden.GLSL.Parsing
 			switch (type)
 			{
 				case DefinitionKind.Function:
-					definition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier);
+					definition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier, string.Empty);
 					break;
 				case DefinitionKind.Parameter:
-					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier);
+					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier, string.Empty);
 					(this.definitions.FindLast(def => def.Kind == DefinitionKind.Function) as FunctionDefinition)?.AddParameter(definition as ParameterDefinition);
 					break;
 				case DefinitionKind.Field:
-					definition = new FieldDefinition(node as StructDeclaratorSyntax, definitionScope, identifier);
-					(this.definitions.FindLast(def => def.Kind == DefinitionKind.TypeName) as TypeNameDefinition)?.AddField(definition as FieldDefinition);
+					definition = new FieldDefinition(node as StructDeclaratorSyntax, definitionScope, identifier, string.Empty);
 					break;
 				case DefinitionKind.GlobalVariable:
 				case DefinitionKind.LocalVariable:
-					definition = new VariableDefinition(node, definitionScope, identifier, type);
+					definition = new VariableDefinition(node, definitionScope, identifier, string.Empty, type);
 					break;
 				case DefinitionKind.Macro:
-					definition = new MacroDefinition(node as DefinePreprocessorSyntax, definitionScope, identifier);
+					definition = new MacroDefinition(node as DefinePreprocessorSyntax, definitionScope, identifier, string.Empty);
 					break;
 				case DefinitionKind.TypeName:
-					definition = new TypeNameDefinition(definitionScope, identifier);
+					definition = new TypeNameDefinition(definitionScope, identifier, string.Empty);
 					break;
 				case DefinitionKind.InterfaceBlock:
-					definition = new InterfaceBlockDefinition(node as InterfaceBlockSyntax, definitionScope, identifier);
+					definition = new InterfaceBlockDefinition(node as InterfaceBlockSyntax, definitionScope, identifier, string.Empty);
 					break;
 			}
 
@@ -248,7 +248,14 @@ namespace Xannden.GLSL.Parsing
 				return null;
 			}
 
-			return this.definitions.FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span) && def.Identifier.Identifier == identifier.Identifier);
+			Definition definition = this.definitions.FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span) && def.Name == identifier.Identifier);
+
+			if (definition == null)
+			{
+				definition = BuiltInData.Instance.Definitions.Find(def => def.Name == identifier.Identifier);
+			}
+
+			return definition;
 		}
 
 		public ResetPoint GetResetPoint()

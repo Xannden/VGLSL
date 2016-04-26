@@ -4,9 +4,9 @@ using Xannden.GLSL.Syntax.Tree.Syntax;
 
 namespace Xannden.GLSL.Semantics
 {
-	public sealed class FieldDefinition : Definition
+	public sealed class FieldDefinition : UserDefinition
 	{
-		internal FieldDefinition(StructDeclaratorSyntax field, Scope scope, IdentifierSyntax identifier) : base(scope, identifier, DefinitionKind.Field)
+		internal FieldDefinition(StructDeclaratorSyntax field, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.Field)
 		{
 			StructDeclarationSyntax declaration = field.Parent as StructDeclarationSyntax;
 

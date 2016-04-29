@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StatementSyntax : SyntaxNode
 	{
-		private List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
+		private readonly List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
 
 		internal StatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Statement, start)
 		{

@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class SwitchStatementSyntax : SyntaxNode
 	{
-		private List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
+		private readonly List<SimpleStatementSyntax> simpleStatements = new List<SimpleStatementSyntax>();
 
 		internal SwitchStatementSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.SwitchStatement, start)
 		{

@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ExcludedCodeSyntax : SyntaxNode
 	{
-		private List<SyntaxNode> code = new List<SyntaxNode>();
+		private readonly List<SyntaxNode> code = new List<SyntaxNode>();
 
 		internal ExcludedCodeSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.ExcludedCode, start)
 		{

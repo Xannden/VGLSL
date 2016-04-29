@@ -4,8 +4,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TokenSeparatedList<T> where T : SyntaxNode
 	{
-		private List<T> nodes = new List<T>();
-		private List<SyntaxToken> tokens = new List<SyntaxToken>();
+		private readonly List<T> nodes = new List<T>();
+		private readonly List<SyntaxToken> tokens = new List<SyntaxToken>();
 
 		public IEnumerable<SyntaxNode> List
 		{

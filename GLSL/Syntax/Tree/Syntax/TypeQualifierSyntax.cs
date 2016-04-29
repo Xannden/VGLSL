@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TypeQualifierSyntax : SyntaxNode
 	{
-		private List<SingleTypeQualifierSyntax> singleTypeQualifiers = new List<SingleTypeQualifierSyntax>();
+		private readonly List<SingleTypeQualifierSyntax> singleTypeQualifiers = new List<SingleTypeQualifierSyntax>();
 
 		internal TypeQualifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TypeQualifier, start)
 		{

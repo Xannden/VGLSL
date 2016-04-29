@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ParameterSyntax : SyntaxNode
 	{
-		private List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
+		private readonly List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
 
 		internal ParameterSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Parameter, start)
 		{

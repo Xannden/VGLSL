@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InitPartSyntax : SyntaxNode
 	{
-		private List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
+		private readonly List<ArraySpecifierSyntax> arraySpecifiers = new List<ArraySpecifierSyntax>();
 
 		internal InitPartSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InitPart, start)
 		{

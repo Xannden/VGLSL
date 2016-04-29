@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class TokenStringSyntax : SyntaxNode
 	{
-		private List<SyntaxNode> tokens = new List<SyntaxNode>();
+		private readonly List<SyntaxNode> tokens = new List<SyntaxNode>();
 
 		internal TokenStringSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.TokenString, start)
 		{

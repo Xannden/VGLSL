@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class ProgramSyntax : SyntaxNode
 	{
-		private List<SyntaxNode> nodes = new List<SyntaxNode>();
+		private readonly List<SyntaxNode> nodes = new List<SyntaxNode>();
 
 		internal ProgramSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.Program, start)
 		{

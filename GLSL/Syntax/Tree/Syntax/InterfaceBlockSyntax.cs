@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class InterfaceBlockSyntax : SyntaxNode
 	{
-		private List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
+		private readonly List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
 
 		internal InterfaceBlockSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.InterfaceBlock, start)
 		{

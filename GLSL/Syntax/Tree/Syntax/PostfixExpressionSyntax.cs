@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class PostfixExpressionSyntax : SyntaxNode
 	{
-		private List<PostfixExpressionContinuationSyntax> postfixExpressionContinuations = new List<PostfixExpressionContinuationSyntax>();
+		private readonly List<PostfixExpressionContinuationSyntax> postfixExpressionContinuations = new List<PostfixExpressionContinuationSyntax>();
 
 		internal PostfixExpressionSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.PostfixExpression, start)
 		{

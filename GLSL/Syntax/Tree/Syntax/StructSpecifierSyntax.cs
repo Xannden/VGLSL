@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 {
 	public sealed class StructSpecifierSyntax : SyntaxNode
 	{
-		private List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
+		private readonly List<StructDeclarationSyntax> structDeclarations = new List<StructDeclarationSyntax>();
 
 		internal StructSpecifierSyntax(SyntaxTree tree, int start) : base(tree, SyntaxType.StructSpecifier, start)
 		{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -13,6 +14,7 @@ namespace Xannden.VSGLSL.Classification
 	internal sealed class GLSLClassifierProvider : IClassifierProvider
 	{
 		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal IClassificationTypeRegistryService ClassificationTypeRegistryService { get; private set; } = null;
 
 		public IClassifier GetClassifier(ITextBuffer textBuffer)

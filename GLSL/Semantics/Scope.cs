@@ -4,7 +4,7 @@ namespace Xannden.GLSL.Semantics
 {
 	public sealed class Scope
 	{
-		private bool isBuiltIn = false;
+		private readonly bool isBuiltIn;
 
 		internal Scope(TrackingPoint start, TrackingPoint end)
 		{
@@ -38,7 +38,7 @@ namespace Xannden.GLSL.Semantics
 				return true;
 			}
 
-			return span.Start >= this.Start.GetPosition(snapshot) && span.End <= this.End.GetPosition(snapshot);
+			return span?.Start >= this.Start.GetPosition(snapshot) && span?.End <= this.End.GetPosition(snapshot);
 		}
 
 		public bool Contains(Snapshot snapshot, TrackingSpan span)
@@ -48,7 +48,7 @@ namespace Xannden.GLSL.Semantics
 				return true;
 			}
 
-			return this.Contains(snapshot, span.GetSpan(snapshot));
+			return this.Contains(snapshot, span?.GetSpan(snapshot));
 		}
 	}
 }

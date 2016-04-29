@@ -59,11 +59,11 @@ namespace Xannden.GLSL.Syntax.Tree
 			return node;
 		}
 
-		internal void WriteToXML(string file, Snapshot snapshot)
+		internal void WriteToXml(string file, Snapshot snapshot)
 		{
 			using (IndentedTextWriter indentedWriter = new IndentedTextWriter(new StreamWriter(File.Create(file)), "\t"))
 			{
-				this.Root.WriteToXML(indentedWriter, snapshot);
+				this.Root.WriteToXml(indentedWriter, snapshot);
 			}
 		}
 	}

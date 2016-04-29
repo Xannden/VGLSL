@@ -29,7 +29,7 @@ namespace Xannden.GLSL.Tests
 
 			SyntaxTree tree = parser.Run(source.CurrentSnapshot, tokens);
 
-			tree.WriteToXML("tree.xml", source.CurrentSnapshot);
+			tree.WriteToXml("tree.xml", source.CurrentSnapshot);
 		}
 	}
 }

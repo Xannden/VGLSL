@@ -12,10 +12,10 @@ namespace Xannden.VSGLSL.Preprocessors
 {
 	internal class PreprocessorSuggestedAction : ISuggestedAction
 	{
-		private PreprocessorSuggestedActionsSource actionSource;
-		private bool newValue;
-		private int position;
-		private Source source;
+		private readonly PreprocessorSuggestedActionsSource actionSource;
+		private readonly bool newValue;
+		private readonly int position;
+		private readonly Source source;
 
 		public PreprocessorSuggestedAction(bool newValue, Source source, int position, PreprocessorSuggestedActionsSource actionSource)
 		{
@@ -40,6 +40,7 @@ namespace Xannden.VSGLSL.Preprocessors
 
 		public void Dispose()
 		{
+			// Method intentionally left empty.
 		}
 
 		public Task<IEnumerable<SuggestedActionSet>> GetActionSetsAsync(CancellationToken cancellationToken)

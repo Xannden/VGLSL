@@ -12,9 +12,9 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 {
 	internal class GLSLCompletionCommandHandler : IOleCommandTarget
 	{
+		private readonly ITextView textView;
+		private readonly GLSLCompletionCommandHandlerProvider provider;
 		private IOleCommandTarget nextCommandHandler;
-		private ITextView textView;
-		private GLSLCompletionCommandHandlerProvider provider;
 		private ICompletionSession session;
 
 		internal GLSLCompletionCommandHandler(IVsTextView textViewAdapter, ITextView textView, GLSLCompletionCommandHandlerProvider provider)
@@ -42,27 +42,22 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 				typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
 			}
 
-			// check for a commit character
-			if (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB || (char.IsWhiteSpace(typedChar) || char.IsPunctuation(typedChar)))
+			if ((nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB || (char.IsWhiteSpace(typedChar) || char.IsPunctuation(typedChar))) && (this.session != null && !this.session.IsDismissed))
 			{
-				// check for a a selection
-				if (this.session != null && !this.session.IsDismissed)
+				// if the selection is fully selected, commit the current session
+				if (this.session.SelectedCompletionSet.SelectionStatus.IsSelected)
 				{
-					// if the selection is fully selected, commit the current session
-					if (this.session.SelectedCompletionSet.SelectionStatus.IsSelected)
-					{
-						this.session.Commit();
+					this.session.Commit();
 
-						if (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB)
-						{
-							return VSConstants.S_OK;
-						}
-					}
-					else
+					if (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB)
 					{
-						// if there is no selection, dismiss the session
-						this.session.Dismiss();
+						return VSConstants.S_OK;
 					}
+				}
+				else
+				{
+					// if there is no selection, dismiss the session
+					this.session.Dismiss();
 				}
 			}
 
@@ -109,14 +104,14 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 			return this.nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
 
-		private bool TriggerCompletion()
+		private void TriggerCompletion()
 		{
 			// the caret must be in a non-projection location
 			SnapshotPoint? caretPoint = this.textView.Caret.Position.Point.GetPoint(textBuffer => (!textBuffer.ContentType.IsOfType("projection")), PositionAffinity.Predecessor);
 
 			if (!caretPoint.HasValue)
 			{
-				return false;
+				return;
 			}
 
 			this.session = this.provider.CompletionBroker.CreateCompletionSession(this.textView, caretPoint.Value.Snapshot.CreateTrackingPoint(caretPoint.Value.Position, PointTrackingMode.Positive), true);
@@ -125,7 +120,7 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 			this.session.Dismissed += this.OnSessionDismissed;
 			this.session.Start();
 
-			return true;
+			return;
 		}
 
 		private void OnSessionDismissed(object sender, EventArgs e)

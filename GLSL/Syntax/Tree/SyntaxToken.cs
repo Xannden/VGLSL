@@ -7,7 +7,7 @@ namespace Xannden.GLSL.Syntax.Tree
 {
 	public class SyntaxToken : SyntaxNode
 	{
-		private TrackingSpan fullSpan;
+		private readonly TrackingSpan fullSpan;
 
 		internal SyntaxToken(SyntaxTree tree, SyntaxType type, TrackingSpan span, string text, SyntaxTrivia leadingTrivia, SyntaxTrivia trailingTrivia, Snapshot snapshot, bool isMissing = false) : base(tree, type, span)
 		{
@@ -15,8 +15,8 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.LeadingTrivia = leadingTrivia;
 			this.TrailingTrivia = trailingTrivia;
 
-			int start = this.HasLeadingTrivia() ? this.LeadingTrivia.Span.GetSpan(snapshot).Start : this.Span.GetSpan(snapshot).Start;
-			int end = this.HasTrailingTrivia() ? this.TrailingTrivia.Span.GetSpan(snapshot).End : this.Span.GetSpan(snapshot).End;
+			int start = this.HasLeadingTrivia ? this.LeadingTrivia.Span.GetSpan(snapshot).Start : this.Span.GetSpan(snapshot).Start;
+			int end = this.HasTrailingTrivia ? this.TrailingTrivia.Span.GetSpan(snapshot).End : this.Span.GetSpan(snapshot).End;
 
 			this.fullSpan = snapshot.CreateTrackingSpan(GLSL.Text.Span.Create(start, end));
 			this.IsMissing = isMissing;
@@ -30,41 +30,22 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		public SyntaxTrivia TrailingTrivia { get; private set; }
 
-		public bool HasLeadingTrivia() => this.LeadingTrivia != null;
+		public bool HasLeadingTrivia => this.LeadingTrivia != null;
 
-		public bool HasTrailingTrivia() => this.TrailingTrivia != null;
-
-		public string ToStringWithoutNewLines()
-		{
-			StringBuilder builder = new StringBuilder();
-
-			if (this.HasLeadingTrivia())
-			{
-				this.LeadingTrivia.ToStringWithoutNewLines(builder, true);
-			}
-
-			builder.Append(this.Text);
-
-			if (this.HasTrailingTrivia())
-			{
-				this.TrailingTrivia.ToStringWithoutNewLines(builder, false);
-			}
-
-			return builder.ToString();
-		}
+		public bool HasTrailingTrivia => this.TrailingTrivia != null;
 
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();
 
-			if (this.HasLeadingTrivia())
+			if (this.HasLeadingTrivia)
 			{
 				builder.Append(this.LeadingTrivia.ToString());
 			}
 
 			builder.Append(this.Text);
 
-			if (this.HasTrailingTrivia())
+			if (this.HasTrailingTrivia)
 			{
 				builder.Append(this.TrailingTrivia.ToString());
 			}
@@ -76,14 +57,14 @@ namespace Xannden.GLSL.Syntax.Tree
 		{
 			List<string> elements = new List<string>();
 
-			elements.Add($"Text=\"{this.Escape(this.Text)}\"");
+			elements.Add($"Text=\"{Escape(this.Text)}\"");
 
-			if (this.HasLeadingTrivia())
+			if (this.HasLeadingTrivia)
 			{
 				elements.Add($"LeadingTrivia=\"{this.LeadingTrivia.ToString()}\"");
 			}
 
-			if (this.HasTrailingTrivia())
+			if (this.HasTrailingTrivia)
 			{
 				elements.Add($"TrailingTrivia=\"{this.TrailingTrivia.ToString()}\"");
 			}
@@ -93,20 +74,20 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		internal override void ToString(StringBuilder builder)
 		{
-			if (this.HasLeadingTrivia())
+			if (this.HasLeadingTrivia)
 			{
 				builder.Append(this.LeadingTrivia.ToString());
 			}
 
 			builder.Append(this.Text);
 
-			if (this.HasTrailingTrivia())
+			if (this.HasTrailingTrivia)
 			{
 				builder.Append(this.TrailingTrivia.ToString());
 			}
 		}
 
-		private string Escape(string text)
+		private static string Escape(string text)
 		{
 			return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
 		}

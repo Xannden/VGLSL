@@ -23,7 +23,7 @@ namespace Xannden.VSGLSL.Packages
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
-	[ProvideLanguageService(typeof(GLSLPackage), "GLSL", 106, EnableLineNumbers = true)]
+	[ProvideLanguageService(typeof(GLSLPackage), "GLSL", 106, EnableLineNumbers = true, EnableCommenting = true, QuickInfo = true, ShowCompletion = true)]
 	[ProvideLanguageExtension(typeof(GLSLPackage), ".glsl")]
 	[ProvideLanguageExtension(typeof(GLSLPackage), ".vert")]
 	[ProvideLanguageExtension(typeof(GLSLPackage), ".frag")]

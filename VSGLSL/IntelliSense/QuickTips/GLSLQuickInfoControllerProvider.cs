@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -14,6 +15,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 	internal class GLSLQuickInfoControllerProvider : IIntellisenseControllerProvider
 	{
 		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal IQuickInfoBroker QuickInfoBroker { get; private set; }
 
 		public IIntellisenseController TryCreateIntellisenseController(ITextView textView, IList<ITextBuffer> subjectBuffers)

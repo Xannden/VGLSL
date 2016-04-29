@@ -11,10 +11,10 @@ namespace Xannden.VSGLSL.Sources
 {
 	internal sealed class VSSource : Source, IDisposable
 	{
-		private AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+		private readonly AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+		private readonly GLSLLexer lexer = new GLSLLexer();
+		private readonly object lockObject = new object();
 		private bool isParsing = false;
-		private GLSLLexer lexer = new GLSLLexer();
-		private object lockObject = new object();
 
 		private VSSource(ITextBuffer buffer, ErrorHandler errorHandler) : base(errorHandler)
 		{
@@ -78,8 +78,10 @@ namespace Xannden.VSGLSL.Sources
 		private void Parse(object obj)
 		{
 			while (this.autoResetEvent.WaitOne(200))
+#pragma warning disable S108 // Nested blocks of code should not be left empty
 			{
 			}
+#pragma warning restore S108 // Nested blocks of code should not be left empty
 
 			this.ErrorHandler.ClearErrors();
 

@@ -10,8 +10,8 @@ namespace Xannden.VSGLSL.Errors
 {
 	internal sealed class ErrorTagger : ITagger<ErrorTag>
 	{
-		private ErrorHandler handler;
-		private VSSource source;
+		private readonly ErrorHandler handler;
+		private readonly VSSource source;
 
 		public ErrorTagger(ErrorHandler handler, VSSource source)
 		{

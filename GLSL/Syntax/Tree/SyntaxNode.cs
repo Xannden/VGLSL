@@ -159,7 +159,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			this.Span = snapshot.CreateTrackingSpan(Text.Span.Create(this.TempStart, end));
 		}
 
-		internal virtual void WriteToXML(IndentedTextWriter writer, Snapshot snapshot)
+		internal virtual void WriteToXml(IndentedTextWriter writer, Snapshot snapshot)
 		{
 			StringBuilder builder = new StringBuilder();
 
@@ -187,7 +187,7 @@ namespace Xannden.GLSL.Syntax.Tree
 
 			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
-				this.InternalChildren[i].WriteToXML(writer, snapshot);
+				this.InternalChildren[i].WriteToXml(writer, snapshot);
 			}
 
 			writer.IndentLevel--;

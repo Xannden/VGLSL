@@ -8,24 +8,24 @@ namespace Xannden.GLSL.Semantics
 	{
 		internal ParameterDefinition(ParameterSyntax parameter, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.Parameter)
 		{
-			this.TypeQualfier = parameter.TypeQualifier;
-			this.Type = new TypeDefinition(parameter.TypeSyntax);
+			this.TypeQualifier = parameter.TypeQualifier;
+			this.ParameterType = new TypeDefinition(parameter.TypeSyntax);
 			this.ArraySpecifiers = parameter.ArraySpecifiers;
 		}
 
-		public TypeQualifierSyntax TypeQualfier { get; }
+		public TypeQualifierSyntax TypeQualifier { get; }
 
-		public TypeDefinition Type { get; }
+		public TypeDefinition ParameterType { get; }
 
 		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers { get; }
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
-			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualfier));
+			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier));
 
-			result.Add(this.Type.Type);
+			result.Add(this.ParameterType.TypeToken);
 
-			result.AddRange(this.GetSyntaxTokens(this.Type.ArraySpecifiers));
+			result.AddRange(this.GetSyntaxTokens(this.ParameterType.ArraySpecifiers));
 
 			result.Add(this.Identifier);
 

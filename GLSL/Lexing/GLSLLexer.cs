@@ -11,18 +11,18 @@ namespace Xannden.GLSL.Lexing
 {
 	public sealed class GLSLLexer
 	{
-		private List<TrackingSpan> commentSpans = new List<TrackingSpan>();
+		private readonly List<TrackingSpan> commentSpans = new List<TrackingSpan>();
+		private readonly Dictionary<string, SyntaxType> keywords;
+		private readonly List<SyntaxTrivia> leadingTriva = new List<SyntaxTrivia>();
+		private readonly Dictionary<string, SyntaxType> preprocessors;
+		private readonly StringBuilder tokenBuilder = new StringBuilder();
+		private readonly List<SyntaxTrivia> trailingTriva = new List<SyntaxTrivia>();
 		private TokenInfo info;
 		private int invalidTokens = 0;
 		private bool isLeadingTrivia = false;
-		private Dictionary<string, SyntaxType> keywords;
-		private List<SyntaxTrivia> leadingTriva = new List<SyntaxTrivia>();
 		private TextNavigator navigator;
-		private Dictionary<string, SyntaxType> preprocessors;
 		private Snapshot snapshot;
-		private StringBuilder tokenBuilder = new StringBuilder();
 		private LinkedList<Token> tokens;
-		private List<SyntaxTrivia> trailingTriva = new List<SyntaxTrivia>();
 
 		public GLSLLexer()
 		{
@@ -277,13 +277,10 @@ namespace Xannden.GLSL.Lexing
 
 		private void CreateToken()
 		{
-			if (!this.info.SyntaxType.IsTrivia() || (this.trailingTriva.Count > 0 && this.isLeadingTrivia))
+			if ((!this.info.SyntaxType.IsTrivia() || (this.trailingTriva.Count > 0 && this.isLeadingTrivia)) && this.trailingTriva.Count > 0)
 			{
-				if (this.trailingTriva.Count > 0)
-				{
-					this.tokens.Last.Value.TrailingTrivia = this.CreateTrivia(this.trailingTriva);
-					this.trailingTriva.Clear();
-				}
+				this.tokens.Last.Value.TrailingTrivia = this.CreateTrivia(this.trailingTriva);
+				this.trailingTriva.Clear();
 			}
 
 			if (this.info.Start > this.info.End)
@@ -1024,7 +1021,7 @@ namespace Xannden.GLSL.Lexing
 			{
 				character = this.navigator.PeekChar();
 
-				if ((character >= 'A' && character <= 'Z') || (character >= '0' && character <= '9') || (character >= 'a' && character <= 'z') || character == '_')
+				if (char.IsLetterOrDigit(character) || character == '_')
 				{
 					this.tokenBuilder.Append(character);
 					this.navigator.Advance();
@@ -1043,14 +1040,7 @@ namespace Xannden.GLSL.Lexing
 
 			SyntaxType type;
 
-			if (this.keywords.TryGetValue(this.info.Text, out type))
-			{
-				this.info.SyntaxType = type;
-			}
-			else
-			{
-				this.info.SyntaxType = SyntaxType.IdentifierToken;
-			}
+			this.info.SyntaxType = this.keywords.TryGetValue(this.info.Text, out type) ? type : SyntaxType.IdentifierToken;
 		}
 
 		private void ScanLineCommentTriva()
@@ -1141,7 +1131,7 @@ namespace Xannden.GLSL.Lexing
 
 				if (isHex)
 				{
-					if ((character >= '0' && character <= '9') || (character >= 'A' && character <= 'F') || (character >= 'a' && character <= 'f'))
+					if (char.IsDigit(character) || (char.ToLowerInvariant(character) >= 'a' && char.ToLowerInvariant(character) <= 'f'))
 					{
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
@@ -1169,7 +1159,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 					}
-					else if (character == '.' || character == 'e' || character == 'E' || character == 'f' || character == 'F' || (character == 'l' && this.navigator.PeekChar(1) == 'f') || (character == 'L' && this.navigator.PeekChar(1) == 'F'))
+					else if (character == '.' || char.ToLowerInvariant(character) == 'e' || char.ToLowerInvariant(character) == 'f' || (char.ToLowerInvariant(character) == 'l' && char.ToLowerInvariant(this.navigator.PeekChar(1)) == 'f'))
 					{
 						isFloat = true;
 						isOctal = false;
@@ -1183,7 +1173,7 @@ namespace Xannden.GLSL.Lexing
 				}
 				else if (isFloat)
 				{
-					if (character == '.')
+					if (character == '.' || (character >= '0' && character <= '9'))
 					{
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
@@ -1217,11 +1207,6 @@ namespace Xannden.GLSL.Lexing
 						this.info.SyntaxType = SyntaxType.DoubleConstToken;
 						break;
 					}
-					else if (character >= '0' && character <= '9')
-					{
-						this.tokenBuilder.Append(character);
-						this.navigator.Advance();
-					}
 					else
 					{
 						break;
@@ -1234,7 +1219,7 @@ namespace Xannden.GLSL.Lexing
 						this.tokenBuilder.Append(character);
 						this.navigator.Advance();
 					}
-					else if (character == '.' || character == 'e' || character == 'E' || character == 'f' || character == 'F' || (character == 'l' && this.navigator.PeekChar(1) == 'f') || (character == 'L' && this.navigator.PeekChar(1) == 'F'))
+					else if (character == '.' || char.ToLowerInvariant(character) == 'e' || char.ToLowerInvariant(character) == 'f' || (char.ToLowerInvariant(character) == 'l' && char.ToLowerInvariant(this.navigator.PeekChar(1)) == 'f'))
 					{
 						isFloat = true;
 					}

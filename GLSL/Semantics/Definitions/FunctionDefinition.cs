@@ -6,8 +6,8 @@ namespace Xannden.GLSL.Semantics
 {
 	public sealed class FunctionDefinition : UserDefinition
 	{
-		private List<ParameterDefinition> parameters = new List<ParameterDefinition>();
-		private FunctionHeaderSyntax header;
+		private readonly List<ParameterDefinition> parameters = new List<ParameterDefinition>();
+		private readonly FunctionHeaderSyntax header;
 
 		internal FunctionDefinition(FunctionHeaderSyntax header, Scope scope, IdentifierSyntax identifier, string documentation) : base(scope, identifier, documentation, DefinitionKind.Function)
 		{
@@ -22,11 +22,11 @@ namespace Xannden.GLSL.Semantics
 
 		public IReadOnlyList<ParameterDefinition> Parameters => this.parameters;
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier));
 
-			result.Add(this.ReturnType.Type);
+			result.Add(this.ReturnType.TypeToken);
 
 			result.AddRange(this.GetSyntaxTokens(this.ReturnType.ArraySpecifiers));
 

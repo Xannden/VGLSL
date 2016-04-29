@@ -9,21 +9,21 @@ namespace Xannden.GLSL.Semantics
 	{
 		internal VariableDefinition(SyntaxNode node, Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier, documentation, kind)
 		{
-			switch (node.SyntaxType)
+			switch (node?.SyntaxType)
 			{
 				case SyntaxType.InitPart:
 					InitPartSyntax initPart = node as InitPartSyntax;
 					InitDeclaratorListSyntax initDeclaratorList = node.Parent as InitDeclaratorListSyntax;
 
 					this.TypeQualifier = initDeclaratorList.TypeQualifier;
-					this.Type = new TypeDefinition(initDeclaratorList.TypeSyntax);
+					this.VariableType = new TypeDefinition(initDeclaratorList.TypeSyntax);
 					this.ArraySpecifiers = initPart.ArraySpecifiers;
 					break;
 				case SyntaxType.Condition:
 					ConditionSyntax condition = node as ConditionSyntax;
 
 					this.TypeQualifier = condition.TypeQualifier;
-					this.Type = new TypeDefinition(condition.TypeSyntax);
+					this.VariableType = new TypeDefinition(condition.TypeSyntax);
 					this.ArraySpecifiers = new List<ArraySpecifierSyntax>();
 					break;
 				case SyntaxType.StructDeclarator:
@@ -31,7 +31,7 @@ namespace Xannden.GLSL.Semantics
 					InterfaceBlockSyntax interfaceBlock = node.Parent as InterfaceBlockSyntax;
 
 					this.TypeQualifier = interfaceBlock.TypeQualifier;
-					this.Type = new TypeDefinition(interfaceBlock.Identifier);
+					this.VariableType = new TypeDefinition(interfaceBlock.Identifier);
 					this.ArraySpecifiers = declarator.ArraySpecifiers;
 					break;
 			}
@@ -39,19 +39,19 @@ namespace Xannden.GLSL.Semantics
 
 		public SyntaxNode TypeQualifier { get; }
 
-		public TypeDefinition Type { get; }
+		public TypeDefinition VariableType { get; }
 
 		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers { get; }
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier));
 
-			if (this.Type != null)
+			if (this.VariableType != null)
 			{
-				result.Add(this.Type.Type);
+				result.Add(this.VariableType.TypeToken);
 
-				result.AddRange(this.GetSyntaxTokens(this.Type.ArraySpecifiers));
+				result.AddRange(this.GetSyntaxTokens(this.VariableType.ArraySpecifiers));
 			}
 
 			result.Add(this.Identifier);

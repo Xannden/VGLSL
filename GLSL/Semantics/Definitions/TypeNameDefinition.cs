@@ -10,7 +10,7 @@ namespace Xannden.GLSL.Semantics
 		{
 		}
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			return new List<SyntaxToken> { this.Identifier };
 		}

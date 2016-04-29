@@ -22,7 +22,6 @@
     <Rule Id="CA1019" Action="Warning" />
     <Rule Id="CA1021" Action="Warning" />
     <Rule Id="CA1023" Action="Warning" />
-    <Rule Id="CA1024" Action="Warning" />
     <Rule Id="CA1025" Action="Warning" />
     <Rule Id="CA1026" Action="Warning" />
     <Rule Id="CA1027" Action="Warning" />
@@ -61,18 +60,34 @@
     <Rule Id="CA1063" Action="Warning" />
     <Rule Id="CA1064" Action="Warning" />
     <Rule Id="CA1065" Action="Warning" />
+    <Rule Id="CA1300" Action="Warning" />
     <Rule Id="CA1301" Action="Warning" />
+    <Rule Id="CA1302" Action="Warning" />
+    <Rule Id="CA1304" Action="Warning" />
+    <Rule Id="CA1306" Action="Warning" />
+    <Rule Id="CA1307" Action="Warning" />
     <Rule Id="CA1308" Action="Warning" />
+    <Rule Id="CA1309" Action="Warning" />
     <Rule Id="CA1400" Action="Warning" />
     <Rule Id="CA1401" Action="Warning" />
+    <Rule Id="CA1402" Action="Warning" />
     <Rule Id="CA1403" Action="Warning" />
     <Rule Id="CA1404" Action="Warning" />
     <Rule Id="CA1405" Action="Warning" />
+    <Rule Id="CA1406" Action="Warning" />
+    <Rule Id="CA1407" Action="Warning" />
+    <Rule Id="CA1408" Action="Warning" />
+    <Rule Id="CA1409" Action="Warning" />
     <Rule Id="CA1410" Action="Warning" />
+    <Rule Id="CA1411" Action="Warning" />
+    <Rule Id="CA1412" Action="Warning" />
+    <Rule Id="CA1413" Action="Warning" />
     <Rule Id="CA1414" Action="Warning" />
     <Rule Id="CA1415" Action="Warning" />
     <Rule Id="CA1501" Action="Warning" />
     <Rule Id="CA1504" Action="Warning" />
+    <Rule Id="CA1600" Action="Warning" />
+    <Rule Id="CA1601" Action="Warning" />
     <Rule Id="CA1700" Action="Warning" />
     <Rule Id="CA1701" Action="Warning" />
     <Rule Id="CA1702" Action="Warning" />
@@ -106,11 +121,13 @@
     <Rule Id="CA1812" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
+    <Rule Id="CA1815" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
     <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
     <Rule Id="CA1821" Action="Warning" />
     <Rule Id="CA1823" Action="Warning" />
+    <Rule Id="CA1824" Action="Warning" />
     <Rule Id="CA1900" Action="Warning" />
     <Rule Id="CA1901" Action="Warning" />
     <Rule Id="CA2000" Action="Warning" />
@@ -192,11 +209,38 @@
     <Rule Id="RECS0004" Action="Warning" />
     <Rule Id="RECS0033" Action="Hidden" />
     <Rule Id="RECS0091" Action="None" />
-    <Rule Id="RECS0092" Action="None" />
+    <Rule Id="RECS0092" Action="Warning" />
     <Rule Id="RECS0122" Action="None" />
     <Rule Id="RECS0129" Action="None" />
     <Rule Id="RECS0135" Action="None" />
     <Rule Id="RECS0145" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <Rule Id="S100" Action="None" />
+    <Rule Id="S101" Action="None" />
+    <Rule Id="S1109" Action="Warning" />
+    <Rule Id="S1125" Action="Warning" />
+    <Rule Id="S121" Action="Warning" />
+    <Rule Id="S122" Action="Warning" />
+    <Rule Id="S1226" Action="Warning" />
+    <Rule Id="S127" Action="Warning" />
+    <Rule Id="S1313" Action="Warning" />
+    <Rule Id="S1479" Action="None" />
+    <Rule Id="S1659" Action="Warning" />
+    <Rule Id="S1694" Action="Warning" />
+    <Rule Id="S1994" Action="Warning" />
+    <Rule Id="S2197" Action="Warning" />
+    <Rule Id="S2228" Action="Warning" />
+    <Rule Id="S2357" Action="Warning" />
+    <Rule Id="S2387" Action="Warning" />
+    <Rule Id="S2551" Action="Warning" />
+    <Rule Id="S2674" Action="Warning" />
+    <Rule Id="S2760" Action="Warning" />
+    <Rule Id="S2931" Action="Warning" />
+    <Rule Id="S2952" Action="Warning" />
+    <Rule Id="S2955" Action="Warning" />
+    <Rule Id="S3215" Action="Warning" />
+    <Rule Id="S3216" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA1027" Action="None" />

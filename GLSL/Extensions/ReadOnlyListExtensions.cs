@@ -23,7 +23,7 @@ namespace Xannden.GLSL.Extensions
 			return default(T);
 		}
 
-		public static List<T> FindAll<T>(this IReadOnlyList<T> list, Predicate<T> predicate)
+		public static IReadOnlyList<T> FindAll<T>(this IReadOnlyList<T> list, Predicate<T> predicate)
 		{
 			if (list == null)
 			{

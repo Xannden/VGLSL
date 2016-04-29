@@ -6,12 +6,14 @@
 		{
 			this.Snapshot = snapshot;
 
-			if (end < start)
+			int lineEnd = end;
+
+			if (lineEnd < start)
 			{
-				end = start;
+				lineEnd = start;
 			}
 
-			this.Span = Span.Create(start, end);
+			this.Span = Span.Create(start, lineEnd);
 			this.LineNumber = lineNumber;
 		}
 

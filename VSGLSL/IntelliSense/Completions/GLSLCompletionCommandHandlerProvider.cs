@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
@@ -20,9 +21,11 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 		internal IVsEditorAdaptersFactoryService AdapterService { get; set; } = null;
 
 		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal ICompletionBroker CompletionBroker { get; set; }
 
 		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal SVsServiceProvider ServiceProvider { get; set; }
 
 		public void VsTextViewCreated(IVsTextView textViewAdapter)

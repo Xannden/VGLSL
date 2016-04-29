@@ -13,15 +13,15 @@ namespace Xannden.GLSL.Parsing
 {
 	internal sealed class TreeBuilder
 	{
-		private ErrorHandler errorHandler;
+		private readonly ErrorHandler errorHandler;
+		private readonly Snapshot snapshot;
+		private readonly Stack<SyntaxNode> stack = new Stack<SyntaxNode>();
+		private readonly LinkedList<Token> tokens;
+		private readonly SyntaxTree tree = new SyntaxTree();
+		private readonly Stack<Scope> scope = new Stack<Scope>();
+		private readonly List<Definition> definitions = new List<Definition>();
 		private LinkedListNode<Token> listNode;
-		private Snapshot snapshot;
-		private Stack<SyntaxNode> stack = new Stack<SyntaxNode>();
-		private LinkedList<Token> tokens;
-		private SyntaxTree tree = new SyntaxTree();
-		private Stack<Scope> scope = new Stack<Scope>();
-		private List<Definition> definitions = new List<Definition>();
-		private int testModeLayer = 0;
+		private int testModeLayer;
 
 		public TreeBuilder(Snapshot snapshot, LinkedList<Token> tokens, ErrorHandler errorHandler)
 		{
@@ -214,23 +214,29 @@ namespace Xannden.GLSL.Parsing
 				case DefinitionKind.Function:
 					definition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier, string.Empty);
 					break;
+
 				case DefinitionKind.Parameter:
 					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier, string.Empty);
 					(this.definitions.FindLast(def => def.Kind == DefinitionKind.Function) as FunctionDefinition)?.AddParameter(definition as ParameterDefinition);
 					break;
+
 				case DefinitionKind.Field:
 					definition = new FieldDefinition(node as StructDeclaratorSyntax, definitionScope, identifier, string.Empty);
 					break;
+
 				case DefinitionKind.GlobalVariable:
 				case DefinitionKind.LocalVariable:
 					definition = new VariableDefinition(node, definitionScope, identifier, string.Empty, type);
 					break;
+
 				case DefinitionKind.Macro:
 					definition = new MacroDefinition(node as DefinePreprocessorSyntax, definitionScope, identifier, string.Empty);
 					break;
+
 				case DefinitionKind.TypeName:
 					definition = new TypeNameDefinition(definitionScope, identifier, string.Empty);
 					break;
+
 				case DefinitionKind.InterfaceBlock:
 					definition = new InterfaceBlockDefinition(node as InterfaceBlockSyntax, definitionScope, identifier, string.Empty);
 					break;
@@ -541,23 +547,23 @@ namespace Xannden.GLSL.Parsing
 
 		private SyntaxToken CreateToken(SyntaxType type, TrackingSpan span, bool isMissing = false)
 		{
-			switch (type)
+			if (type == SyntaxType.IdentifierToken)
 			{
-				case SyntaxType.IdentifierToken:
-					if (isMissing)
-					{
-						return new IdentifierSyntax(this.tree, span, string.Empty, null, null, this.snapshot, isMissing);
-					}
+				if (isMissing)
+				{
+					return new IdentifierSyntax(this.tree, span, string.Empty, null, null, this.snapshot, isMissing);
+				}
 
-					return new IdentifierSyntax(this.tree, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
+				return new IdentifierSyntax(this.tree, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot, isMissing);
+			}
+			else
+			{
+				if (isMissing)
+				{
+					return new SyntaxToken(this.tree, type, span, string.Empty, null, null, this.snapshot, isMissing);
+				}
 
-				default:
-					if (isMissing)
-					{
-						return new SyntaxToken(this.tree, type, span, string.Empty, null, null, this.snapshot, isMissing);
-					}
-
-					return new SyntaxToken(this.tree, type, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot);
+				return new SyntaxToken(this.tree, type, span, this.CurrentToken.Text, this.CurrentToken.LeadingTrivia, this.CurrentToken.TrailingTrivia, this.snapshot);
 			}
 		}
 

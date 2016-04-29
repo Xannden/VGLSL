@@ -1,6 +1,6 @@
 ﻿namespace Xannden.GLSL.Semantics
 {
-	public abstract class Definition
+	public class Definition
 	{
 		protected Definition(Scope scope, string name, string documentation, DefinitionKind kind)
 		{

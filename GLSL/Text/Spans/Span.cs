@@ -85,11 +85,7 @@ namespace Xannden.GLSL.Text
 				throw new ArgumentNullException(nameof(span));
 			}
 
-			if (span.Start >= this.Start && span.Start <= this.End)
-			{
-				return true;
-			}
-			else if (span.End <= this.End && span.End >= this.Start)
+			if ((span.Start >= this.Start && span.Start <= this.End) || (span.End <= this.End && span.End >= this.Start))
 			{
 				return true;
 			}

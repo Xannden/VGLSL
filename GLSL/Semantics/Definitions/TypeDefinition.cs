@@ -8,13 +8,13 @@ namespace Xannden.GLSL.Semantics
 	{
 		internal TypeDefinition(TypeSyntax type)
 		{
-			this.Type = this.GetTypeToken(type);
+			this.TypeToken = GetTypeToken(type);
 			this.ArraySpecifiers = type.ArraySpecifiers;
 		}
 
 		internal TypeDefinition(IdentifierSyntax identifier)
 		{
-			this.Type = identifier;
+			this.TypeToken = identifier;
 			this.ArraySpecifiers = new List<ArraySpecifierSyntax>();
 		}
 
@@ -22,21 +22,21 @@ namespace Xannden.GLSL.Semantics
 		{
 			if (returnType.VoidKeyword != null)
 			{
-				this.Type = returnType.VoidKeyword;
+				this.TypeToken = returnType.VoidKeyword;
 				this.ArraySpecifiers = new List<ArraySpecifierSyntax>();
 			}
 			else
 			{
-				this.Type = this.GetTypeToken(returnType.TypeSyntax);
+				this.TypeToken = GetTypeToken(returnType.TypeSyntax);
 				this.ArraySpecifiers = returnType.TypeSyntax.ArraySpecifiers;
 			}
 		}
 
-		public SyntaxToken Type { get; }
+		public SyntaxToken TypeToken { get; }
 
 		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers { get; }
 
-		private SyntaxToken GetTypeToken(TypeSyntax type)
+		private static SyntaxToken GetTypeToken(TypeSyntax type)
 		{
 			if (type.TypeNonArray.TypeName != null)
 			{

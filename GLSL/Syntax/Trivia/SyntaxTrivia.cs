@@ -1,11 +1,10 @@
-﻿using System.Text;
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Trivia
 {
 	public class SyntaxTrivia
 	{
-		private string text = string.Empty;
+		private readonly string text = string.Empty;
 
 		public SyntaxTrivia(SyntaxType type, TrackingSpan span, string text)
 		{
@@ -35,16 +34,19 @@ namespace Xannden.GLSL.Syntax.Trivia
 			return this.Text.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
 		}
 
-		internal virtual void ToStringWithoutNewLines(StringBuilder builder, bool isLeadingTrivia)
+		public virtual string GetTextAndReplaceNewLines(string replaceValue)
 		{
 			if (this.SyntaxType != SyntaxType.NewLineTrivia && this.SyntaxType != SyntaxType.LineCommentTrivia && this.SyntaxType != SyntaxType.BlockCommentTrivia)
 			{
-				builder.Append(this.text.Trim('\t'));
+				return this.text.Trim('\t');
 			}
-			else if (this.SyntaxType == SyntaxType.NewLineTrivia && !isLeadingTrivia)
+
+			if (this.SyntaxType == SyntaxType.NewLineTrivia)
 			{
-				builder.Append(" ");
+				return replaceValue;
 			}
+
+			return string.Empty;
 		}
 	}
 }

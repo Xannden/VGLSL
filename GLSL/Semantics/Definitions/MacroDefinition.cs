@@ -13,7 +13,7 @@ namespace Xannden.GLSL.Semantics
 
 		public DefinePreprocessorSyntax DefinePreprocessor { get; }
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			return this.GetSyntaxTokens(this.DefinePreprocessor);
 		}

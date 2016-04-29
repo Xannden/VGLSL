@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Test.Text
 {
 	internal sealed class TextSnapshot : Snapshot
 	{
-		private string text;
+		private readonly string text;
 
 		public TextSnapshot(Source source, string text) : base(source)
 		{
@@ -40,11 +40,7 @@ namespace Xannden.GLSL.Test.Text
 
 		public override SourceLine GetLineFromPosition(int position)
 		{
-			if (position < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(position));
-			}
-			else if (position >= this.Length)
+			if (position < 0 || position >= this.Length)
 			{
 				throw new ArgumentOutOfRangeException(nameof(position));
 			}

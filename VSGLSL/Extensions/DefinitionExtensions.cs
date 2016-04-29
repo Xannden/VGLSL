@@ -30,6 +30,7 @@ namespace Xannden.VSGLSL.Extensions
 				case DefinitionKind.LocalVariable:
 				case DefinitionKind.GlobalVariable:
 				case DefinitionKind.Parameter:
+				case DefinitionKind.InterfaceBlock:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
 					break;
 				case DefinitionKind.Macro:
@@ -85,36 +86,41 @@ namespace Xannden.VSGLSL.Extensions
 				switch (definition.Kind)
 				{
 					case DefinitionKind.LocalVariable:
-						typeRun = new Run("(local variable) ");
+						typeRun = "local variable".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
 						break;
 					case DefinitionKind.Field:
-						typeRun = new Run("(field) ");
+						typeRun = "field".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
 						break;
 					case DefinitionKind.GlobalVariable:
-						typeRun = new Run("(global variable) ");
+						typeRun = "global variable".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
 						break;
 					case DefinitionKind.Macro:
-						typeRun = new Run("(macro) ");
+						typeRun = "macro".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
 						break;
 					case DefinitionKind.Parameter:
-						typeRun = new Run("(parameter) ");
+						typeRun = "parameter".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
 						break;
 					case DefinitionKind.TypeName:
-						typeRun = new Run("(struct) ");
+						typeRun = "struct".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage));
+						break;
+					case DefinitionKind.Function:
+					case DefinitionKind.InterfaceBlock:
 						break;
 				}
 
 				if (typeRun != null)
 				{
-					typeRun.SetTextProperties(formatMap.GetTextProperties(typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
+					runs.Add("(".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
 					runs.Add(typeRun);
+					runs.Add(")".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
 				}
 
-				List<SyntaxToken> tokens = userDefinition.GetTokens();
+				IReadOnlyList<SyntaxToken> tokens = userDefinition.GetTokens();
 
 				for (int i = 0; i < tokens.Count; i++)
 				{
-					runs.Add(tokens[i].ToRun(formatMap, typeRegistry.GetClassificationType(GetClassificationName(tokens[i]))));
+					runs.AddRange(tokens[i].ToRuns(formatMap, GetClassificationName(tokens[i]), typeRegistry));
 				}
 
 				block.Inlines.AddRange(runs);
@@ -127,19 +133,33 @@ namespace Xannden.VSGLSL.Extensions
 		{
 			List<Run> runs = new List<Run>();
 
-			Run spaceRun = new Run(" ");
-			spaceRun.SetTextProperties(formatMap.GetTextProperties(typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
-
 			for (int i = 0; i < parameters.Count; i++)
 			{
-				runs.Add(parameters[i].Type.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Keyword)));
-				runs.Add(spaceRun);
-				runs.Add(parameters[i].Identifier.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Parameter)));
+				if (parameters[i].IsOptional)
+				{
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+					runs.Add("[".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+				}
 
-				if (i != parameters.Count - 1)
+				if (i != 0)
 				{
 					runs.Add(",".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
-					runs.Add(spaceRun);
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+				}
+
+				if (!string.IsNullOrEmpty(parameters[i].TypeQualifier))
+				{
+					runs.Add(parameters[i].TypeQualifier.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Keyword)));
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+				}
+
+				runs.Add(parameters[i].VariableType.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Keyword)));
+				runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+				runs.Add(parameters[i].Identifier.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Parameter)));
+
+				if (parameters[i].IsOptional)
+				{
+					runs.Add("]".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
 				}
 			}
 
@@ -218,16 +238,13 @@ namespace Xannden.VSGLSL.Extensions
 
 			block.SetTextProperties(formatMap.DefaultTextProperties);
 
-			Run spaceRun = new Run(" ");
-			spaceRun.SetTextProperties(formatMap.GetTextProperties(typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.FormalLanguage)));
-
 			switch (definition.Kind)
 			{
 				case DefinitionKind.Function:
 					BuiltInFunction function = definition as BuiltInFunction;
 
 					block.Inlines.Add(function.ReturnType.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Keyword)));
-					block.Inlines.Add(spaceRun);
+					block.Inlines.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
 					block.Inlines.Add(function.Name.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Function)));
 					block.Inlines.Add("(".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
 					block.Inlines.AddRange(function.Parameters.ToRuns(formatMap, typeRegistry));

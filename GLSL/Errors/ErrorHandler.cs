@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Errors
 {
 	public sealed class ErrorHandler
 	{
-		private List<GLSLError> errors = new List<GLSLError>();
+		private readonly List<GLSLError> errors = new List<GLSLError>();
 
 		public IReadOnlyList<GLSLError> Errors
 		{

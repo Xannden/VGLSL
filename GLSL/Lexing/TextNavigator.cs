@@ -6,10 +6,10 @@ namespace Xannden.GLSL.Lexing
 	{
 		public const char EndCharacter = char.MaxValue;
 
+		private readonly Snapshot snapshot;
 		private SourceLine currentLine;
 		private int lineIndex;
 		private int offset;
-		private Snapshot snapshot;
 
 		public TextNavigator(Snapshot snapshot, Span span = null)
 		{
@@ -96,12 +96,9 @@ namespace Xannden.GLSL.Lexing
 				return false;
 			}
 
-			if (this.currentLine.Text[this.offset] == '\\' && this.currentLine.Length > this.offset + 1)
+			if (this.currentLine.Text[this.offset] == '\\' && this.currentLine.Length > this.offset + 1 && (this.currentLine.Text[this.offset + 1] == '\n' || this.currentLine.Text[this.offset + 1] == '\r'))
 			{
-				if (this.currentLine.Text[this.offset + 1] == '\n' || this.currentLine.Text[this.offset + 1] == '\r')
-				{
-					return true;
-				}
+				return true;
 			}
 
 			return false;

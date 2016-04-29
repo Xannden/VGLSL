@@ -13,9 +13,9 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 {
 	internal class GLSLQuickInfoSource : IQuickInfoSource
 	{
-		private GLSLQuickInfoSourceProvider provider;
-		private Source source;
-		private ITextBuffer textBuffer;
+		private readonly GLSLQuickInfoSourceProvider provider;
+		private readonly Source source;
+		private readonly ITextBuffer textBuffer;
 
 		public GLSLQuickInfoSource(GLSLQuickInfoSourceProvider provider, Source source, ITextBuffer textBuffer)
 		{
@@ -62,6 +62,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 		public void Dispose()
 		{
+			// Method intentionally left empty.
 		}
 	}
 }

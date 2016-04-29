@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Text.Utility
 {
 	internal class IndentedTextWriter : IDisposable
 	{
-		private TextWriter writer;
+		private readonly TextWriter writer;
 
 		internal IndentedTextWriter(TextWriter textWriter, string indentString)
 		{

@@ -17,9 +17,9 @@ namespace Xannden.VSGLSL.Classification
 {
 	internal sealed class GLSLClassifier : IClassifier
 	{
-		private IClassificationTypeRegistryService classificationTypeRegistryService;
-		private GLSLLexer lexer = new GLSLLexer();
-		private VSSource source;
+		private readonly IClassificationTypeRegistryService classificationTypeRegistryService;
+		private readonly GLSLLexer lexer = new GLSLLexer();
+		private readonly VSSource source;
 
 		internal GLSLClassifier(VSSource source, IClassificationTypeRegistryService classificationTypeRegistryService)
 		{
@@ -35,7 +35,6 @@ namespace Xannden.VSGLSL.Classification
 		{
 			LinkedList<Token> tokens = this.lexer.Run(new VSSnapshot(this.source, span.Snapshot), span.Start.GetContainingLine().ExtentIncludingLineBreak.Span.ToGLSLSpan());
 			List<ClassificationSpan> spans = new List<ClassificationSpan>();
-			IReadOnlyList<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
 			VSSnapshot currentSnapshot = new VSSnapshot(this.source, span.Snapshot);
 
 			SyntaxTree tree = this.source.Tree;
@@ -130,21 +129,29 @@ namespace Xannden.VSGLSL.Classification
 				}
 			}
 
-			this.ColorComments(span, spans, currentSnapshot);
+			this.ColorComments(span, spans, currentSnapshot, this.lexer.CommentSpans);
 
 			return spans;
 		}
 
-		private void ColorComments(SnapshotSpan span, List<ClassificationSpan> spans, VSSnapshot snapshot)
+		private void ColorComments(SnapshotSpan span, List<ClassificationSpan> spans, VSSnapshot snapshot, IReadOnlyList<GLSL.Text.TrackingSpan> commentSpans)
 		{
-			IReadOnlyList<GLSL.Text.TrackingSpan> commentSpans = this.source.CommentSpans;
-
 			for (int i = 0; i < commentSpans.Count; i++)
 			{
 				Span commentSpan = commentSpans[i].GetSpan(snapshot).ToVSSpan();
 				if (span.IntersectsWith(commentSpan))
 				{
 					spans.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, commentSpan), this.classificationTypeRegistryService.GetClassificationType(GLSLConstants.Comment)));
+				}
+			}
+
+			IReadOnlyList<GLSL.Text.TrackingSpan> sourceSpans = this.source.CommentSpans;
+
+			for (int i = 0; i < sourceSpans.Count; i++)
+			{
+				if (!commentSpans.Contains(s => s.GetSpan(snapshot).Overlaps(sourceSpans[i].GetSpan(snapshot))))
+				{
+					spans.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, sourceSpans[i].GetSpan(snapshot).ToVSSpan()), this.classificationTypeRegistryService.GetClassificationType(GLSLConstants.Comment)));
 				}
 			}
 		}

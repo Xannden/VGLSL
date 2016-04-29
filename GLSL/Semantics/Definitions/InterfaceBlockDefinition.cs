@@ -14,7 +14,7 @@ namespace Xannden.GLSL.Semantics
 
 		public TypeQualifierSyntax TypeQualifier { get; }
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier.SingleTypeQualifiers.Find(qualifier => qualifier.StorageQualifier != null)));
 			result.Add(this.Identifier);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Parsing;
 using Xannden.GLSL.Settings;
@@ -8,8 +9,8 @@ namespace Xannden.GLSL.Text
 {
 	public abstract class Source
 	{
+		private readonly object lockObject = new object();
 		private IReadOnlyList<TrackingSpan> commentSpans = new List<TrackingSpan>();
-		private object lockObject = new object();
 		private SyntaxTree tree;
 
 		protected Source(ErrorHandler errorHandler)
@@ -17,6 +18,8 @@ namespace Xannden.GLSL.Text
 			this.ErrorHandler = errorHandler;
 
 			this.Parser = new GLSLParser(this.ErrorHandler, this.Settings);
+
+			BuiltInData.Instance.LoadData();
 		}
 
 		public IReadOnlyList<TrackingSpan> CommentSpans

@@ -1,4 +1,5 @@
 ﻿using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Text.Utility;
 
 namespace Xannden.GLSL.BuiltIn
 {
@@ -7,5 +8,7 @@ namespace Xannden.GLSL.BuiltIn
 		protected BuiltInDefinition(string name, string documentation, DefinitionKind kind) : base(new Scope(true), name, documentation, kind)
 		{
 		}
+
+		internal abstract void WriteToXml(IndentedTextWriter writer);
 	}
 }

@@ -11,8 +11,8 @@ namespace Xannden.VSGLSL.Preprocessors
 {
 	internal class PreprocessorSuggestedActionsSource : ISuggestedActionsSource
 	{
-		private Source source;
-		private ITextView textView;
+		private readonly Source source;
+		private readonly ITextView textView;
 
 		public PreprocessorSuggestedActionsSource(Source source, ITextView textView)
 		{
@@ -24,6 +24,7 @@ namespace Xannden.VSGLSL.Preprocessors
 
 		public void Dispose()
 		{
+			// Method intentionally left empty.
 		}
 
 		public IEnumerable<SuggestedActionSet> GetSuggestedActions(ISuggestedActionCategorySet requestedActionCategories, SnapshotSpan range, CancellationToken cancellationToken)

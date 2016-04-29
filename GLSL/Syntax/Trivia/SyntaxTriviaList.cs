@@ -5,7 +5,7 @@ using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Trivia
 {
-	internal class SyntaxTriviaList : SyntaxTrivia
+	internal sealed class SyntaxTriviaList : SyntaxTrivia
 	{
 		private SyntaxTriviaList(SyntaxType type, TrackingSpan span) : base(type, span)
 		{
@@ -49,12 +49,16 @@ namespace Xannden.GLSL.Syntax.Trivia
 			return syntaxTriviaList;
 		}
 
-		internal override void ToStringWithoutNewLines(StringBuilder builder, bool isLeadingTrivia)
+		public override string GetTextAndReplaceNewLines(string replaceValue)
 		{
+			StringBuilder builder = new StringBuilder();
+
 			for (int i = 0; i < this.List.Count; i++)
 			{
-				this.List[i].ToStringWithoutNewLines(builder, isLeadingTrivia);
+				builder.Append(this.List[i].GetTextAndReplaceNewLines(replaceValue));
 			}
+
+			return builder.ToString();
 		}
 	}
 }

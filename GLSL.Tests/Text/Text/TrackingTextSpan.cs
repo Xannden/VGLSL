@@ -4,8 +4,8 @@ namespace Xannden.GLSL.Test.Text
 {
 	internal sealed class TrackingTextSpan : TrackingSpan
 	{
-		private int end;
-		private int start;
+		private readonly int end;
+		private readonly int start;
 
 		public TrackingTextSpan(Span span)
 		{

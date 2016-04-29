@@ -8,7 +8,7 @@ using Xannden.VSGLSL.Data;
 
 namespace Xannden.VSGLSL.Classification
 {
-	[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements must appear in the correct order", Justification = "Elements are ordered incorrectly to help readability", Scope = "class")]
+#pragma warning disable SA1201
 	internal static class ClassificationTypes
 	{
 		#region Keyword
@@ -16,6 +16,7 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.Keyword)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Keyword)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLKeywordDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -23,9 +24,9 @@ namespace Xannden.VSGLSL.Classification
 		[Name(GLSLConstants.Keyword)]
 		[UserVisible(true)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Keyword)]
-		private class GLSLKeywordFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLKeywordFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLKeywordFormatDefinition()
+			internal GLSLKeywordFormatDefinition()
 			{
 				this.DisplayName = "GLSL Keyword";
 			}
@@ -38,6 +39,7 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.Comment)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Comment)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLCommentDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
@@ -45,9 +47,9 @@ namespace Xannden.VSGLSL.Classification
 		[Name(GLSLConstants.Comment)]
 		[UserVisible(true)]
 		[Order(After = Priority.Default)]
-		private class GLSLCommentFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLCommentFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLCommentFormatDefinition()
+			internal GLSLCommentFormatDefinition()
 			{
 				this.DisplayName = "GLSL Comment";
 			}
@@ -60,15 +62,16 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.Number)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Number)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLNumberLiteralDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Number)]
 		[Name(GLSLConstants.Number)]
 		[UserVisible(true)]
-		private class GLSLNumberLiteralFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLNumberLiteralFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLNumberLiteralFormatDefinition()
+			internal GLSLNumberLiteralFormatDefinition()
 			{
 				this.DisplayName = "GLSL Number";
 			}
@@ -81,15 +84,16 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.Punctuation)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Operator)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLPunctuationDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Punctuation)]
 		[Name(GLSLConstants.Punctuation)]
 		[UserVisible(true)]
-		private class GLSLPunctuationFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLPunctuationFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLPunctuationFormatDefinition()
+			internal GLSLPunctuationFormatDefinition()
 			{
 				this.DisplayName = "GLSL Punctuation";
 			}
@@ -102,45 +106,52 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.Field)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLFieldDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Function)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLFunctionDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.GlobalVariable)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLGlobalVariableDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Identifier)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLIdentifierDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.LocalVariable)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLLocalVariableDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Parameter)]
 		[BaseDefinition(PredefinedClassificationTypeNames.Identifier)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLParameterDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.TypeName)]
 		[BaseDefinition(PredefinedClassificationTypeNames.SymbolReference)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLTypeNameDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Field)]
 		[Name(GLSLConstants.Field)]
 		[UserVisible(true)]
-		private class GLSLFieldFormantDefinition : ClassificationFormatDefinition
+		internal class GLSLFieldFormantDefinition : ClassificationFormatDefinition
 		{
-			private GLSLFieldFormantDefinition()
+			internal GLSLFieldFormantDefinition()
 			{
 				this.DisplayName = "GLSL Field";
 			}
@@ -150,9 +161,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Function)]
 		[Name(GLSLConstants.Function)]
 		[UserVisible(true)]
-		private class GLSLFunctionFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLFunctionFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLFunctionFormatDefinition()
+			internal GLSLFunctionFormatDefinition()
 			{
 				this.DisplayName = "GLSL Function";
 			}
@@ -162,9 +173,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.GlobalVariable)]
 		[Name(GLSLConstants.GlobalVariable)]
 		[UserVisible(true)]
-		private class GLSLGlobalVariableFormantDefinition : ClassificationFormatDefinition
+		internal class GLSLGlobalVariableFormantDefinition : ClassificationFormatDefinition
 		{
-			private GLSLGlobalVariableFormantDefinition()
+			internal GLSLGlobalVariableFormantDefinition()
 			{
 				this.DisplayName = "GLSL Global Variable";
 			}
@@ -174,9 +185,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Identifier)]
 		[Name(GLSLConstants.Identifier)]
 		[UserVisible(true)]
-		private class GLSLIdentifierFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLIdentifierFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLIdentifierFormatDefinition()
+			internal GLSLIdentifierFormatDefinition()
 			{
 				this.DisplayName = "GLSL Identifier";
 			}
@@ -186,9 +197,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.LocalVariable)]
 		[Name(GLSLConstants.LocalVariable)]
 		[UserVisible(true)]
-		private class GLSLLocalVariableFormantDefinition : ClassificationFormatDefinition
+		internal class GLSLLocalVariableFormantDefinition : ClassificationFormatDefinition
 		{
-			private GLSLLocalVariableFormantDefinition()
+			internal GLSLLocalVariableFormantDefinition()
 			{
 				this.DisplayName = "GLSL Local Variable";
 			}
@@ -198,9 +209,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Parameter)]
 		[Name(GLSLConstants.Parameter)]
 		[UserVisible(true)]
-		private class GLSLParameterFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLParameterFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLParameterFormatDefinition()
+			internal GLSLParameterFormatDefinition()
 			{
 				this.DisplayName = "GLSL Parameter";
 			}
@@ -210,9 +221,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.TypeName)]
 		[Name(GLSLConstants.TypeName)]
 		[UserVisible(true)]
-		private class GLSLTypeNameFormantDefinition : ClassificationFormatDefinition
+		internal class GLSLTypeNameFormantDefinition : ClassificationFormatDefinition
 		{
-			private GLSLTypeNameFormantDefinition()
+			internal GLSLTypeNameFormantDefinition()
 			{
 				this.DisplayName = "GLSL TypeName";
 			}
@@ -225,29 +236,33 @@ namespace Xannden.VSGLSL.Classification
 		[Export]
 		[Name(GLSLConstants.ExcludedCode)]
 		[BaseDefinition(PredefinedClassificationTypeNames.ExcludedCode)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLExcludedCodeDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.Macro)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLMacroDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.PreprocessorKeyword)]
 		[BaseDefinition(PredefinedClassificationTypeNames.PreprocessorKeyword)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLPreprocessorKeywordDefinition { get; }
 
 		[Export]
 		[Name(GLSLConstants.PreprocessorText)]
 		[BaseDefinition(PredefinedClassificationTypeNames.FormalLanguage)]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field used to by MEF")]
 		internal static ClassificationTypeDefinition GLSLPreprocessorTextDefinition { get; }
 
 		[Export(typeof(EditorFormatDefinition))]
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.ExcludedCode)]
 		[Name(GLSLConstants.ExcludedCode)]
 		[UserVisible(true)]
-		private class GLSLExcludedCodeFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLExcludedCodeFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLExcludedCodeFormatDefinition()
+			internal GLSLExcludedCodeFormatDefinition()
 			{
 				this.DisplayName = "GLSL Excluded Code";
 			}
@@ -257,9 +272,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.Macro)]
 		[Name(GLSLConstants.Macro)]
 		[UserVisible(true)]
-		private class GLSLMacroFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLMacroFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLMacroFormatDefinition()
+			internal GLSLMacroFormatDefinition()
 			{
 				this.DisplayName = "GLSL Macro";
 				this.ForegroundColor = Colors.OrangeRed;
@@ -270,9 +285,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.PreprocessorKeyword)]
 		[Name(GLSLConstants.PreprocessorKeyword)]
 		[UserVisible(true)]
-		private class GLSLPreprocessorKeywordFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLPreprocessorKeywordFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLPreprocessorKeywordFormatDefinition()
+			internal GLSLPreprocessorKeywordFormatDefinition()
 			{
 				this.DisplayName = "GLSL Preprocessor Keyword";
 			}
@@ -282,9 +297,9 @@ namespace Xannden.VSGLSL.Classification
 		[ClassificationType(ClassificationTypeNames = GLSLConstants.PreprocessorText)]
 		[Name(GLSLConstants.PreprocessorText)]
 		[UserVisible(true)]
-		private class GLSLPreprocessorTextFormatDefinition : ClassificationFormatDefinition
+		internal class GLSLPreprocessorTextFormatDefinition : ClassificationFormatDefinition
 		{
-			private GLSLPreprocessorTextFormatDefinition()
+			internal GLSLPreprocessorTextFormatDefinition()
 			{
 				this.DisplayName = "GLSL Preprocessor Text";
 			}
@@ -292,4 +307,5 @@ namespace Xannden.VSGLSL.Classification
 
 		#endregion Preprocessor
 	}
+#pragma warning restore SA1201
 }

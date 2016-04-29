@@ -16,11 +16,11 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 {
 	internal sealed class GLSLCompletionSource : ICompletionSource
 	{
-		private ITextBuffer textBuffer;
-		private GLSLCompletionSourceProvider provider;
-		private List<Completion> keywords = new List<Completion>();
-		private List<Completion> builtInCompleations = new List<Completion>();
-		private VSSource source;
+		private readonly ITextBuffer textBuffer;
+		private readonly GLSLCompletionSourceProvider provider;
+		private readonly List<Completion> keywords = new List<Completion>();
+		private readonly List<Completion> builtInCompleations = new List<Completion>();
+		private readonly VSSource source;
 
 		internal GLSLCompletionSource(ITextBuffer textBuffer, GLSLCompletionSourceProvider provider, VSSource source)
 		{
@@ -37,7 +37,7 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 				this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
 			}
 
-			foreach (BuiltInDefinition item in BuiltInData.Instance.Definitions)
+			foreach (Definition item in BuiltInData.Instance.Definitions)
 			{
 				if (!this.builtInCompleations.Contains(com => com.DisplayText == item.Name))
 				{
@@ -48,6 +48,11 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 		public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
 		{
+			if (session == null || completionSets == null)
+			{
+				return;
+			}
+
 			List<Completion> completions = new List<Completion>(this.keywords);
 
 			SyntaxTree tree = this.source.Tree;
@@ -56,7 +61,7 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 			if (tree != null)
 			{
-				List<Definition> definitions = tree.Definitions.FindAll(def => def.Scope.Contains(snapshot, triggerPoint));
+				IReadOnlyList<Definition> definitions = tree.Definitions.FindAll(def => def.Scope.Contains(snapshot, triggerPoint));
 
 				foreach (Definition definition in definitions)
 				{
@@ -72,16 +77,17 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 				}
 			}
 
-			ITrackingSpan span = this.FindTokenSpanAtPosition(session.GetTriggerPoint(this.textBuffer), session);
+			ITrackingSpan span = this.FindTokenSpanAtPosition(session);
 
 			completionSets.Add(new CompletionSet("GLSL", "GLSL", span, completions, null));
 		}
 
 		public void Dispose()
 		{
+			// Method intentionally left empty.
 		}
 
-		private ITrackingSpan FindTokenSpanAtPosition(ITrackingPoint point, ICompletionSession session)
+		private ITrackingSpan FindTokenSpanAtPosition(ICompletionSession session)
 		{
 			SnapshotPoint currentPoint = session.TextView.Caret.Position.BufferPosition - 1;
 			ITextStructureNavigator navigator = this.provider.NavigatorService.GetTextStructureNavigator(this.textBuffer);

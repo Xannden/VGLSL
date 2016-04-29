@@ -11,23 +11,23 @@ namespace Xannden.GLSL.Semantics
 			StructDeclarationSyntax declaration = field.Parent as StructDeclarationSyntax;
 
 			this.TypeQualifier = declaration.TypeQualifier;
-			this.Type = new TypeDefinition(declaration.TypeSyntax);
+			this.FieldType = new TypeDefinition(declaration.TypeSyntax);
 			this.ArraySpecifiers = field.ArraySpecifiers;
 		}
 
 		public TypeQualifierSyntax TypeQualifier { get; }
 
-		public TypeDefinition Type { get; }
+		public TypeDefinition FieldType { get; }
 
 		public IReadOnlyList<ArraySpecifierSyntax> ArraySpecifiers { get; }
 
-		public override List<SyntaxToken> GetTokens()
+		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
 			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier));
 
-			result.Add(this.Type.Type);
+			result.Add(this.FieldType.TypeToken);
 
-			result.AddRange(this.GetSyntaxTokens(this.Type.ArraySpecifiers));
+			result.AddRange(this.GetSyntaxTokens(this.FieldType.ArraySpecifiers));
 
 			result.Add(this.Identifier);
 

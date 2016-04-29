@@ -13,11 +13,11 @@ namespace Xannden.GLSL.Parsing
 {
 	public sealed class GLSLParser
 	{
+		private readonly ErrorHandler errorHandler;
+		private readonly GLSLSettings settings;
 		private TreeBuilder builder;
-		private ErrorHandler errorHandler;
 		private List<IfPreprocessor> preprocessors;
 		private Stack<IfPreprocessor> preprocessorStack;
-		private GLSLSettings settings;
 		private Snapshot snapshot;
 
 		internal GLSLParser(ErrorHandler errorHandler, GLSLSettings settings)
@@ -211,12 +211,9 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			if (node?.Parent.SyntaxType == SyntaxType.TypeNonArray)
+			if (node?.Parent.SyntaxType == SyntaxType.TypeNonArray && identifier != null)
 			{
-				if (identifier != null)
-				{
-					identifier.Definition = this.builder.FindDefinition(identifier);
-				}
+				identifier.Definition = this.builder.FindDefinition(identifier);
 			}
 
 			return this.builder.EndNode() as TypeNameSyntax;
@@ -641,11 +638,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseJumpStatement();
 			}
-			else if (type == SyntaxType.PrecisionKeyword)
-			{
-				this.ParseDeclaration();
-			}
-			else if (this.IsDeclaration())
+			else if (type == SyntaxType.PrecisionKeyword || this.IsDeclaration())
 			{
 				this.ParseDeclaration();
 			}
@@ -999,7 +992,7 @@ namespace Xannden.GLSL.Parsing
 			}
 			else
 			{
-				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
+				this.RequireToken(SyntaxType.IdentifierToken);
 
 				// TODO: fix this
 				// identifier.Definition = this.builder.FindDefinition(identifier);
@@ -1141,16 +1134,17 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.PostfixExpressionContinuation);
 
-			if (this.AcceptToken(SyntaxType.PlusPlusToken, SyntaxType.MinusMinusToken))
-			{
-			}
-			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.DotToken)
+			if (this.builder.CurrentToken.SyntaxType == SyntaxType.DotToken)
 			{
 				this.ParseFieldSelection();
 			}
 			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
 			{
 				this.ParsePostFixArrayAccess();
+			}
+			else
+			{
+				this.RequireToken(SyntaxType.PlusPlusToken, SyntaxType.MinusMinusToken);
 			}
 
 			this.builder.EndNode();
@@ -1601,12 +1595,9 @@ namespace Xannden.GLSL.Parsing
 				this.ParseExcludedCode();
 			}
 
-			if (this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword))
+			if (this.AcceptTokenPreprocessor(SyntaxType.EndIfPreprocessorKeyword) && this.preprocessorStack.Count > 0)
 			{
-				if (this.preprocessorStack.Count > 0)
-				{
-					this.preprocessorStack.Pop();
-				}
+				this.preprocessorStack.Pop();
 			}
 
 			IfDefinedPreprocessorSyntax node = this.builder.EndNode() as IfDefinedPreprocessorSyntax;
@@ -1827,6 +1818,87 @@ namespace Xannden.GLSL.Parsing
 
 		#region Helpers
 
+		private bool IsPostFixOperator(SyntaxType type)
+		{
+			return type == SyntaxType.PlusPlusToken || type == SyntaxType.MinusMinusToken;
+		}
+
+		private bool IsStorageQualifier(SyntaxType type)
+		{
+			switch (type)
+			{
+				case SyntaxType.ConstKeyword:
+				case SyntaxType.InOutKeyword:
+				case SyntaxType.InKeyword:
+				case SyntaxType.OutKeyword:
+				case SyntaxType.CentroidKeyword:
+				case SyntaxType.PatchKeyword:
+				case SyntaxType.SampleKeyword:
+				case SyntaxType.UniformKeyword:
+				case SyntaxType.BufferKeyword:
+				case SyntaxType.SharedKeyword:
+				case SyntaxType.CoherentKeyword:
+				case SyntaxType.VolatileKeyword:
+				case SyntaxType.RestrictKeyword:
+				case SyntaxType.ReadOnlyKeyword:
+				case SyntaxType.WriteOnlyKeyword:
+				case SyntaxType.SubroutineKeyword:
+					return true;
+
+				default:
+					return false;
+			}
+		}
+
+		private bool IsTypeQualifier(SyntaxType type)
+		{
+			switch (type)
+			{
+				case SyntaxType.ConstKeyword:
+				case SyntaxType.InOutKeyword:
+				case SyntaxType.InKeyword:
+				case SyntaxType.OutKeyword:
+				case SyntaxType.CentroidKeyword:
+				case SyntaxType.PatchKeyword:
+				case SyntaxType.SampleKeyword:
+				case SyntaxType.UniformKeyword:
+				case SyntaxType.BufferKeyword:
+				case SyntaxType.SharedKeyword:
+				case SyntaxType.CoherentKeyword:
+				case SyntaxType.VolatileKeyword:
+				case SyntaxType.RestrictKeyword:
+				case SyntaxType.ReadOnlyKeyword:
+				case SyntaxType.WriteOnlyKeyword:
+				case SyntaxType.SubroutineKeyword:
+				case SyntaxType.LayoutKeyword:
+				case SyntaxType.LowPrecisionKeyword:
+				case SyntaxType.MediumPrecisionKeyword:
+				case SyntaxType.HighPrecisionKeyword:
+				case SyntaxType.SmoothKeyword:
+				case SyntaxType.FlatKeyword:
+				case SyntaxType.NoPerspectiveKeyword:
+				case SyntaxType.InvariantKeyword:
+				case SyntaxType.PreciseKeyword:
+					return true;
+
+				default:
+					return false;
+			}
+		}
+
+		private DefinitionKind GetVariableType(SyntaxNode node)
+		{
+			foreach (SyntaxNode ancestor in node.Ancestors)
+			{
+				if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
+				{
+					return DefinitionKind.LocalVariable;
+				}
+			}
+
+			return DefinitionKind.GlobalVariable;
+		}
+
 		private bool GetPreprocessorValue(TrackingSpan span, bool defaultValue = false)
 		{
 			return this.settings.GetPreprocessorValue(this.snapshot, span.GetSpan(this.snapshot).Start, defaultValue);
@@ -1903,11 +1975,7 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseTypeQualifier();
 
-				if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
-				{
-					result = true;
-				}
-				else if (this.IsType(this.builder.CurrentToken.SyntaxType))
+				if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken || this.IsType(this.builder.CurrentToken.SyntaxType))
 				{
 					result = true;
 				}
@@ -1939,13 +2007,13 @@ namespace Xannden.GLSL.Parsing
 
 		private bool IsExpressionStatement(SyntaxType type)
 		{
-			switch (type)
+			if (type == SyntaxType.SemicolonToken)
 			{
-				case SyntaxType.SemicolonToken:
-					return true;
-
-				default:
-					return this.IsUnaryExpression(type);
+				return true;
+			}
+			else
+			{
+				return this.IsUnaryExpression(type);
 			}
 		}
 
@@ -2023,11 +2091,6 @@ namespace Xannden.GLSL.Parsing
 			return result;
 		}
 
-		private bool IsPostFixOperator(SyntaxType type)
-		{
-			return type == SyntaxType.PlusPlusToken || type == SyntaxType.MinusMinusToken;
-		}
-
 		private bool IsPreprocessor()
 		{
 			return this.builder.CurrentToken?.SyntaxType.IsPreprocessor() ?? false;
@@ -2062,33 +2125,6 @@ namespace Xannden.GLSL.Parsing
 					{
 						return false;
 					}
-			}
-		}
-
-		private bool IsStorageQualifier(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.ConstKeyword:
-				case SyntaxType.InOutKeyword:
-				case SyntaxType.InKeyword:
-				case SyntaxType.OutKeyword:
-				case SyntaxType.CentroidKeyword:
-				case SyntaxType.PatchKeyword:
-				case SyntaxType.SampleKeyword:
-				case SyntaxType.UniformKeyword:
-				case SyntaxType.BufferKeyword:
-				case SyntaxType.SharedKeyword:
-				case SyntaxType.CoherentKeyword:
-				case SyntaxType.VolatileKeyword:
-				case SyntaxType.RestrictKeyword:
-				case SyntaxType.ReadOnlyKeyword:
-				case SyntaxType.WriteOnlyKeyword:
-				case SyntaxType.SubroutineKeyword:
-					return true;
-
-				default:
-					return false;
 			}
 		}
 
@@ -2261,42 +2297,6 @@ namespace Xannden.GLSL.Parsing
 			}
 		}
 
-		private bool IsTypeQualifier(SyntaxType type)
-		{
-			switch (type)
-			{
-				case SyntaxType.ConstKeyword:
-				case SyntaxType.InOutKeyword:
-				case SyntaxType.InKeyword:
-				case SyntaxType.OutKeyword:
-				case SyntaxType.CentroidKeyword:
-				case SyntaxType.PatchKeyword:
-				case SyntaxType.SampleKeyword:
-				case SyntaxType.UniformKeyword:
-				case SyntaxType.BufferKeyword:
-				case SyntaxType.SharedKeyword:
-				case SyntaxType.CoherentKeyword:
-				case SyntaxType.VolatileKeyword:
-				case SyntaxType.RestrictKeyword:
-				case SyntaxType.ReadOnlyKeyword:
-				case SyntaxType.WriteOnlyKeyword:
-				case SyntaxType.SubroutineKeyword:
-				case SyntaxType.LayoutKeyword:
-				case SyntaxType.LowPrecisionKeyword:
-				case SyntaxType.MediumPrecisionKeyword:
-				case SyntaxType.HighPrecisionKeyword:
-				case SyntaxType.SmoothKeyword:
-				case SyntaxType.FlatKeyword:
-				case SyntaxType.NoPerspectiveKeyword:
-				case SyntaxType.InvariantKeyword:
-				case SyntaxType.PreciseKeyword:
-					return true;
-
-				default:
-					return false;
-			}
-		}
-
 		private bool IsUnaryExpression(SyntaxType type)
 		{
 			switch (type)
@@ -2346,19 +2346,6 @@ namespace Xannden.GLSL.Parsing
 						return false;
 					}
 			}
-		}
-
-		private DefinitionKind GetVariableType(SyntaxNode node)
-		{
-			foreach (SyntaxNode ancestor in node.Ancestors)
-			{
-				if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
-				{
-					return DefinitionKind.LocalVariable;
-				}
-			}
-
-			return DefinitionKind.GlobalVariable;
 		}
 
 		#endregion Helpers
@@ -2433,9 +2420,6 @@ namespace Xannden.GLSL.Parsing
 				this.builder.AddToken();
 
 				result = true;
-			}
-			else
-			{
 			}
 
 			while (this.IsPreprocessor())

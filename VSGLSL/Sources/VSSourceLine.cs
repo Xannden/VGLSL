@@ -5,8 +5,8 @@ namespace Xannden.VSGLSL.Sources
 {
 	internal sealed class VSSourceLine : SourceLine
 	{
-		private ITextSnapshotLine line;
-		private string text;
+		private readonly ITextSnapshotLine line;
+		private readonly string text;
 
 		public VSSourceLine(Snapshot snapshot, ITextSnapshotLine line) : base(snapshot, line.Start.Position, line.EndIncludingLineBreak.Position - 1, line.LineNumber)
 		{

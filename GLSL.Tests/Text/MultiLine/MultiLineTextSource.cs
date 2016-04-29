@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Test.Text
 {
 	internal class MultiLineTextSource : Source
 	{
-		private MultiLineSnapshot snapshot;
+		private readonly MultiLineSnapshot snapshot;
 
 		public MultiLineTextSource(ErrorHandler reporter) : base(reporter)
 		{

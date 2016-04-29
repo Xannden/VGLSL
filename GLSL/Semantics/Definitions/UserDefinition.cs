@@ -7,16 +7,16 @@ namespace Xannden.GLSL.Semantics
 {
 	public abstract class UserDefinition : Definition
 	{
-		protected UserDefinition(Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier.Identifier, documentation, kind)
+		protected UserDefinition(Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier?.Identifier, documentation, kind)
 		{
 			this.Identifier = identifier;
 		}
 
 		public IdentifierSyntax Identifier { get; }
 
-		public abstract List<SyntaxToken> GetTokens();
+		public abstract IReadOnlyList<SyntaxToken> GetTokens();
 
-		protected List<SyntaxToken> GetSyntaxTokens(SyntaxNode node)
+		protected IReadOnlyList<SyntaxToken> GetSyntaxTokens(SyntaxNode node)
 		{
 			List<SyntaxToken> tokens = new List<SyntaxToken>();
 
@@ -25,13 +25,13 @@ namespace Xannden.GLSL.Semantics
 			return tokens;
 		}
 
-		protected List<SyntaxToken> GetSyntaxTokens<T>(IReadOnlyList<T> list) where T : SyntaxNode
+		protected IReadOnlyList<SyntaxToken> GetSyntaxTokens<T>(IReadOnlyList<T> list) where T : SyntaxNode
 		{
 			List<SyntaxToken> tokens = new List<SyntaxToken>();
 
 			for (int i = 0; i < list?.Count; i++)
 			{
-				this.GetSyntaxTokensRecursive(list[i], tokens);
+				this.GetSyntaxTokensRecursive(list?[i], tokens);
 			}
 
 			return tokens;
@@ -39,9 +39,11 @@ namespace Xannden.GLSL.Semantics
 
 		private void GetSyntaxTokensRecursive(SyntaxNode node, List<SyntaxToken> tokens)
 		{
-			if (node is SyntaxToken)
+			SyntaxToken token = node as SyntaxToken;
+
+			if (token != null)
 			{
-				tokens.Add(node as SyntaxToken);
+				tokens.Add(token);
 			}
 			else
 			{

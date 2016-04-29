@@ -11,10 +11,10 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 {
 	internal class GLSLQuickInfoController : IIntellisenseController
 	{
-		private GLSLQuickInfoControllerProvider provider;
+		private readonly GLSLQuickInfoControllerProvider provider;
+		private readonly IList<ITextBuffer> subjectBuffers;
+		private readonly Source source;
 		private ITextView textView;
-		private IList<ITextBuffer> subjectBuffers;
-		private Source source;
 
 		public GLSLQuickInfoController(GLSLQuickInfoControllerProvider provider, ITextView textView, IList<ITextBuffer> subjectBuffers)
 		{
@@ -24,10 +24,6 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			this.source = VSSource.GetOrCreate(textView.TextBuffer);
 
 			textView.MouseHover += this.OnTextViewMouseHover;
-		}
-
-		public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
-		{
 		}
 
 		public void Detach(ITextView textView)
@@ -44,8 +40,14 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 			}
 		}
 
+		public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
+		{
+			// Method intentionally left empty.
+		}
+
 		public void DisconnectSubjectBuffer(ITextBuffer subjectBuffer)
 		{
+			// Method intentionally left empty.
 		}
 
 		private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e)

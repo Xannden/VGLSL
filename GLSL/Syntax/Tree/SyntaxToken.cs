@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Xannden.GLSL.Syntax.Trivia;
+using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tree

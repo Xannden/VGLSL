@@ -5,7 +5,6 @@ using Xannden.GLSL.Errors;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
-using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Test.Text;
 
 namespace Xannden.GLSL.Tests

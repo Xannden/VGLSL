@@ -4,7 +4,6 @@ using System.Text;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
-using Xannden.GLSL.Syntax.Trivia;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Lexing

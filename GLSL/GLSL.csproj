@@ -199,16 +199,16 @@
     <Compile Include="Syntax\Tree\Syntax\UnDefinePreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\VersionPreprocessorSyntax.cs" />
     <Compile Include="Syntax\Tree\Syntax\WhileStatementSyntax.cs" />
-    <Compile Include="Syntax\Trivia\SyntaxTrivia.cs" />
-    <Compile Include="Syntax\Trivia\SyntaxTriviaList.cs" />
-    <Compile Include="Text\Spans\Span.cs" />
-    <Compile Include="Text\Spans\TrackingPoint.cs" />
-    <Compile Include="Text\Spans\TrackingSpan.cs" />
-    <Compile Include="Text\Sources\Snapshot.cs" />
-    <Compile Include="Text\Sources\Source.cs" />
-    <Compile Include="Text\Sources\SourceLine.cs" />
+    <Compile Include="Syntax\Tokens\SyntaxTrivia.cs" />
+    <Compile Include="Syntax\Tokens\SyntaxTriviaList.cs" />
+    <Compile Include="Text\Span.cs" />
+    <Compile Include="Text\TrackingPoint.cs" />
+    <Compile Include="Text\TrackingSpan.cs" />
+    <Compile Include="Text\Snapshot.cs" />
+    <Compile Include="Text\Source.cs" />
+    <Compile Include="Text\SourceLine.cs" />
     <Compile Include="Lexing\TextNavigator.cs" />
-    <Compile Include="Text\Utility\IndentedTextWriter.cs" />
+    <Compile Include="Text\IndentedTextWriter.cs" />
     <Compile Include="Utility\TextAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

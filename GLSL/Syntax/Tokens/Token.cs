@@ -1,5 +1,4 @@
-﻿using Xannden.GLSL.Syntax.Trivia;
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tokens
 {

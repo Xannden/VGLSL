@@ -42,7 +42,7 @@ namespace Xannden.GLSL.Semantics
 			{
 				return type.TypeNonArray.TypeName.Identifier;
 			}
-			else if (type.TypeNonArray.StructSpecifier != null)
+			else if (type.TypeNonArray.StructSpecifier?.TypeName != null)
 			{
 				return type.TypeNonArray.StructSpecifier.TypeName.Identifier;
 			}

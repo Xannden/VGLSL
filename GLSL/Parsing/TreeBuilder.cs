@@ -32,7 +32,7 @@ namespace Xannden.GLSL.Parsing
 			this.listNode = this.tokens.First;
 		}
 
-		public Token CurrentToken => this.listNode?.Value;
+		public Token CurrentToken => this.listNode?.Value ?? this.tokens.Last.Value;
 
 		public SyntaxToken AddToken()
 		{
@@ -42,13 +42,13 @@ namespace Xannden.GLSL.Parsing
 
 				this.stack.Peek().AddChild(node);
 
-				this.listNode = this.listNode.Next;
+				this.listNode = this.listNode?.Next;
 
 				return node;
 			}
 			else
 			{
-				this.listNode = this.listNode.Next;
+				this.listNode = this.listNode?.Next;
 				return null;
 			}
 		}
@@ -130,6 +130,11 @@ namespace Xannden.GLSL.Parsing
 		{
 			if (this.testModeLayer <= 0)
 			{
+				if (this.CurrentToken == null)
+				{
+					return;
+				}
+
 				Span span;
 
 				if (this.stack.Count > 0)

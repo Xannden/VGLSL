@@ -46,7 +46,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.builder.StartNode(SyntaxType.Program);
 
-			while (this.builder.CurrentToken.SyntaxType != SyntaxType.EOF)
+			while (this.builder.CurrentToken?.SyntaxType != SyntaxType.EOF)
 			{
 				if (this.IsPreprocessor())
 				{
@@ -223,11 +223,11 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.TypeNonArray);
 
-			if (this.builder.CurrentToken.SyntaxType == SyntaxType.StructKeyword)
+			if (this.builder.CurrentToken?.SyntaxType == SyntaxType.StructKeyword)
 			{
 				this.ParseStructSpecifier();
 			}
-			else if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
+			else if (this.builder.CurrentToken?.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				this.ParseTypeName();
 			}
@@ -376,7 +376,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseType();
 
-			if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
+			if (this.builder.CurrentToken?.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				IdentifierSyntax identifier = this.RequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
@@ -385,7 +385,7 @@ namespace Xannden.GLSL.Parsing
 					identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionKind.Parameter);
 				}
 
-				while (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
+				while (this.builder.CurrentToken?.SyntaxType == SyntaxType.LeftBracketToken)
 				{
 					this.ParseArraySpecifier();
 				}
@@ -553,7 +553,8 @@ namespace Xannden.GLSL.Parsing
 		private IterationStatementSyntax ParseIterationStatement()
 		{
 			this.builder.StartNode(SyntaxType.IterationStatement);
-			switch (this.builder.CurrentToken.SyntaxType)
+
+			switch (this.builder.CurrentToken?.SyntaxType)
 			{
 				case SyntaxType.WhileKeyword:
 					this.ParseWhileStatement();
@@ -604,7 +605,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.ParseStatement();
 
-			if (this.builder.CurrentToken.SyntaxType == SyntaxType.ElseKeyword)
+			if (this.builder.CurrentToken?.SyntaxType == SyntaxType.ElseKeyword)
 			{
 				this.ParseElseStatement();
 			}
@@ -988,7 +989,12 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.IsFunctionCall())
 			{
-				this.ParseFunctionCall();
+				FunctionCallSyntax node = this.ParseFunctionCall();
+
+				if (node?.Identifier != null)
+				{
+					node.Identifier.Definition = null;
+				}
 			}
 			else
 			{
@@ -1001,7 +1007,7 @@ namespace Xannden.GLSL.Parsing
 			this.builder.EndNode();
 		}
 
-		private void ParseFunctionCall()
+		private FunctionCallSyntax ParseFunctionCall()
 		{
 			this.builder.StartNode(SyntaxType.FunctionCall);
 
@@ -1030,7 +1036,7 @@ namespace Xannden.GLSL.Parsing
 
 			this.RequireToken(SyntaxType.RightParenToken);
 
-			this.builder.EndNode();
+			return this.builder.EndNode() as FunctionCallSyntax;
 		}
 
 		private void ParseInclusiveOrExpression()
@@ -1252,7 +1258,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			this.builder.StartNode(SyntaxType.Declaration);
 
-			if (this.builder.CurrentToken.SyntaxType == SyntaxType.PrecisionKeyword)
+			if (this.builder.CurrentToken?.SyntaxType == SyntaxType.PrecisionKeyword)
 			{
 				this.ParsePrecisionDeclaration();
 			}
@@ -1548,7 +1554,7 @@ namespace Xannden.GLSL.Parsing
 
 			int depth = 0;
 
-			while (depth > 0 || (this.builder.CurrentToken.SyntaxType != SyntaxType.EndIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElseIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElsePreprocessorKeyword))
+			while (this.builder.CurrentToken.SyntaxType != SyntaxType.EOF && (depth > 0 || (this.builder.CurrentToken.SyntaxType != SyntaxType.EndIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElseIfPreprocessorKeyword && this.builder.CurrentToken.SyntaxType != SyntaxType.ElsePreprocessorKeyword)))
 			{
 				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IfPreprocessorKeyword)
 				{
@@ -1662,7 +1668,7 @@ namespace Xannden.GLSL.Parsing
 
 			IfPreprocessorSyntax node = this.builder.EndNode() as IfPreprocessorSyntax;
 
-			IfPreprocessor preprocessor = new IfPreprocessor(node.IfKeyword, this.GetPreprocessorValue(node.IfKeyword.Span));
+			IfPreprocessor preprocessor = new IfPreprocessor(node?.IfKeyword, this.GetPreprocessorValue(node?.IfKeyword.Span));
 
 			this.preprocessors.Add(preprocessor);
 
@@ -2039,6 +2045,11 @@ namespace Xannden.GLSL.Parsing
 
 		private bool IsFunctionHeader()
 		{
+			if (this.builder.CurrentToken == null)
+			{
+				return false;
+			}
+
 			bool result = false;
 			ResetPoint resetPoint = this.builder.GetResetPoint();
 			this.builder.StartTestMode();
@@ -2138,16 +2149,16 @@ namespace Xannden.GLSL.Parsing
 			{
 				this.ParseTypeQualifier();
 
-				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
+				if (this.builder.CurrentToken?.SyntaxType == SyntaxType.IdentifierToken)
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBraceToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
+					if (this.builder.CurrentToken?.SyntaxType == SyntaxType.LeftBraceToken || this.builder.CurrentToken?.SyntaxType == SyntaxType.SemicolonToken)
 					{
 						result = true;
 					}
 				}
-				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
+				else if (this.builder.CurrentToken?.SyntaxType == SyntaxType.SemicolonToken)
 				{
 					result = true;
 				}
@@ -2354,7 +2365,7 @@ namespace Xannden.GLSL.Parsing
 
 		private bool AcceptTokenPreprocessor(SyntaxType type)
 		{
-			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			if (this.builder.CurrentToken?.SyntaxType == type || type == SyntaxType.Any)
 			{
 				this.builder.AddToken();
 
@@ -2387,7 +2398,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool result = false;
 
-			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			if (this.builder.CurrentToken?.SyntaxType == type || type == SyntaxType.Any)
 			{
 				token = this.builder.AddToken();
 
@@ -2415,7 +2426,7 @@ namespace Xannden.GLSL.Parsing
 
 			bool result = false;
 
-			if (this.builder.CurrentToken.SyntaxType == type || type == SyntaxType.Any)
+			if (this.builder.CurrentToken?.SyntaxType == type || type == SyntaxType.Any)
 			{
 				this.builder.AddToken();
 

@@ -25,7 +25,7 @@ namespace Xannden.VSGLSL.Errors
 
 			ErrorHandler handler = buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorHandler());
 
-			return new ErrorTagger(handler, source) as ITagger<T>;
+			return buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorTagger(handler, source)) as ITagger<T>;
 		}
 	}
 }

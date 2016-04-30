@@ -78,7 +78,11 @@
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSource.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSourceProvider.cs" />
     <Compile Include="IntelliSense\QuickTips\QuickTipPanel.cs" />
+    <Compile Include="Packages\GLSLAuthoringScope.cs" />
+    <Compile Include="Packages\GLSLLanguageService.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
+    <Compile Include="Packages\GLSLScanner.cs" />
+    <Compile Include="Packages\GLSLSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedAction.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSourceProvider.cs" />

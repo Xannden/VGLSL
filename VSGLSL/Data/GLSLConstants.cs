@@ -4,6 +4,7 @@
 	{
 		internal const string Comment = "glslComment";
 		internal const string ContentType = "GLSL";
+		internal const string Name = "GLSL";
 
 		internal const string ExcludedCode = "glslExcludedCode";
 		internal const string Field = "glslField";

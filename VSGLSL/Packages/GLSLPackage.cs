@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using Xannden.VSGLSL.Data;
 
 namespace Xannden.VSGLSL.Packages
 {
@@ -22,11 +24,12 @@ namespace Xannden.VSGLSL.Packages
 	/// </para>
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true)]
+	[ProvideService(typeof(GLSLLanguageService), ServiceName = "GLSL Language Service")]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
-	[ProvideLanguageService(typeof(GLSLPackage), "GLSL", 106, EnableLineNumbers = true, EnableCommenting = true, QuickInfo = true, ShowCompletion = true)]
-	[ProvideLanguageExtension(typeof(GLSLPackage), ".glsl")]
-	[ProvideLanguageExtension(typeof(GLSLPackage), ".vert")]
-	[ProvideLanguageExtension(typeof(GLSLPackage), ".frag")]
+	[ProvideLanguageService(typeof(GLSLLanguageService), GLSLConstants.Name, 106, EnableLineNumbers = true, EnableCommenting = true)]
+	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".glsl")]
+	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".vert")]
+	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".frag")]
 	[Guid(PackageGuidString)]
 	public sealed class GLSLPackage : Package
 	{
@@ -44,8 +47,12 @@ namespace Xannden.VSGLSL.Packages
 		protected override void Initialize()
 		{
 			base.Initialize();
-		}
 
+			IServiceContainer serviceContainer = this as IServiceContainer;
+			GLSLLanguageService langService = new GLSLLanguageService();
+			langService.SetSite(this);
+			serviceContainer.AddService(typeof(GLSLLanguageService), langService, true);
+		}
 		#endregion Package Members
 	}
 }

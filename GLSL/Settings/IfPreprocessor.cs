@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
+using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Settings
@@ -12,6 +13,8 @@ namespace Xannden.GLSL.Settings
 		}
 
 		public IReadOnlyList<Preprocessor> ElsePreprocessors => this.InternalElsePreprocessors;
+
+		public EndIfPreprocessorSyntax EndIf { get; internal set; }
 
 		internal List<Preprocessor> InternalElsePreprocessors { get; } = new List<Preprocessor>();
 

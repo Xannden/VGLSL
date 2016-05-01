@@ -40,7 +40,6 @@ namespace Xannden.VSGLSL.Preprocessors
 
 		public void Dispose()
 		{
-			// Method intentionally left empty.
 		}
 
 		public Task<IEnumerable<SuggestedActionSet>> GetActionSetsAsync(CancellationToken cancellationToken)

@@ -135,18 +135,7 @@ namespace Xannden.GLSL.Parsing
 					return;
 				}
 
-				Span span;
-
-				if (this.stack.Count > 0)
-				{
-					span = Span.Create(this.stack.Peek().TempStart);
-				}
-				else
-				{
-					span = this.CurrentToken.Span;
-				}
-
-				this.errorHandler.AddError($"{expected.GetText()} expected", span);
+				this.errorHandler.AddError($"{expected.GetText()} expected", this.CurrentToken.Span);
 
 				SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
 

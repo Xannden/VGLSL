@@ -16,6 +16,7 @@ namespace Xannden.GLSL.Tests
 		[TestMethod]
 		public void FullParse()
 		{
+
 			string[] lines = File.ReadAllLines(@"test.glsl");
 
 			ErrorHandler errors = new ErrorHandler();

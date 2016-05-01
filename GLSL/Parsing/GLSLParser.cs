@@ -1523,7 +1523,7 @@ namespace Xannden.GLSL.Parsing
 
 		private void ParseEndIfPreprocessor()
 		{
-			this.builder.StartNode(SyntaxType.EndIfPreprocessor);
+			EndIfPreprocessorSyntax endIf = this.builder.StartNode(SyntaxType.EndIfPreprocessor) as EndIfPreprocessorSyntax;
 
 			this.PreprocessorRequireToken(SyntaxType.EndIfPreprocessorKeyword);
 
@@ -1531,6 +1531,8 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.preprocessorStack.Count > 0)
 			{
+				this.preprocessorStack.Peek().EndIf = endIf;
+
 				this.preprocessorStack.Pop();
 			}
 		}

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
+using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -91,9 +93,66 @@ namespace Xannden.VSGLSL.Outlining
 						}
 
 						break;
-					case SyntaxType.Preprocessor:
-						PreprocessorSyntax proprocessor = node as PreprocessorSyntax;
+					case SyntaxType.IfDefinedPreprocessor:
+						IfDefinedPreprocessorSyntax ifDefined = node as IfDefinedPreprocessorSyntax;
+
+						if (ifDefined.EndIfKeyword != null)
+						{
+							this.AddRegion(snapshot, ifDefined.IfDefinedKeyword.Span.GetSpan(snapshot).End + 1, ifDefined.IfDefinedKeyword, ifDefined.EndIfKeyword);
+						}
+
 						break;
+					case SyntaxType.IfPreprocessor:
+						IfPreprocessorSyntax ifPreprocessor = node as IfPreprocessorSyntax;
+
+						if (ifPreprocessor.EndIfKeyword != null)
+						{
+							this.AddRegion(snapshot, ifPreprocessor.IfKeyword.Span.GetSpan(snapshot).End + 1, ifPreprocessor.IfKeyword, ifPreprocessor.EndIfKeyword);
+						}
+
+						break;
+					case SyntaxType.IfNotDefinedPreprocessor:
+						IfNotDefinedPreprocessorSyntax ifNotDefined = node as IfNotDefinedPreprocessorSyntax;
+
+						if (ifNotDefined.EndIfKeyword != null)
+						{
+							this.AddRegion(snapshot, ifNotDefined.IfNotDefinedKeyword.Span.GetSpan(snapshot).End + 1, ifNotDefined.IfNotDefinedKeyword, ifNotDefined.EndIfKeyword);
+						}
+
+						break;
+				}
+			}
+
+			foreach (IfPreprocessor preprocessor in this.source.Settings.Preprocessors)
+			{
+				if (preprocessor.EndIf != null)
+				{
+					this.AddRegion(snapshot, preprocessor.Keyword.Span.GetSpan(snapshot).End + 1, preprocessor.Keyword, preprocessor.EndIf.EndIfKeyword);
+				}
+
+				for (int i = 0; i < preprocessor.ElsePreprocessors.Count; i++)
+				{
+					SyntaxToken next;
+
+					if (i < preprocessor.ElsePreprocessors.Count - 1)
+					{
+						ElseIfPreprocessorSyntax elseIf = preprocessor.ElsePreprocessors[i].Keyword.Parent as ElseIfPreprocessorSyntax;
+
+						if (elseIf != null)
+						{
+							next = elseIf.ExcludedCode.Code.Last() as SyntaxToken;
+						}
+						else
+						{
+							next = preprocessor.ElsePreprocessors[i].Keyword;
+						}
+					}
+					else
+					{
+						next = preprocessor.EndIf.EndIfKeyword;
+					}
+
+					this.AddRegion(snapshot, preprocessor.ElsePreprocessors[i].Keyword.Span.GetSpan(snapshot).End + 1, preprocessor.ElsePreprocessors[i].Keyword, next);
 				}
 			}
 

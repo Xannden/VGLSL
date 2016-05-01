@@ -60,5 +60,20 @@ namespace Xannden.GLSL.Extensions
 
 			return false;
 		}
+
+		public static T Last<T>(this IReadOnlyList<T> list)
+		{
+			if (list == null)
+			{
+				throw new ArgumentNullException(nameof(list));
+			}
+
+			if (list.Count <= 0)
+			{
+				return default(T);
+			}
+
+			return list[list.Count - 1];
+		}
 	}
 }

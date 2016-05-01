@@ -157,6 +157,13 @@ namespace Xannden.VSGLSL.Extensions
 				runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
 				runs.Add(parameters[i].Identifier.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Parameter)));
 
+				if (parameters[i].ArraySize > 0)
+				{
+					runs.Add("[".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+					runs.Add(parameters[i].ArraySize.ToString().ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Number)));
+					runs.Add("]".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+				}
+
 				if (parameters[i].IsOptional)
 				{
 					runs.Add("]".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));

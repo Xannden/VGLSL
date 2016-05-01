@@ -6,7 +6,7 @@ namespace Xannden.GLSL.Settings
 {
 	public sealed class GLSLSettings
 	{
-		private IReadOnlyList<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
+		public IReadOnlyList<IfPreprocessor> Preprocessors { get; set; } = new List<IfPreprocessor>();
 
 		public IfPreprocessor GetPreprocessor(Snapshot snapshot, int position) => this.Preprocessors.Find(preprocessor => preprocessor.Contains(snapshot, position));
 

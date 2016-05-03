@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
@@ -21,6 +22,14 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 		[Import]
 		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal IGlyphService GlyphService { get; private set; } = null;
+
+		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
+		internal IClassificationFormatMapService FormatMap { get; private set; } = null;
+
+		[Import]
+		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
+		internal IClassificationTypeRegistryService TypeRegistry { get; private set; } = null;
 
 		public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
 		{

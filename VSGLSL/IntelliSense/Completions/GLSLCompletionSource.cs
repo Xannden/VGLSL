@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Operations;
 using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Extensions;
@@ -9,6 +12,7 @@ using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Text;
+using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Extensions;
 using Xannden.VSGLSL.Sources;
 
@@ -21,27 +25,36 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 		private readonly List<Completion> keywords = new List<Completion>();
 		private readonly List<Completion> builtInCompleations = new List<Completion>();
 		private readonly VSSource source;
+		private readonly IClassificationFormatMap formatMap;
 
 		internal GLSLCompletionSource(ITextBuffer textBuffer, GLSLCompletionSourceProvider provider, VSSource source)
 		{
 			this.textBuffer = textBuffer;
 			this.provider = provider;
 			this.source = source;
+			this.formatMap = this.provider.FormatMap.GetClassificationFormatMap("text");
 
-			ImageSource imageSource = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword, StandardGlyphItem.GlyphItemPublic);
+			ImageSource keywordIcon = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword, StandardGlyphItem.GlyphItemPublic);
 
 			for (SyntaxType type = SyntaxType.AttributeKeyword; type <= SyntaxType.LinePreprocessorKeyword; type++)
 			{
 				string text = type.GetText();
 
-				this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
+				TextBlock textBlock = new TextBlock();
+
+				textBlock.Inlines.Add(text.ToRun(this.formatMap, this.provider.TypeRegistry.GetClassificationType(GLSLConstants.Keyword)));
+				textBlock.Inlines.Add(new Run(" Keyword"));
+
+				this.keywords.Add(new GLSLCompletion(textBlock, text, text + "Keyword", keywordIcon));
+
+				// this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
 			}
 
-			foreach (Definition item in BuiltInData.Instance.Definitions)
+			foreach (Definition definition in BuiltInData.Instance.Definitions)
 			{
-				if (!this.builtInCompleations.Contains(com => com.DisplayText == item.Name))
+				if (!this.builtInCompleations.Contains(com => com.DisplayText == definition.Name))
 				{
-					this.builtInCompleations.Add(new Completion(item.Name, item.Name, item.Documentation, item.GetImageSource(this.provider.GlyphService), null));
+					this.builtInCompleations.Add(new GLSLCompletion(definition.ToTextBlock(this.formatMap, this.provider.TypeRegistry), definition, definition.GetImageSource(this.provider.GlyphService)));
 				}
 			}
 		}
@@ -65,7 +78,7 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 				foreach (Definition definition in definitions)
 				{
-					completions.Add(new Completion(definition.Name, definition.Name, string.Empty, definition.GetImageSource(this.provider.GlyphService), string.Empty));
+					completions.Add(new GLSLCompletion(definition.ToTextBlock(this.provider.FormatMap.GetClassificationFormatMap("text"), this.provider.TypeRegistry), definition, definition.GetImageSource(this.provider.GlyphService)));
 				}
 			}
 
@@ -84,7 +97,6 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 		public void Dispose()
 		{
-			// Method intentionally left empty.
 		}
 
 		private ITrackingSpan FindTokenSpanAtPosition(ICompletionSession session)

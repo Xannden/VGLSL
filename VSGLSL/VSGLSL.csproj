@@ -69,8 +69,10 @@
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="Extensions\TextExtensions.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletion.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandler.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
+    <Compile Include="IntelliSense\Completions\GLSLCompletionPresenter.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionSource.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionSourceProvider.cs" />
     <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoController.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Outlining\GLSLOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\Region.cs" />
     <Compile Include="Packages\GLSLAuthoringScope.cs" />
+    <Compile Include="Packages\GLSLLanguageInfo.cs" />
     <Compile Include="Packages\GLSLLanguageService.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
     <Compile Include="Packages\GLSLScanner.cs" />
@@ -90,7 +93,6 @@
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Definitions\GLSLFileTypes.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

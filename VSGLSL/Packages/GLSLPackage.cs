@@ -24,12 +24,14 @@ namespace Xannden.VSGLSL.Packages
 	/// </para>
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true)]
-	[ProvideService(typeof(GLSLLanguageService), ServiceName = "GLSL Language Service")]
-	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
+	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
+	[ProvideService(typeof(GLSLLanguageService))]
 	[ProvideLanguageService(typeof(GLSLLanguageService), GLSLConstants.Name, 106, EnableLineNumbers = true, EnableCommenting = true, AutoOutlining = true, QuickInfo = true)]
 	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".glsl")]
-	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".vert")]
-	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".frag")]
+
+	// [ProvideService(typeof(GLSLLanguageInfo))]
+	// [ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 100)]
+	// [ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
 	[Guid(PackageGuidString)]
 	public sealed class GLSLPackage : Package
 	{
@@ -37,6 +39,9 @@ namespace Xannden.VSGLSL.Packages
 		/// GLSLPackage GUID string.
 		/// </summary>
 		public const string PackageGuidString = "40d37d04-e60a-4b6e-8390-a2055347798d";
+
+		// private GLSLLanguageInfo languageInfo;
+		private GLSLLanguageService languageService;
 
 		#region Package Members
 
@@ -49,10 +54,17 @@ namespace Xannden.VSGLSL.Packages
 			base.Initialize();
 
 			IServiceContainer serviceContainer = this as IServiceContainer;
-			GLSLLanguageService langService = new GLSLLanguageService();
-			langService.SetSite(this);
-			serviceContainer.AddService(typeof(GLSLLanguageService), langService, true);
+
+			this.languageService = new GLSLLanguageService();
+			this.languageService.SetSite(this);
+
+			// this.languageInfo = new GLSLLanguageInfo();
+
+			serviceContainer.AddService(typeof(GLSLLanguageService), this.languageService, true);
+
+			// serviceContainer.AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
 		}
+
 		#endregion Package Members
 	}
 }

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	[Export(typeof(IVsTextViewCreationListener))]
 	[Name("GLSL Completions Handler")]

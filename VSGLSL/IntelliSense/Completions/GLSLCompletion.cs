@@ -3,7 +3,7 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Xannden.GLSL.Semantics;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	internal sealed class GLSLCompletion : Completion
 	{

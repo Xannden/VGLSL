@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Xannden.VSGLSL.IntelliSense.QuickTips
+namespace Xannden.VSGLSL.Intellisense.QuickInfo
 {
 	internal class QuickTipPanel : StackPanel
 	{

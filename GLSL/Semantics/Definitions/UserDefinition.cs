@@ -7,7 +7,7 @@ namespace Xannden.GLSL.Semantics
 {
 	public abstract class UserDefinition : Definition
 	{
-		protected UserDefinition(Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier?.Identifier, documentation, kind)
+		protected UserDefinition(Scope scope, IdentifierSyntax identifier, string documentation, DefinitionKind kind) : base(scope, identifier?.Identifier, documentation, kind, identifier.Span)
 		{
 			this.Identifier = identifier;
 		}

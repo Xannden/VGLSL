@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	internal class GLSLCompletionCommandHandler : IOleCommandTarget
 	{

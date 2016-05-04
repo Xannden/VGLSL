@@ -9,7 +9,7 @@ using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Extensions;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.IntelliSense.QuickTips
+namespace Xannden.VSGLSL.Intellisense.QuickInfo
 {
 	internal class GLSLQuickInfoSource : IQuickInfoSource
 	{

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.IntelliSense.QuickTips
+namespace Xannden.VSGLSL.Intellisense.QuickInfo
 {
 	[Export(typeof(IQuickInfoSourceProvider))]
 	[Name("GLSL QuickInfo Source")]

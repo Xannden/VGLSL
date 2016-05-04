@@ -26,7 +26,7 @@ namespace Xannden.VSGLSL.Packages
 	[PackageRegistration(UseManagedResourcesOnly = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
 	[ProvideService(typeof(GLSLLanguageInfo))]
-	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true)]
+	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true)]
 	[ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
 	[Guid(PackageGuidString)]
 	public sealed class GLSLPackage : Package

@@ -16,7 +16,7 @@ using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Extensions;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	internal sealed class GLSLCompletionSource : ICompletionSource
 	{

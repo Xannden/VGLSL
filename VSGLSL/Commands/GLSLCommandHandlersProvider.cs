@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
 
-namespace Xannden.VSGLSL.Command
+namespace Xannden.VSGLSL.Commands
 {
 	[Export(typeof(IVsTextViewCreationListener))]
 	[Name("GLSL Command Handler")]
@@ -15,6 +16,9 @@ namespace Xannden.VSGLSL.Command
 	[TextViewRole(PredefinedTextViewRoles.Editable)]
 	internal sealed class GLSLCommandHandlersProvider : IVsTextViewCreationListener
 	{
+		[Import]
+		internal IQuickInfoBroker QuickInfoBroker { get; set; }
+
 		internal IVsEditorAdaptersFactoryService AdapterService { get; set; }
 
 		public void VsTextViewCreated(IVsTextView textViewAdapter)
@@ -28,7 +32,10 @@ namespace Xannden.VSGLSL.Command
 				return;
 			}
 
-			textView.Properties.GetOrCreateSingletonProperty(() => new GLSLCommandHandlers(textViewAdapter, textView));
+			textView.Properties.GetOrCreateSingletonProperty(() => new CommentSelectionCommand(textViewAdapter, textView));
+			textView.Properties.GetOrCreateSingletonProperty(() => new UnCommentSelectionCommand(textViewAdapter, textView));
+			textView.Properties.GetOrCreateSingletonProperty(() => new QuickInfoCommand(textViewAdapter, textView, this.QuickInfoBroker));
+			textView.Properties.GetOrCreateSingletonProperty(() => new GoToDefinitionCommand(textViewAdapter, textView));
 		}
 	}
 }

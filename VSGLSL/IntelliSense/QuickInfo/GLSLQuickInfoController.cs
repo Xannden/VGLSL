@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 
-namespace Xannden.VSGLSL.IntelliSense.QuickTips
+namespace Xannden.VSGLSL.Intellisense.QuickInfo
 {
 	internal class GLSLQuickInfoController : IIntellisenseController
 	{

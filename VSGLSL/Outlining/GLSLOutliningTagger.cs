@@ -42,7 +42,7 @@ namespace Xannden.VSGLSL.Outlining
 			foreach (Region region in list)
 			{
 				// TODO: make the collapsed text have syntax coloring
-				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, region.Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, false, "...", region.Text));
+				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, region.Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", region.Text));
 			}
 		}
 

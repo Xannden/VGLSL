@@ -60,11 +60,17 @@
     <Compile Include="Classification\GLSLClassifier.cs" />
     <Compile Include="Classification\GLSLClassifierProvider.cs" />
     <Compile Include="Classification\ClassificationTypes.cs" />
-    <Compile Include="Command\GLSLCommandHandlers.cs" />
-    <Compile Include="Command\GLSLCommandHandlersProvider.cs" />
+    <Compile Include="Commands\Commenting\CommentSelectionCommand.cs" />
+    <Compile Include="Commands\Commenting\UnCommentSelectionCommand.cs" />
+    <Compile Include="Commands\GLSLCommandHandlers.cs" />
+    <Compile Include="Commands\GLSLCommandHandlersProvider.cs" />
+    <Compile Include="Commands\Intellisence\GoToDefinitionCommand.cs" />
+    <Compile Include="Commands\Intellisence\QuickInfoCommand.cs" />
+    <Compile Include="Commands\VSCommand.cs" />
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
     <Compile Include="Errors\VSErrorList.cs" />
     <Compile Include="Errors\VSErrorListProvider.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DefinitionExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -73,17 +79,18 @@
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="Extensions\VSExtensions.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletion.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandler.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletionPresenter.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletionSource.cs" />
-    <Compile Include="IntelliSense\Completions\GLSLCompletionSourceProvider.cs" />
-    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoController.cs" />
-    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoControllerProvider.cs" />
-    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSource.cs" />
-    <Compile Include="IntelliSense\QuickTips\GLSLQuickInfoSourceProvider.cs" />
-    <Compile Include="IntelliSense\QuickTips\QuickTipPanel.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletion.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletionCommandHandler.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletionPresenter.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletionSource.cs" />
+    <Compile Include="Intellisense\Completions\GLSLCompletionSourceProvider.cs" />
+    <Compile Include="Intellisense\ParameterHelp\GLSLParameterHelpProvider.cs" />
+    <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoController.cs" />
+    <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoControllerProvider.cs" />
+    <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoSource.cs" />
+    <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoSourceProvider.cs" />
+    <Compile Include="Intellisense\QuickInfo\QuickTipPanel.cs" />
     <Compile Include="Outlining\GLSLOutliningTagger.cs" />
     <Compile Include="Outlining\GLSLOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\Region.cs" />
@@ -289,9 +296,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntelliSense\ParameterHelp\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

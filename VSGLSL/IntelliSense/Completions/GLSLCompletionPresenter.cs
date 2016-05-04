@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	[Export(typeof(IUIElementProvider<Completion, ICompletionSession>))]
 	[Name("GLSL Completion Presenter")]

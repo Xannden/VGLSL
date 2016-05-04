@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Sources;
 
-namespace Xannden.VSGLSL.IntelliSense.Completions
+namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	[Export(typeof(ICompletionSourceProvider))]
 	[ContentType(GLSLConstants.ContentType)]

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Settings;
@@ -13,16 +12,14 @@ namespace Xannden.GLSL.Parsing
 {
 	public sealed class GLSLParser
 	{
-		private readonly ErrorHandler errorHandler;
 		private readonly GLSLSettings settings;
 		private TreeBuilder builder;
 		private List<IfPreprocessor> preprocessors;
 		private Stack<IfPreprocessor> preprocessorStack;
 		private Snapshot snapshot;
 
-		internal GLSLParser(ErrorHandler errorHandler, GLSLSettings settings)
+		internal GLSLParser(GLSLSettings settings)
 		{
-			this.errorHandler = errorHandler;
 			this.settings = settings;
 		}
 
@@ -31,7 +28,7 @@ namespace Xannden.GLSL.Parsing
 		public SyntaxTree Run(Snapshot snapshot, LinkedList<Token> tokens)
 		{
 			this.snapshot = snapshot;
-			this.builder = new TreeBuilder(snapshot, tokens, this.errorHandler);
+			this.builder = new TreeBuilder(snapshot, tokens);
 			this.preprocessors = new List<IfPreprocessor>();
 			this.preprocessorStack = new Stack<IfPreprocessor>();
 

@@ -79,7 +79,6 @@
     <Compile Include="BuiltIn\BuiltInFunction.cs" />
     <Compile Include="BuiltIn\Parameter.cs" />
     <Compile Include="BuiltIn\Variable.cs" />
-    <Compile Include="Errors\ErrorHandler.cs" />
     <Compile Include="Errors\GLSLError.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTypeExtensions.cs" />

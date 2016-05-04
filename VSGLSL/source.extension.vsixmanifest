@@ -4,6 +4,7 @@
 		<Identity Id="22e23217-3b60-46c7-8047-a5ae0a268489" Version="1.0" Language="en-US" Publisher="Xannden" />
 		<DisplayName>VSGLSL</DisplayName>
 		<Description xml:space="preserve">Empty VSIX Project.</Description>
+		<Icon>Resources\GLSLPackage.ico</Icon>
 	</Metadata>
 	<Installation>
 		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />

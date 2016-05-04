@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.BuiltIn;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Parsing;
 using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax.Tree;
@@ -13,11 +12,11 @@ namespace Xannden.GLSL.Text
 		private IReadOnlyList<TrackingSpan> commentSpans = new List<TrackingSpan>();
 		private SyntaxTree tree;
 
-		protected Source(ErrorHandler errorHandler)
+		protected Source(string fileName)
 		{
-			this.ErrorHandler = errorHandler;
+			this.FileName = fileName;
 
-			this.Parser = new GLSLParser(this.ErrorHandler, this.Settings);
+			this.Parser = new GLSLParser(this.Settings);
 
 			BuiltInData.Instance.LoadData();
 		}
@@ -43,7 +42,7 @@ namespace Xannden.GLSL.Text
 
 		public abstract Snapshot CurrentSnapshot { get; }
 
-		public ErrorHandler ErrorHandler { get; }
+		public string FileName { get; }
 
 		public GLSLSettings Settings { get; } = new GLSLSettings();
 

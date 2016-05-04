@@ -10,12 +10,10 @@ namespace Xannden.VSGLSL.Errors
 {
 	internal sealed class ErrorTagger : ITagger<ErrorTag>
 	{
-		private readonly ErrorHandler handler;
 		private readonly VSSource source;
 
-		public ErrorTagger(ErrorHandler handler, VSSource source)
+		public ErrorTagger(VSSource source)
 		{
-			this.handler = handler;
 			this.source = source;
 
 			this.source.DoneParsing += this.Source_DoneParsing;
@@ -25,7 +23,7 @@ namespace Xannden.VSGLSL.Errors
 
 		public IEnumerable<ITagSpan<ErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
 		{
-			IReadOnlyList<GLSLError> errors = this.handler.Errors;
+			IReadOnlyList<GLSLError> errors = this.source.Tree.Errors;
 
 			for (int i = 0; i < errors.Count; i++)
 			{

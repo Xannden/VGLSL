@@ -25,13 +25,9 @@ namespace Xannden.VSGLSL.Packages
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
-	[ProvideService(typeof(GLSLLanguageService))]
-	[ProvideLanguageService(typeof(GLSLLanguageService), GLSLConstants.Name, 106, EnableLineNumbers = true, EnableCommenting = true, AutoOutlining = true, QuickInfo = true)]
-	[ProvideLanguageExtension(typeof(GLSLLanguageService), ".glsl")]
-
-	// [ProvideService(typeof(GLSLLanguageInfo))]
-	// [ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 100)]
-	// [ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
+	[ProvideService(typeof(GLSLLanguageInfo))]
+	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true)]
+	[ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
 	[Guid(PackageGuidString)]
 	public sealed class GLSLPackage : Package
 	{
@@ -40,8 +36,7 @@ namespace Xannden.VSGLSL.Packages
 		/// </summary>
 		public const string PackageGuidString = "40d37d04-e60a-4b6e-8390-a2055347798d";
 
-		// private GLSLLanguageInfo languageInfo;
-		private GLSLLanguageService languageService;
+		private GLSLLanguageInfo languageInfo;
 
 		#region Package Members
 
@@ -53,16 +48,8 @@ namespace Xannden.VSGLSL.Packages
 		{
 			base.Initialize();
 
-			IServiceContainer serviceContainer = this as IServiceContainer;
-
-			this.languageService = new GLSLLanguageService();
-			this.languageService.SetSite(this);
-
-			// this.languageInfo = new GLSLLanguageInfo();
-
-			serviceContainer.AddService(typeof(GLSLLanguageService), this.languageService, true);
-
-			// serviceContainer.AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
+			this.languageInfo = new GLSLLanguageInfo();
+			((IServiceContainer)this).AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
 		}
 
 		#endregion Package Members

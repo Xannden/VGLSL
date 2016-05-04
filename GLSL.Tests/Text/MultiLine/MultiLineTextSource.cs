@@ -1,5 +1,4 @@
 ﻿using System;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Test.Text
@@ -8,17 +7,17 @@ namespace Xannden.GLSL.Test.Text
 	{
 		private readonly MultiLineSnapshot snapshot;
 
-		public MultiLineTextSource(ErrorHandler reporter) : base(reporter)
+		public MultiLineTextSource() : base(string.Empty)
 		{
 			this.snapshot = new MultiLineSnapshot(this);
 		}
 
 		public override Snapshot CurrentSnapshot => this.snapshot;
 
-		public static MultiLineTextSource FromString(string text, ErrorHandler reporter)
+		public static MultiLineTextSource FromString(string text)
 		{
 			string[] lines = text.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-			MultiLineTextSource source = new MultiLineTextSource(reporter);
+			MultiLineTextSource source = new MultiLineTextSource();
 
 			for (int i = 0; i < lines.Length; i++)
 			{
@@ -28,9 +27,9 @@ namespace Xannden.GLSL.Test.Text
 			return source;
 		}
 
-		public static MultiLineTextSource FromString(string[] lines, ErrorHandler reporter, bool addNewLine = false)
+		public static MultiLineTextSource FromString(string[] lines, bool addNewLine = false)
 		{
-			MultiLineTextSource source = new MultiLineTextSource(reporter);
+			MultiLineTextSource source = new MultiLineTextSource();
 
 			for (int i = 0; i < lines.Length; i++)
 			{

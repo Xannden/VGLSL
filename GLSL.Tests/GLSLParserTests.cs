@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Parsing;
 using Xannden.GLSL.Syntax.Tokens;
@@ -19,12 +18,11 @@ namespace Xannden.GLSL.Tests
 
 			string[] lines = File.ReadAllLines(@"test.glsl");
 
-			ErrorHandler errors = new ErrorHandler();
 			GLSLLexer lexer = new GLSLLexer();
 
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors, true);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines, true);
 
-			GLSLParser parser = new GLSLParser(errors, source.Settings);
+			GLSLParser parser = new GLSLParser(source.Settings);
 
 			LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 

@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -27,98 +26,122 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 
 		public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 		{
-			if (VsShellUtilities.IsInAutomationFunction(this.provider.ServiceProvider))
+			switch ((VSConstants.VSStd2KCmdID)nCmdID)
 			{
-				return this.nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-			}
+				case VSConstants.VSStd2KCmdID.SHOWMEMBERLIST:
+					if (this.session == null || this.session.IsDismissed)
+					{
+						this.TriggerCompletion();
+					}
 
-			// make a copy of this so we can look at it after forwarding some commands
-			uint commandID = nCmdID;
-			char typedChar = char.MinValue;
+					return VSConstants.S_OK;
 
-			// make sure the input is a char before getting it
-			if (pguidCmdGroup == VSConstants.VSStd2K && nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR)
-			{
-				typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
-			}
+				case VSConstants.VSStd2KCmdID.COMPLETEWORD:
+					this.CompleteWord();
 
-			if ((nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB || (char.IsWhiteSpace(typedChar) || char.IsPunctuation(typedChar))) && (this.session != null && !this.session.IsDismissed))
-			{
-				// if the selection is fully selected, commit the current session
-				if (this.session.SelectedCompletionSet.SelectionStatus.IsSelected)
-				{
-					this.session.Commit();
+					return VSConstants.S_OK;
 
-					if (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN || nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB)
+				case VSConstants.VSStd2KCmdID.TYPECHAR:
+					return this.TypeChar(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
+				case VSConstants.VSStd2KCmdID.RETURN:
+				case VSConstants.VSStd2KCmdID.TAB:
+					if (this.Done())
 					{
 						return VSConstants.S_OK;
 					}
-				}
-				else
-				{
-					// if there is no selection, dismiss the session
-					this.session.Dismiss();
-				}
+
+					break;
+
+				case VSConstants.VSStd2KCmdID.BACKSPACE:
+				case VSConstants.VSStd2KCmdID.DELETE:
+					this.nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
+					if (!this.session?.IsDismissed ?? false)
+					{
+						this.session.Filter();
+					}
+
+					return VSConstants.S_OK;
 			}
 
-			// pass along the command so the char is added to the buffer
-			int retVal = this.nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-			bool handled = false;
-
-			if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
-			{
-				// If there is no active session, bring up completion
-				if (this.session == null || this.session.IsDismissed)
-				{
-					this.TriggerCompletion();
-					this.session.Filter();
-				}
-				else
-				{
-					// the completion session is already active, so just filter
-					this.session.Filter();
-				}
-
-				handled = true;
-			}
-			else if (commandID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE || commandID == (uint)VSConstants.VSStd2KCmdID.DELETE)
-			{
-				if (this.session != null && !this.session.IsDismissed)
-				{
-					this.session.Filter();
-				}
-
-				handled = true;
-			}
-
-			if (handled)
-			{
-				return VSConstants.S_OK;
-			}
-
-			return retVal;
+			return this.nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 		}
 
 		public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
 		{
+			if (pguidCmdGroup == VSConstants.VSStd2K)
+			{
+				for (int i = 0; i < cCmds; i++)
+				{
+					switch ((VSConstants.VSStd2KCmdID)prgCmds[i].cmdID)
+					{
+						case VSConstants.VSStd2KCmdID.SHOWMEMBERLIST:
+						case VSConstants.VSStd2KCmdID.COMPLETEWORD:
+#pragma warning disable RECS0016 // Bitwise operation on enum which has no [Flags] attribute
+							prgCmds[i].cmdf = (uint)(OLECMDF.OLECMDF_ENABLED | OLECMDF.OLECMDF_SUPPORTED);
+#pragma warning restore RECS0016 // Bitwise operation on enum which has no [Flags] attribute
+							return VSConstants.S_OK;
+					}
+				}
+			}
+
 			return this.nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+		}
+
+		private int TypeChar(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			char character = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
+
+			if (char.IsWhiteSpace(character) || (char.IsPunctuation(character) && character != '_'))
+			{
+				this.Done();
+			}
+
+			int returnValue = this.nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
+			if (char.IsLetterOrDigit(character) || character == '_')
+			{
+				if (this.session?.IsDismissed ?? true)
+				{
+					this.TriggerCompletion();
+				}
+				else
+				{
+					this.session.Filter();
+				}
+
+				return VSConstants.S_OK;
+			}
+
+			return returnValue;
+		}
+
+		private void CompleteWord()
+		{
+			if (this.session == null || this.session.IsDismissed)
+			{
+				this.TriggerCompletion();
+
+				if (this.session.SelectedCompletionSet.Completions.Count <= 1)
+				{
+					this.session.SelectedCompletionSet.SelectBestMatch();
+
+					this.session.Commit();
+				}
+			}
 		}
 
 		private void TriggerCompletion()
 		{
-			// the caret must be in a non-projection location
-			SnapshotPoint? caretPoint = this.textView.Caret.Position.Point.GetPoint(textBuffer => (!textBuffer.ContentType.IsOfType("projection")), PositionAffinity.Predecessor);
+			SnapshotPoint point = this.textView.Caret.Position.BufferPosition;
 
-			if (!caretPoint.HasValue)
-			{
-				return;
-			}
+			this.session = this.provider.CompletionBroker.CreateCompletionSession(this.textView, point.Snapshot.CreateTrackingPoint(point.Position, PointTrackingMode.Positive), true);
 
-			this.session = this.provider.CompletionBroker.CreateCompletionSession(this.textView, caretPoint.Value.Snapshot.CreateTrackingPoint(caretPoint.Value.Position, PointTrackingMode.Positive), true);
-
-			// subscribe to the Dismissed event on the session
 			this.session.Dismissed += this.OnSessionDismissed;
 			this.session.Start();
+
+			this.session.Filter();
 
 			return;
 		}
@@ -127,6 +150,23 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 		{
 			this.session.Dismissed -= this.OnSessionDismissed;
 			this.session = null;
+		}
+
+		private bool Done()
+		{
+			if (!this.session?.IsDismissed ?? false)
+			{
+				if (this.session.SelectedCompletionSet.SelectionStatus.IsSelected)
+				{
+					this.session.Commit();
+
+					return true;
+				}
+
+				this.session.Dismiss();
+			}
+
+			return false;
 		}
 	}
 }

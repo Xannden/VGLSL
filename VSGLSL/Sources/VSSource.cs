@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualStudio.Text;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Text;
+using Xannden.VSGLSL.Extensions;
 
 namespace Xannden.VSGLSL.Sources
 {
@@ -16,7 +16,7 @@ namespace Xannden.VSGLSL.Sources
 		private readonly object lockObject = new object();
 		private bool isParsing = false;
 
-		private VSSource(ITextBuffer buffer, ErrorHandler errorHandler) : base(errorHandler)
+		private VSSource(ITextBuffer buffer, string fileName) : base(fileName)
 		{
 			this.TextBuffer = buffer;
 
@@ -31,9 +31,7 @@ namespace Xannden.VSGLSL.Sources
 
 		public static VSSource GetOrCreate(ITextBuffer buffer)
 		{
-			ErrorHandler errors = buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorHandler());
-
-			VSSource source = buffer.Properties.GetOrCreateSingletonProperty(() => new VSSource(buffer, errors));
+			VSSource source = buffer.Properties.GetOrCreateSingletonProperty(() => new VSSource(buffer, buffer.GetFileName()));
 
 			if (source.Tree == null)
 			{
@@ -77,13 +75,11 @@ namespace Xannden.VSGLSL.Sources
 
 		private void Parse(object obj)
 		{
-			while (this.autoResetEvent.WaitOne(200))
 #pragma warning disable S108 // Nested blocks of code should not be left empty
+			while (this.autoResetEvent.WaitOne(200))
 			{
 			}
 #pragma warning restore S108 // Nested blocks of code should not be left empty
-
-			this.ErrorHandler.ClearErrors();
 
 			Snapshot snapshot = this.CurrentSnapshot;
 

@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
-using Xannden.VSGLSL.Sources;
 
 namespace Xannden.VSGLSL.IntelliSense.QuickTips
 {
@@ -16,12 +15,12 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 		private readonly Source source;
 		private ITextView textView;
 
-		public GLSLQuickInfoController(GLSLQuickInfoControllerProvider provider, ITextView textView, IList<ITextBuffer> subjectBuffers)
+		public GLSLQuickInfoController(GLSLQuickInfoControllerProvider provider, Source source, ITextView textView, IList<ITextBuffer> subjectBuffers)
 		{
 			this.provider = provider;
 			this.textView = textView;
 			this.subjectBuffers = subjectBuffers;
-			this.source = VSSource.GetOrCreate(textView.TextBuffer);
+			this.source = source;
 
 			textView.MouseHover += this.OnTextViewMouseHover;
 		}
@@ -42,12 +41,10 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 		public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
 		{
-			// Method intentionally left empty.
 		}
 
 		public void DisconnectSubjectBuffer(ITextBuffer subjectBuffer)
 		{
-			// Method intentionally left empty.
 		}
 
 		private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e)

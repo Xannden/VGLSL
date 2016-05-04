@@ -1,11 +1,10 @@
-﻿using Xannden.GLSL.Errors;
-using Xannden.GLSL.Text;
+﻿using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Test.Text
 {
 	internal sealed class TextSource : Source
 	{
-		public TextSource(string text, ErrorHandler reporter) : base(reporter)
+		public TextSource(string text) : base(string.Empty)
 		{
 			this.CurrentSnapshot = new TextSnapshot(this, text);
 		}

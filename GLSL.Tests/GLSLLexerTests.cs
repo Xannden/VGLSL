@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
@@ -29,10 +28,9 @@ namespace Xannden.GLSL.Tests
 				"and still continues \\\n"
 			};
 
-			ErrorHandler errors = new ErrorHandler();
 			GLSLLexer lexer = new GLSLLexer();
 
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			LinkedList<Token> list = lexer.Run(source.CurrentSnapshot);
 
@@ -67,12 +65,12 @@ namespace Xannden.GLSL.Tests
 		{
 			string[] lines = { "1234567890", "1234567890u", "1234567890U" };
 			SyntaxType[] resultTypes = { SyntaxType.IntConstToken, SyntaxType.UIntConstToken, SyntaxType.UIntConstToken };
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
 			for (int i = 0; i < lines.Length; i++)
 			{
-				TextSource source = new TextSource(lines[i], errors);
+				TextSource source = new TextSource(lines[i]);
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
@@ -84,12 +82,12 @@ namespace Xannden.GLSL.Tests
 		public void LexFloat()
 		{
 			string[] lines = { "5.5", "5.", ".5", "5.5e5", "5.e5", ".5e5", "5.5e+5", "5.e+5", ".5e+5", "5.5e-5", "5.e-5", ".5e-5", "5.5e5F", "5.e5F", ".5e5F", "5.5e+5F", "5.e+5F", ".5e+5F", "5.5e-5F", "5.e-5F", ".5e-5F", "5.5e5f", "5.e5f", ".5e5f", "5.5e+5f", "5.e+5f", ".5e+5f", "5.5e-5f", "5.e-5f", ".5e-5f", "5.e5lf", ".5e5lf", "5.5e+5lf", "5.e+5lf", ".5e+5lf", "5.5e-5lf", "5.e-5lf", ".5e-5lf", "5.5e5LF", "5.e5LF", ".5e5LF", "5.5e+5LF", "5.e+5LF", ".5e+5LF", "5.5e-5LF", "5.e-5LF", ".5e-5LF", "5.5f", "5.f", ".5f", "5.5F", "5.F", ".5F", "5.5lf", "5.lf", ".5lf", "5.5LF", "5.LF", ".5LF", "5e5" };
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
 			for (int i = 0; i < lines.Length; i++)
 			{
-				TextSource source = new TextSource(lines[i], errors);
+				TextSource source = new TextSource(lines[i]);
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
@@ -110,12 +108,12 @@ namespace Xannden.GLSL.Tests
 		{
 			string[] lines = { "0x123456789abcdef", "0x123456789abcdefu", "0x123456789abcedfU", "0x123456789ABCDEF", "0x123456789ABCDEFu", "0x123456789ABCDEFU", "0X123456789abcdef", "0X123456789abcdefu", "0X123456789abcedfU", "0X123456789ABCDEF", "0X123456789ABCDEFu", "0X123456789ABCDEFU" };
 			SyntaxType[] resultTypes = { SyntaxType.IntConstToken, SyntaxType.UIntConstToken, SyntaxType.UIntConstToken };
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
 			for (int i = 0; i < lines.Length; i++)
 			{
-				TextSource source = new TextSource(lines[i], errors);
+				TextSource source = new TextSource(lines[i]);
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
@@ -144,12 +142,12 @@ namespace Xannden.GLSL.Tests
 				"image1D", "iimage1D", "uimage1D", "image2D", "iimage2D", "uimage2D", "image3D", "iimage3D", "uimage3D", "image2DRect", "iimage2DRect", "uimage2DRect", "imageCube", "iimageCube", "uimageCube", "imageBuffer", "iimageBuffer", "uimageBuffer", "image1DArray", "iimage1DArray", "uimage1DArray", "image2DArray", "iimage2DArray", "uimage2DArray", "imageCubeArray", "iimageCubeArray", "uimageCubeArray", "image2DMS", "iimage2DMS", "uimage2DMS", "image2DMSArray", "iimage2DMSArray", "uimage2DMSArray", "struct",
 				"common", "partition", "active", "asm", "class", "union", "enum", "typedef", "template", "this", "resource", "goto", "inline", "noinline", "public", "static", "extern", "external", "interface", "long", "short", "half", "fixed", "unsigned", "superp", "input", "output", "hvec2", "hvec3", "hvec4", "fvec2", "fvec3", "fvec4", "sampler3DRect", "filter", "sizeof", "cast", "namespace", "using"
 			};
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
 			for (int i = 0; i < keywords.Length; i++)
 			{
-				TextSource source = new TextSource(keywords[i], errors);
+				TextSource source = new TextSource(keywords[i]);
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
@@ -162,12 +160,12 @@ namespace Xannden.GLSL.Tests
 		{
 			string[] lines = { "01234567", "01234567u", "01234567U", "0123456789" };
 			SyntaxType[] resultTypes = { SyntaxType.IntConstToken, SyntaxType.UIntConstToken, SyntaxType.UIntConstToken, SyntaxType.InvalidToken };
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
 			for (int i = 0; i < lines.Length; i++)
 			{
-				TextSource source = new TextSource(lines[i], errors);
+				TextSource source = new TextSource(lines[i]);
 				LinkedList<Token> tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
@@ -180,21 +178,21 @@ namespace Xannden.GLSL.Tests
 		{
 			string[] preprocessors = { "#define", "#undef", "#if", "#ifdef", "#ifndef", "#else", "#elif", "#endif", "#error", "#pragma", "#extension", "#version", "#line" };
 			SyntaxType[] types = { SyntaxType.DefinePreprocessorKeyword, SyntaxType.UndefinePreprocessorKeyword, SyntaxType.IfPreprocessorKeyword, SyntaxType.IfDefinedPreprocessorKeyword, SyntaxType.IfNotDefinedPreprocessorKeyword, SyntaxType.ElsePreprocessorKeyword, SyntaxType.ElseIfPreprocessorKeyword, SyntaxType.EndIfPreprocessorKeyword, SyntaxType.ErrorPreprocessorKeyword, SyntaxType.PragmaPreprocessorKeyword, SyntaxType.ExtensionPreprocessorKeyword, SyntaxType.VersionPreprocessorKeyword, SyntaxType.LinePreprocessorKeyword };
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 			TextSource source;
 			LinkedList<Token> tokens;
 
 			for (int i = 0; i < preprocessors.Length; i++)
 			{
-				source = new TextSource(preprocessors[i], errors);
+				source = new TextSource(preprocessors[i]);
 				tokens = lexer.Run(source.CurrentSnapshot);
 
 				Assert.AreEqual(2, tokens.Count);
 				Assert.AreEqual(types[i], tokens.First.Value.SyntaxType);
 			}
 
-			source = new TextSource("#unknown", errors);
+			source = new TextSource("#unknown");
 			tokens = lexer.Run(source.CurrentSnapshot);
 
 			Assert.AreEqual(2, tokens.Count);
@@ -216,9 +214,9 @@ namespace Xannden.GLSL.Tests
 				SyntaxType.LeftParenToken, SyntaxType.RightParenToken, SyntaxType.LeftBracketToken, SyntaxType.RightBracketToken, SyntaxType.LeftBraceToken, SyntaxType.RightBraceToken, SyntaxType.DotToken, SyntaxType.CommaToken, SyntaxType.ColonToken, SyntaxType.EqualToken, SyntaxType.EqualEqualToken, SyntaxType.SemicolonToken, SyntaxType.ExclamationToken, SyntaxType.ExclamationEqualToken, SyntaxType.MinusToken, SyntaxType.MinusMinusToken, SyntaxType.MinusEqualToken, SyntaxType.TildeToken, SyntaxType.PlusToken, SyntaxType.PlusPlusToken, SyntaxType.PlusEqualToken, SyntaxType.StarToken, SyntaxType.StarEqualToken, SyntaxType.SlashToken, SyntaxType.SlashEqualToken, SyntaxType.PercentToken, SyntaxType.PercentEqualToken, SyntaxType.LessThenToken, SyntaxType.LessThenEqualToken, SyntaxType.LessThenLessThenToken, SyntaxType.LessThenLessThenEqualToken, SyntaxType.GreaterThenToken, SyntaxType.GreaterThenEqualToken, SyntaxType.GreaterThenGreaterThenToken,
 				SyntaxType.GreaterThenGreaterThenEqualToken, SyntaxType.VerticalBarToken, SyntaxType.BarBarToken, SyntaxType.BarEqualToken, SyntaxType.CaretToken, SyntaxType.CaretCaretToken, SyntaxType.CaretEqualToken, SyntaxType.AmpersandToken, SyntaxType.AmpersandAmpersandToken, SyntaxType.AmpersandEqualToken, SyntaxType.QuestionToken, SyntaxType.EOF
 			};
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
-			TextSource source = new TextSource(line, errors);
+			TextSource source = new TextSource(line);
 
 			int index = 0;
 
@@ -242,10 +240,10 @@ namespace Xannden.GLSL.Tests
 				"1234\\\n",
 				"56789"
 			};
-			ErrorHandler errors = new ErrorHandler();
+
 			GLSLLexer lexer = new GLSLLexer();
 
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			List<Token> tokens = lexer.Run(source.CurrentSnapshot).ToList();
 

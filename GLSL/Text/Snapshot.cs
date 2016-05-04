@@ -5,6 +5,7 @@
 		protected Snapshot(Source source)
 		{
 			this.Source = source;
+			this.FileName = this.Source.FileName;
 		}
 
 		public abstract int Length { get; }
@@ -12,6 +13,8 @@
 		public abstract int LineCount { get; }
 
 		public Source Source { get; }
+
+		public string FileName { get; }
 
 #pragma warning disable SA1101
 		public Span Span => Span.Create(0, this.Length - 1);

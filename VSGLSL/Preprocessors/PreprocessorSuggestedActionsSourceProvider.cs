@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -17,7 +16,6 @@ namespace Xannden.VSGLSL.Preprocessors
 	internal class PreprocessorSuggestedActionsSourceProvider : ISuggestedActionsSourceProvider
 	{
 		[Import]
-		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
 
 		public ISuggestedActionsSource CreateSuggestedActionsSource(ITextView textView, ITextBuffer textBuffer)

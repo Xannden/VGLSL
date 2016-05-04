@@ -13,7 +13,7 @@ namespace Xannden.GLSL.Parsing
 {
 	internal sealed class TreeBuilder
 	{
-		private readonly ErrorHandler errorHandler;
+		private readonly List<GLSLError> errorList = new List<GLSLError>();
 		private readonly Snapshot snapshot;
 		private readonly Stack<SyntaxNode> stack = new Stack<SyntaxNode>();
 		private readonly LinkedList<Token> tokens;
@@ -23,11 +23,10 @@ namespace Xannden.GLSL.Parsing
 		private LinkedListNode<Token> listNode;
 		private int testModeLayer;
 
-		public TreeBuilder(Snapshot snapshot, LinkedList<Token> tokens, ErrorHandler errorHandler)
+		public TreeBuilder(Snapshot snapshot, LinkedList<Token> tokens)
 		{
 			this.snapshot = snapshot;
 			this.tokens = tokens;
-			this.errorHandler = errorHandler;
 
 			this.listNode = this.tokens.First;
 		}
@@ -135,7 +134,7 @@ namespace Xannden.GLSL.Parsing
 					return;
 				}
 
-				this.errorHandler.AddError($"{expected.GetText()} expected", this.CurrentToken.Span);
+				this.errorList.Add(new GLSLError($"{expected.GetText()} expected", this.CurrentToken.Span));
 
 				SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
 
@@ -149,13 +148,14 @@ namespace Xannden.GLSL.Parsing
 		{
 			if (this.testModeLayer <= 0)
 			{
-				this.errorHandler.AddError(message, this.CurrentToken.Span);
+				this.errorList.Add(new GLSLError(message, this.CurrentToken.Span));
 			}
 		}
 
 		public SyntaxTree GetTree()
 		{
 			this.tree.Definitions = this.definitions;
+			this.tree.Errors = this.errorList;
 
 			return this.tree;
 		}

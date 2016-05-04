@@ -3,7 +3,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
-using Xannden.GLSL.Errors;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Sources;
 
@@ -23,9 +22,7 @@ namespace Xannden.VSGLSL.Errors
 
 			VSSource source = VSSource.GetOrCreate(buffer);
 
-			ErrorHandler handler = buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorHandler());
-
-			return buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorTagger(handler, source)) as ITagger<T>;
+			return buffer.Properties.GetOrCreateSingletonProperty(() => new ErrorTagger(source)) as ITagger<T>;
 		}
 	}
 }

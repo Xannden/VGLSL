@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Xannden.GLSL.Errors;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
@@ -15,6 +16,8 @@ namespace Xannden.GLSL.Syntax.Tree
 		public IReadOnlyList<Definition> Definitions { get; internal set; }
 
 		public SyntaxNode Root { get; internal set; }
+
+		public IReadOnlyList<GLSLError> Errors { get; internal set; }
 
 		public SyntaxNode GetNodeContainingSpan(Snapshot snapshot, Span span)
 		{

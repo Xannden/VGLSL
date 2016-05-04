@@ -60,7 +60,11 @@
     <Compile Include="Classification\GLSLClassifier.cs" />
     <Compile Include="Classification\GLSLClassifierProvider.cs" />
     <Compile Include="Classification\ClassificationTypes.cs" />
+    <Compile Include="Command\GLSLCommandHandlers.cs" />
+    <Compile Include="Command\GLSLCommandHandlersProvider.cs" />
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
+    <Compile Include="Errors\VSErrorList.cs" />
+    <Compile Include="Errors\VSErrorListProvider.cs" />
     <Compile Include="Extensions\DefinitionExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -68,7 +72,7 @@
     <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\SpanExtensions.cs" />
-    <Compile Include="Extensions\TextExtensions.cs" />
+    <Compile Include="Extensions\VSExtensions.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletion.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandler.cs" />
     <Compile Include="IntelliSense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
@@ -83,12 +87,8 @@
     <Compile Include="Outlining\GLSLOutliningTagger.cs" />
     <Compile Include="Outlining\GLSLOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\Region.cs" />
-    <Compile Include="Packages\GLSLAuthoringScope.cs" />
     <Compile Include="Packages\GLSLLanguageInfo.cs" />
-    <Compile Include="Packages\GLSLLanguageService.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
-    <Compile Include="Packages\GLSLScanner.cs" />
-    <Compile Include="Packages\GLSLSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedAction.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSourceProvider.cs" />
@@ -284,7 +284,10 @@
     <CodeAnalysisDictionary Include="..\GLSL\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
-    <Content Include="Resources\GLSLPackage.ico" />
+    <Content Include="Resources\GLSLPackage.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IntelliSense\ParameterHelp\" />

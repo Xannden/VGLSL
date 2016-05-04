@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Xannden.GLSL.Errors;
 using Xannden.GLSL.Lexing;
 using Xannden.GLSL.Test.Text;
 using Xannden.GLSL.Text;
@@ -13,9 +12,7 @@ namespace Xannden.GLSL.Tests
 		[TestMethod]
 		public void AdvancePastEnd()
 		{
-			ErrorHandler errors = new ErrorHandler();
-
-			TextSource source = new TextSource("test", errors);
+			TextSource source = new TextSource("test");
 			TextNavigator nav = new TextNavigator(source.CurrentSnapshot);
 
 			nav.Advance();
@@ -31,9 +28,7 @@ namespace Xannden.GLSL.Tests
 		{
 			string lines = "one\r\ntwo\r\n";
 
-			ErrorHandler errors = new ErrorHandler();
-
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			TextNavigator nav = new TextNavigator(source.CurrentSnapshot);
 
@@ -53,9 +48,7 @@ namespace Xannden.GLSL.Tests
 		{
 			string lines = "one\r\ntwo\r\nthree\r\n";
 
-			ErrorHandler errors = new ErrorHandler();
-
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			Assert.AreEqual(3, source.CurrentSnapshot.LineCount);
 			Assert.AreEqual("one\r\n", source.CurrentSnapshot.GetLineFromLineNumber(0).Text);
@@ -66,9 +59,7 @@ namespace Xannden.GLSL.Tests
 		[TestMethod]
 		public void PeakAhead()
 		{
-			ErrorHandler errors = new ErrorHandler();
-
-			TextSource source = new TextSource("test", errors);
+			TextSource source = new TextSource("test");
 			TextNavigator nav = new TextNavigator(source.CurrentSnapshot);
 
 			Assert.AreEqual('t', nav.PeekChar(0));
@@ -82,9 +73,7 @@ namespace Xannden.GLSL.Tests
 		{
 			string lines = "one\r\ntwo\r\nthree\r\n";
 
-			ErrorHandler errors = new ErrorHandler();
-
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			TextNavigator nav = new TextNavigator(source.CurrentSnapshot);
 
@@ -102,9 +91,7 @@ namespace Xannden.GLSL.Tests
 		{
 			string lines = "one\r\ntwo\r\nthree\r\n";
 
-			ErrorHandler errors = new ErrorHandler();
-
-			MultiLineTextSource source = MultiLineTextSource.FromString(lines, errors);
+			MultiLineTextSource source = MultiLineTextSource.FromString(lines);
 
 			TextNavigator nav = new TextNavigator(source.CurrentSnapshot, Span.Create(5, 12));
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -16,19 +15,15 @@ namespace Xannden.VSGLSL.IntelliSense.Completions
 	internal class GLSLCompletionSourceProvider : ICompletionSourceProvider
 	{
 		[Import]
-		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal ITextStructureNavigatorSelectorService NavigatorService { get; private set; }
 
 		[Import]
-		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal IGlyphService GlyphService { get; private set; } = null;
 
 		[Import]
-		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal IClassificationFormatMapService FormatMap { get; private set; } = null;
 
 		[Import]
-		[SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "field set to by MEF")]
 		internal IClassificationTypeRegistryService TypeRegistry { get; private set; } = null;
 
 		public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)

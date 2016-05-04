@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
+using Xannden.VSGLSL.Sources;
 
 namespace Xannden.VSGLSL.IntelliSense.QuickTips
 {
@@ -20,7 +21,7 @@ namespace Xannden.VSGLSL.IntelliSense.QuickTips
 
 		public IIntellisenseController TryCreateIntellisenseController(ITextView textView, IList<ITextBuffer> subjectBuffers)
 		{
-			return new GLSLQuickInfoController(this, textView, subjectBuffers);
+			return new GLSLQuickInfoController(this, VSSource.GetOrCreate(textView.TextBuffer), textView, subjectBuffers);
 		}
 	}
 }

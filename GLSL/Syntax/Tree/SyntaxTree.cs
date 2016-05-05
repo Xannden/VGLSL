@@ -19,17 +19,26 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		public IReadOnlyList<GLSLError> Errors { get; internal set; }
 
+		public SyntaxNode GetNodeContainingSpan(Snapshot snapshot, TrackingSpan span)
+		{
+			return this.GetNodeContainingSpan(snapshot, span.GetSpan(snapshot));
+		}
+
 		public SyntaxNode GetNodeContainingSpan(Snapshot snapshot, Span span)
 		{
 			SyntaxNode node = this.Root;
+			bool hasChanged = true;
 
-			while (node.FullSpan.GetSpan(snapshot).Contains(span) && node.Children.Count > 0)
+			while (node.FullSpan.GetSpan(snapshot).Contains(span) && node.Children.Count > 0 && hasChanged)
 			{
+				hasChanged = false;
+
 				for (int i = 0; i < node.Children.Count; i++)
 				{
 					if (node.Children[i].FullSpan.GetSpan(snapshot).Contains(span))
 					{
 						node = node.Children[i];
+						hasChanged = true;
 						break;
 					}
 				}

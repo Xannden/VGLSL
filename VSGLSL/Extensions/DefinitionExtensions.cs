@@ -7,11 +7,8 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.BuiltIn;
-using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
-using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
-using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.VSGLSL.Data;
 
 namespace Xannden.VSGLSL.Extensions
@@ -120,7 +117,7 @@ namespace Xannden.VSGLSL.Extensions
 
 				for (int i = 0; i < tokens.Count; i++)
 				{
-					runs.AddRange(tokens[i].ToRuns(formatMap, GetClassificationName(tokens[i]), typeRegistry));
+					runs.AddRange(tokens[i].ToRuns(formatMap, typeRegistry));
 				}
 
 				block.Inlines.AddRange(runs);
@@ -171,69 +168,6 @@ namespace Xannden.VSGLSL.Extensions
 			}
 
 			return runs;
-		}
-
-		private static string GetClassificationName(SyntaxToken token)
-		{
-			IdentifierSyntax identifier = token as IdentifierSyntax;
-
-			if (token.SyntaxType.IsPreprocessor())
-			{
-				return GLSLConstants.PreprocessorKeyword;
-			}
-			else if (identifier?.Definition?.Kind == DefinitionKind.Macro)
-			{
-				return GLSLConstants.Macro;
-			}
-			else if (token?.IsExcludedCode() ?? false)
-			{
-				return GLSLConstants.ExcludedCode;
-			}
-			else if (token.SyntaxType.IsPunctuation())
-			{
-				return GLSLConstants.Punctuation;
-			}
-			else if (token?.IsPreprocessorText() ?? false)
-			{
-				return GLSLConstants.PreprocessorText;
-			}
-			else if (token.SyntaxType.IsKeyword())
-			{
-				return GLSLConstants.Keyword;
-			}
-			else if (token.SyntaxType.IsNumber())
-			{
-				return GLSLConstants.Number;
-			}
-			else if (identifier?.Definition != null)
-			{
-				switch (identifier.Definition.Kind)
-				{
-					case DefinitionKind.Field:
-						return GLSLConstants.Field;
-					case DefinitionKind.Function:
-						return GLSLConstants.Function;
-					case DefinitionKind.GlobalVariable:
-						return GLSLConstants.GlobalVariable;
-					case DefinitionKind.LocalVariable:
-						return GLSLConstants.LocalVariable;
-					case DefinitionKind.Macro:
-						return GLSLConstants.Macro;
-					case DefinitionKind.Parameter:
-						return GLSLConstants.Parameter;
-					case DefinitionKind.TypeName:
-					case DefinitionKind.InterfaceBlock:
-						return GLSLConstants.TypeName;
-					default:
-						return GLSLConstants.Identifier;
-				}
-			}
-			else if (token.SyntaxType == SyntaxType.IdentifierToken)
-			{
-				return GLSLConstants.Identifier;
-			}
-
-			return PredefinedClassificationTypeNames.FormalLanguage;
 		}
 
 		private static TextBlock GetBuiltInTextBlock(Definition definition, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry)

@@ -111,6 +111,15 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		internal int TempStart { get; private set; }
 
+		public IReadOnlyList<SyntaxToken> GetSyntaxTokens()
+		{
+			List<SyntaxToken> tokens = new List<SyntaxToken>();
+
+			this.GetSyntaxTokensRecursive(this, tokens);
+
+			return tokens;
+		}
+
 		public bool IsExcludedCode()
 		{
 			return this.Parent?.SyntaxType == SyntaxType.ExcludedCode;
@@ -208,6 +217,26 @@ namespace Xannden.GLSL.Syntax.Tree
 
 		protected virtual void NewChild(SyntaxNode node)
 		{
+		}
+
+		private void GetSyntaxTokensRecursive(SyntaxNode node, List<SyntaxToken> tokens)
+		{
+			SyntaxToken token = node as SyntaxToken;
+
+			if (token != null)
+			{
+				tokens.Add(token);
+			}
+			else
+			{
+				for (int i = 0; i < node?.Children.Count; i++)
+				{
+					if (node.SyntaxType != SyntaxType.Preprocessor)
+					{
+						this.GetSyntaxTokensRecursive(node.Children[i], tokens);
+					}
+				}
+			}
 		}
 
 		private void GetFormatedTagInfo(StringBuilder builder)

@@ -15,7 +15,7 @@ namespace Xannden.GLSL.Semantics
 
 		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
-			return this.GetSyntaxTokens(this.DefinePreprocessor);
+			return this.DefinePreprocessor.GetSyntaxTokens();
 		}
 	}
 }

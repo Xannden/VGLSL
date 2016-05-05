@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Settings;
@@ -16,12 +17,16 @@ namespace Xannden.VSGLSL.Outlining
 	internal sealed class GLSLOutliningTagger : ITagger<IOutliningRegionTag>
 	{
 		private readonly VSSource source;
+		private readonly GLSLOutliningTaggerProvider provider;
+		private readonly IClassificationFormatMap formatMap;
 		private List<Region> regions = new List<Region>();
 		private object lockObject = new object();
 
-		public GLSLOutliningTagger(VSSource source)
+		public GLSLOutliningTagger(GLSLOutliningTaggerProvider provider, VSSource source)
 		{
 			this.source = source;
+			this.provider = provider;
+			this.formatMap = this.provider.FormatMapService.GetClassificationFormatMap("text");
 
 			this.source.DoneParsing += this.Source_DoneParsing;
 		}
@@ -31,6 +36,7 @@ namespace Xannden.VSGLSL.Outlining
 		public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
 		{
 			VSSnapshot snapshot = this.source.CurrentSnapshot as VSSnapshot;
+			SyntaxTree tree = this.source.Tree;
 
 			List<Region> list;
 
@@ -71,7 +77,7 @@ namespace Xannden.VSGLSL.Outlining
 
 						if (functionDefinition.FunctionHeader?.RightParentheses != null && functionDefinition.Block?.RightBrace != null)
 						{
-							this.AddRegion(newRegions, snapshot, functionDefinition.FunctionHeader.RightParentheses.Span.GetSpan(snapshot).End + 1, functionDefinition.FunctionHeader.RightParentheses, functionDefinition.Block.RightBrace);
+							this.AddRegion(newRegions, snapshot, tree, 1, functionDefinition.FunctionHeader.RightParentheses, functionDefinition.Block.RightBrace);
 						}
 
 						break;
@@ -81,7 +87,7 @@ namespace Xannden.VSGLSL.Outlining
 
 						if (interfaceBlock.Identifier != null && interfaceBlock.RightBrace != null)
 						{
-							this.AddRegion(newRegions, snapshot, interfaceBlock.Identifier.Span.GetSpan(snapshot).End + 1, interfaceBlock.Identifier, interfaceBlock.RightBrace);
+							this.AddRegion(newRegions, snapshot, tree, 1, interfaceBlock.Identifier, interfaceBlock.RightBrace);
 						}
 
 						break;
@@ -93,11 +99,11 @@ namespace Xannden.VSGLSL.Outlining
 						{
 							if (structSpecifier.TypeName != null)
 							{
-								this.AddRegion(newRegions, snapshot, structSpecifier.TypeName.Span.GetSpan(snapshot).End, structSpecifier.TypeName, structSpecifier.RightBrace);
+								this.AddRegion(newRegions, snapshot, tree, 0, structSpecifier.TypeName, structSpecifier.RightBrace);
 							}
 							else if (structSpecifier.StructKeyword != null)
 							{
-								this.AddRegion(newRegions, snapshot, structSpecifier.StructKeyword.Span.GetSpan(snapshot).End + 1, structSpecifier.StructKeyword, structSpecifier.RightBrace);
+								this.AddRegion(newRegions, snapshot, tree, 1, structSpecifier.StructKeyword, structSpecifier.RightBrace);
 							}
 						}
 
@@ -107,7 +113,7 @@ namespace Xannden.VSGLSL.Outlining
 
 						if (ifDefined.EndIfKeyword != null)
 						{
-							this.AddRegion(newRegions, snapshot, ifDefined.IfDefinedKeyword.Span.GetSpan(snapshot).End + 1, ifDefined.IfDefinedKeyword, ifDefined.EndIfKeyword);
+							this.AddRegion(newRegions, snapshot, tree, 1, ifDefined.IfDefinedKeyword, ifDefined.EndIfKeyword);
 						}
 
 						break;
@@ -116,7 +122,7 @@ namespace Xannden.VSGLSL.Outlining
 
 						if (ifPreprocessor.EndIfKeyword != null)
 						{
-							this.AddRegion(newRegions, snapshot, ifPreprocessor.IfKeyword.Span.GetSpan(snapshot).End + 1, ifPreprocessor.IfKeyword, ifPreprocessor.EndIfKeyword);
+							this.AddRegion(newRegions, snapshot, tree, 1, ifPreprocessor.IfKeyword, ifPreprocessor.EndIfKeyword);
 						}
 
 						break;
@@ -125,7 +131,7 @@ namespace Xannden.VSGLSL.Outlining
 
 						if (ifNotDefined.EndIfKeyword != null)
 						{
-							this.AddRegion(newRegions, snapshot, ifNotDefined.IfNotDefinedKeyword.Span.GetSpan(snapshot).End + 1, ifNotDefined.IfNotDefinedKeyword, ifNotDefined.EndIfKeyword);
+							this.AddRegion(newRegions, snapshot, tree, 1, ifNotDefined.IfNotDefinedKeyword, ifNotDefined.EndIfKeyword);
 						}
 
 						break;
@@ -136,7 +142,7 @@ namespace Xannden.VSGLSL.Outlining
 			{
 				if (preprocessor.EndIf != null)
 				{
-					this.AddRegion(newRegions, snapshot, preprocessor.Keyword.Span.GetSpan(snapshot).End + 1, preprocessor.Keyword, preprocessor.EndIf.EndIfKeyword);
+					this.AddRegion(newRegions, snapshot, tree, 1, preprocessor.Keyword, preprocessor.EndIf.EndIfKeyword);
 				}
 
 				for (int i = 0; i < preprocessor.ElsePreprocessors.Count; i++)
@@ -161,7 +167,7 @@ namespace Xannden.VSGLSL.Outlining
 						next = preprocessor.EndIf.EndIfKeyword;
 					}
 
-					this.AddRegion(newRegions, snapshot, preprocessor.ElsePreprocessors[i].Keyword.Span.GetSpan(snapshot).End + 1, preprocessor.ElsePreprocessors[i].Keyword, next);
+					this.AddRegion(newRegions, snapshot, tree, 1, preprocessor.ElsePreprocessors[i].Keyword, next);
 				}
 			}
 
@@ -173,12 +179,12 @@ namespace Xannden.VSGLSL.Outlining
 			this.TagsChanged?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(snapshot.TextSnapshot, snapshot.Span.ToVSSpan())));
 		}
 
-		private void AddRegion(List<Region> list, VSSnapshot snapshot, int startPosition, SyntaxNode startNode, SyntaxNode endNode)
+		private void AddRegion(List<Region> list, VSSnapshot snapshot, SyntaxTree tree, int startModifier, SyntaxNode startNode, SyntaxNode endNode)
 		{
-			int start = startNode.Span.GetSpan(snapshot).End;
+			int start = startNode.Span.GetSpan(snapshot).End + startModifier;
 			int end = endNode.Span.GetSpan(snapshot).End;
 
-			SourceLine startLine = snapshot.GetLineFromPosition(start);
+			SourceLine startLine = snapshot.GetLineFromPosition(startNode.Span.GetSpan(snapshot).End);
 			SourceLine endLine = snapshot.GetLineFromPosition(end);
 
 			string text;
@@ -186,15 +192,18 @@ namespace Xannden.VSGLSL.Outlining
 			if (endLine.LineNumber - startLine.LineNumber > 10)
 			{
 				int textStart = snapshot.GetLineFromLineNumber(startLine.LineNumber).Span.Start;
+				int textEnd = snapshot.GetLineFromLineNumber(startLine.LineNumber + 10).Span.End;
 
-				text = snapshot.GetText(textStart, snapshot.GetLineFromLineNumber(startLine.LineNumber + 10).Span.End - textStart);
+				text = snapshot.GetText(textStart, textEnd - textStart);
 			}
 			else
 			{
 				text = snapshot.GetText(startLine.Span.Start, endLine.Span.End - startLine.Span.Start).Trim('\r', '\n');
 			}
 
-			list.Add(new Region(snapshot.CreateTrackingSpan(GLSL.Text.Span.Create(startPosition, end)), text));
+			GLSL.Text.Span span = GLSL.Text.Span.Create(start, end);
+
+			list.Add(new Region(snapshot.CreateTrackingSpan(span), text));
 		}
 	}
 }

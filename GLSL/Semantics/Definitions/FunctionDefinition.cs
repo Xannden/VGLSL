@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 
@@ -24,11 +25,11 @@ namespace Xannden.GLSL.Semantics
 
 		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
-			List<SyntaxToken> result = new List<SyntaxToken>(this.GetSyntaxTokens(this.TypeQualifier));
+			List<SyntaxToken> result = new List<SyntaxToken>(this.TypeQualifier.GetSyntaxTokens());
 
 			result.Add(this.ReturnType.TypeToken);
 
-			result.AddRange(this.GetSyntaxTokens(this.ReturnType.ArraySpecifiers));
+			result.AddRange(this.ReturnType.ArraySpecifiers.GetSyntaxTokens());
 
 			result.Add(this.Identifier);
 

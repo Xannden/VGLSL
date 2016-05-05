@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xannden.GLSL.Syntax.Tree;
 
 namespace Xannden.GLSL.Extensions
 {
@@ -74,6 +75,18 @@ namespace Xannden.GLSL.Extensions
 			}
 
 			return list[list.Count - 1];
+		}
+
+		public static IReadOnlyList<SyntaxToken> GetSyntaxTokens<T>(this IReadOnlyList<T> list) where T : SyntaxNode
+		{
+			List<SyntaxToken> tokens = new List<SyntaxToken>();
+
+			for (int i = 0; i < list?.Count; i++)
+			{
+				tokens.AddRange(list[i].GetSyntaxTokens());
+			}
+
+			return tokens;
 		}
 	}
 }

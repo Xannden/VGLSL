@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text.Editor;
@@ -12,17 +12,12 @@ namespace Xannden.VSGLSL.Commands
 	{
 		private IOleCommandTarget nextCommand;
 		private Guid commandGroup;
-		private uint[] commandIds;
+		private List<uint> commandIds = new List<uint>();
 
-		protected VSCommand(IVsTextView textViewAdapter, ITextView textView, params T[] commandIds) : this(textViewAdapter, textView, commandIds.ConvertAll(item => Convert.ToUInt32(item, CultureInfo.InvariantCulture)))
-		{
-		}
-
-		protected VSCommand(IVsTextView textViewAdapter, ITextView textView, params uint[] commandIds)
+		protected VSCommand(IVsTextView textViewAdapter, ITextView textView)
 		{
 			this.TextView = textView;
 			this.commandGroup = typeof(T).GUID;
-			this.commandIds = commandIds;
 
 			textViewAdapter.AddCommandFilter(this, out this.nextCommand);
 		}
@@ -33,9 +28,10 @@ namespace Xannden.VSGLSL.Commands
 		{
 			if (pguidCmdGroup == this.commandGroup && this.commandIds.Contains(nCmdID))
 			{
-				this.Run();
-
-				return VSConstants.S_OK;
+				if (this.Run((T)(object)(int)nCmdID, ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut))
+				{
+					return VSConstants.S_OK;
+				}
 			}
 
 			return this.nextCommand.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
@@ -68,8 +64,26 @@ namespace Xannden.VSGLSL.Commands
 			return this.nextCommand.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
 
+		protected void AddCommand(params T[] commands)
+		{
+			this.commandIds.AddRange(commands.ConvertAll(item => Convert.ToUInt32(item)));
+		}
+
+		protected int RunNextCommand(ref Guid cmdGuid, uint cmdID, uint cmdexecopt, IntPtr vaIn, IntPtr vaOut)
+		{
+			return this.nextCommand.Exec(ref cmdGuid, cmdID, cmdexecopt, vaIn, vaOut);
+		}
+
 		protected abstract bool IsEnabled(T commandId);
 
-		protected abstract void Run();
+		protected virtual bool Run(T commandId, ref Guid cmdGuid, uint cmdID, uint cmdexecopt, IntPtr vaIn, IntPtr vaOut)
+		{
+			return this.Run(commandId);
+		}
+
+		protected virtual bool Run(T commandId)
+		{
+			return false;
+		}
 	}
 }

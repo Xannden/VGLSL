@@ -92,6 +92,8 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 
 			ITrackingSpan span = this.FindTokenSpanAtPosition(session);
 
+			completions.Sort((first, second) => string.Compare(first.DisplayText, second.DisplayText, System.StringComparison.Ordinal));
+
 			completionSets.Add(new CompletionSet("GLSL", "GLSL", span, completions, null));
 		}
 

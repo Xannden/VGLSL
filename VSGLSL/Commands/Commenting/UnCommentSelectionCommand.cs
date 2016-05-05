@@ -7,8 +7,9 @@ namespace Xannden.VSGLSL.Commands
 {
 	internal sealed class UnCommentSelectionCommand : VSCommand<VSConstants.VSStd2KCmdID>
 	{
-		internal UnCommentSelectionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView, VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK, VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK)
+		internal UnCommentSelectionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView)
 		{
+			this.AddCommand(VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK, VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK);
 		}
 
 		protected override bool IsEnabled(VSConstants.VSStd2KCmdID commandId)
@@ -16,9 +17,11 @@ namespace Xannden.VSGLSL.Commands
 			return true;
 		}
 
-		protected override void Run()
+		protected override bool Run(VSConstants.VSStd2KCmdID commandId)
 		{
 			this.TextView.CommentSelection(false);
+
+			return true;
 		}
 	}
 }

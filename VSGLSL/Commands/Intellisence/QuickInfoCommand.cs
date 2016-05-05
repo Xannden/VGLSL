@@ -10,9 +10,11 @@ namespace Xannden.VSGLSL.Commands
 	{
 		private readonly IQuickInfoBroker quickInfoBroker;
 
-		internal QuickInfoCommand(IVsTextView textViewAdapter, ITextView textView, IQuickInfoBroker quickInfoBroker) : base(textViewAdapter, textView, VSConstants.VSStd2KCmdID.QUICKINFO)
+		internal QuickInfoCommand(IVsTextView textViewAdapter, ITextView textView, IQuickInfoBroker quickInfoBroker) : base(textViewAdapter, textView)
 		{
 			this.quickInfoBroker = quickInfoBroker;
+
+			this.AddCommand(VSConstants.VSStd2KCmdID.QUICKINFO);
 		}
 
 		protected override bool IsEnabled(VSConstants.VSStd2KCmdID commandId)
@@ -20,11 +22,13 @@ namespace Xannden.VSGLSL.Commands
 			return true;
 		}
 
-		protected override void Run()
+		protected override bool Run(VSConstants.VSStd2KCmdID commandId)
 		{
 			ITrackingPoint triggerPoint = this.TextView.TextSnapshot.CreateTrackingPoint(this.TextView.Caret.Position.BufferPosition.Position, PointTrackingMode.Negative);
 
 			this.quickInfoBroker.TriggerQuickInfo(this.TextView, triggerPoint, false);
+
+			return true;
 		}
 	}
 }

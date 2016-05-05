@@ -19,6 +19,9 @@ namespace Xannden.VSGLSL.Commands
 		[Import]
 		internal IQuickInfoBroker QuickInfoBroker { get; set; }
 
+		[Import]
+		internal ICompletionBroker CompletionBroker { get; set; }
+
 		internal IVsEditorAdaptersFactoryService AdapterService { get; set; }
 
 		public void VsTextViewCreated(IVsTextView textViewAdapter)
@@ -36,6 +39,7 @@ namespace Xannden.VSGLSL.Commands
 			textView.Properties.GetOrCreateSingletonProperty(() => new UnCommentSelectionCommand(textViewAdapter, textView));
 			textView.Properties.GetOrCreateSingletonProperty(() => new QuickInfoCommand(textViewAdapter, textView, this.QuickInfoBroker));
 			textView.Properties.GetOrCreateSingletonProperty(() => new GoToDefinitionCommand(textViewAdapter, textView));
+			textView.Properties.GetOrCreateSingletonProperty(() => new CompletionCommand(textViewAdapter, textView, this.CompletionBroker));
 		}
 	}
 }

@@ -64,6 +64,7 @@
     <Compile Include="Commands\Commenting\UnCommentSelectionCommand.cs" />
     <Compile Include="Commands\GLSLCommandHandlers.cs" />
     <Compile Include="Commands\GLSLCommandHandlersProvider.cs" />
+    <Compile Include="Commands\Intellisence\CompletionCommand.cs" />
     <Compile Include="Commands\Intellisence\GoToDefinitionCommand.cs" />
     <Compile Include="Commands\Intellisence\QuickInfoCommand.cs" />
     <Compile Include="Commands\VSCommand.cs" />
@@ -80,8 +81,6 @@
     <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="Extensions\VSExtensions.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletion.cs" />
-    <Compile Include="Intellisense\Completions\GLSLCompletionCommandHandler.cs" />
-    <Compile Include="Intellisense\Completions\GLSLCompletionCommandHandlerProvider.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletionPresenter.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletionSource.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletionSourceProvider.cs" />

@@ -12,9 +12,11 @@ namespace Xannden.VSGLSL.Commands
 	{
 		private readonly VSSource source;
 
-		internal GoToDefinitionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView, VSConstants.VSStd97CmdID.GotoDefn)
+		internal GoToDefinitionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView)
 		{
 			this.source = VSSource.GetOrCreate(textView.TextBuffer);
+
+			this.AddCommand(VSConstants.VSStd97CmdID.GotoDefn);
 		}
 
 		protected override bool IsEnabled(VSConstants.VSStd97CmdID commandId)
@@ -22,13 +24,13 @@ namespace Xannden.VSGLSL.Commands
 			return true;
 		}
 
-		protected override void Run()
+		protected override bool Run(VSConstants.VSStd97CmdID commandId)
 		{
 			SyntaxTree tree = this.source.Tree;
 
 			if (tree == null)
 			{
-				return;
+				return false;
 			}
 
 			VSSnapshot snapshot = this.source.CurrentSnapshot as VSSnapshot;
@@ -40,10 +42,12 @@ namespace Xannden.VSGLSL.Commands
 
 			if (span == null)
 			{
-				return;
+				return false;
 			}
 
 			this.TextView.Caret.MoveTo(new Microsoft.VisualStudio.Text.SnapshotPoint(snapshot.TextSnapshot, span.Start));
+
+			return true;
 		}
 	}
 }

@@ -1,129 +1,659 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
+	Microsoft ResX Schema 
+	
+	Version 2.0
+	
+	The primary goals of this format is to allow a simple XML format 
+	that is mostly human readable. The generation and parsing of the 
+	various data types are done through the TypeConverter classes 
+	associated with the data types.
+	
+	Example:
+	
+	... ado.net/XML headers & schema ...
+	<resheader name="resmimetype">text/microsoft-resx</resheader>
+	<resheader name="version">2.0</resheader>
+	<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+	<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+	<data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+	<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+	<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+		<value>[base64 mime encoded serialized .NET Framework object]</value>
+	</data>
+	<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+		<value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+		<comment>This is a comment</comment>
+	</data>
+				
+	There are any number of "resheader" rows that contain simple 
+	name/value pairs.
+	
+	Each data row contains a name, and value. The row also contains a 
+	type or mimetype. Type corresponds to a .NET class that support 
+	text/value conversion through the TypeConverter architecture. 
+	Classes that don't support this are serialized and stored with the 
+	mimetype set.
+	
+	The mimetype is used for serialized objects, and tells the 
+	ResXResourceReader how to depersist the object. This is currently not 
+	extensible. For a given mimetype the value must be set accordingly:
+	
+	Note - application/x-microsoft.net.object.binary.base64 is the format 
+	that the ResXResourceWriter will generate, however the reader can 
+	read any of the formats listed below.
+	
+	mimetype: application/x-microsoft.net.object.binary.base64
+	value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+	
+	mimetype: application/x-microsoft.net.object.soap.base64
+	value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
+	mimetype: application/x-microsoft.net.object.bytearray.base64
+	value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+	<xsd:element name="root" msdata:IsDataSet="true">
+	  <xsd:complexType>
+		<xsd:choice maxOccurs="unbounded">
+		  <xsd:element name="metadata">
+			<xsd:complexType>
+			  <xsd:sequence>
+				<xsd:element name="value" type="xsd:string" minOccurs="0" />
+			  </xsd:sequence>
+			  <xsd:attribute name="name" use="required" type="xsd:string" />
+			  <xsd:attribute name="type" type="xsd:string" />
+			  <xsd:attribute name="mimetype" type="xsd:string" />
+			  <xsd:attribute ref="xml:space" />
+			</xsd:complexType>
+		  </xsd:element>
+		  <xsd:element name="assembly">
+			<xsd:complexType>
+			  <xsd:attribute name="alias" type="xsd:string" />
+			  <xsd:attribute name="name" type="xsd:string" />
+			</xsd:complexType>
+		  </xsd:element>
+		  <xsd:element name="data">
+			<xsd:complexType>
+			  <xsd:sequence>
+				<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+				<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+			  </xsd:sequence>
+			  <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+			  <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+			  <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+			  <xsd:attribute ref="xml:space" />
+			</xsd:complexType>
+		  </xsd:element>
+		  <xsd:element name="resheader">
+			<xsd:complexType>
+			  <xsd:sequence>
+				<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+			  </xsd:sequence>
+			  <xsd:attribute name="name" type="xsd:string" use="required" />
+			</xsd:complexType>
+		  </xsd:element>
+		</xsd:choice>
+	  </xsd:complexType>
+	</xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+	<value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
-    <value>2.0</value>
+	<value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DegreesDoc" xml:space="preserve">
-    <value>Converts radians to degrees.</value>
+	<value>Converts radians to degrees.</value>
   </data>
   <data name="RadiansDoc" xml:space="preserve">
-    <value>Converts degrees to radians.</value>
+	<value>Converts degrees to radians.</value>
   </data>
   <data name="SinDoc" xml:space="preserve">
-    <value>The standard trigonometric sine function.</value>
+	<value>The standard trigonometric sine function.</value>
   </data>
+
+	<data name = "RadiansDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DegreesDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "SinDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "CosDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TanDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AsinDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AcosDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtanDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "SinhDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "CoshDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TanhDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AsinhDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AcoshDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtanhDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PowDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ExpDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "LogDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Exp2Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Log2Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "SqrtDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "InversesqrtDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AbsDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "SignDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FloorDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TruncDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "RoundDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "RoundEvenDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "CeilDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FractDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ModDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ModfDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MinDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MaxDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ClampDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MixDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "StepDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "SmoothstepDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "IsnanDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "IsinfDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FloatBitsToIntDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FloatBitsToUintDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "IntBitsToFloatDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UintBitsToFloatDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FmaDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FrexpDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "LdexpDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackUnorm2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackSnorm2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackUnorm4x8Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackSnorm4x8Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackUnorm2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackSnorm2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackUnorm4x8Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackSnorm4x8Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackDouble2x32Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackDouble2x32Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "PackHalf2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UnpackHalf2x16Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "LengthDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DistanceDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DotDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "CrossDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "NormalizeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FtransformDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FaceforwardDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ReflectDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "RefractDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MatrixCompMultDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "OuterProductDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TransposeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DeterminantDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "InverseDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "LessThanDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "LessThanEqualDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "GreaterThanDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "GreaterThanEqualDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "EqualDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "NotEqualDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AnyDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AllDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "NotDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UaddCarryDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UsubBorrowDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "UmulExtendedDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImulExtendedDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "BitfieldExtractDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "BitfieldInsertDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "BitfieldReverseDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "BitCountDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FindLSBDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FindMSBDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureSizeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureQueryLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureQueryLevelsDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TexelFetchDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TexelFetchOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureLodOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjLodOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureGradDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureGradOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjGradDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureProjGradOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureGatherDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureGatherOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureGatherOffsetsDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture1DDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture1DProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture1DLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture1DProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture2DDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture2DProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture2DLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture2DProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture3DDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture3DProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture3DLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Texture3DProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureCubeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "TextureCubeLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow1DDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow2DDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow1DProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow2DProjDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow1DLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow2DLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow1DProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Shadow2DProjLodDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicCounterIncrementDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicCounterDecrementDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicCounterDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicAddDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicMinDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicMaxDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicAndDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicOrDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicXorDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicExchangeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "AtomicCompSwapDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageSizeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageLoadDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageStoreDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicAddDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicMinDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicMaxDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicAndDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicOrDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicXorDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicExchangeDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "ImageAtomicCompSwapDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DFdxDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "DFdyDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "FwidthDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "InterpolateAtCentroidDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "InterpolateAtSampleDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "InterpolateAtOffsetDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Noise1Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Noise2Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Noise3Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "Noise4Doc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "EmitStreamVertexDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "EmitStreamPrimitiveDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "EmitVertexDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "EmitPrimitiveDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "BarrierDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MemoryBarrierDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MemoryBarrierAtomicCounterDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MemoryBarrierBufferDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MemoryBarrierSharedDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "MemoryBarrierImageDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+		<data name = "GroupMemoryBarrierDoc" xml:space = "preserve">
+		<value></value>
+	</data>
+
 </root>

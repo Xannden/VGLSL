@@ -61,7 +61,277 @@ namespace Xannden.GLSL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Converts radians to degrees..
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AbsDoc {
+            get {
+                return ResourceManager.GetString("AbsDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AcosDoc {
+            get {
+                return ResourceManager.GetString("AcosDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AcoshDoc {
+            get {
+                return ResourceManager.GetString("AcoshDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AllDoc {
+            get {
+                return ResourceManager.GetString("AllDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AnyDoc {
+            get {
+                return ResourceManager.GetString("AnyDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AsinDoc {
+            get {
+                return ResourceManager.GetString("AsinDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AsinhDoc {
+            get {
+                return ResourceManager.GetString("AsinhDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtanDoc {
+            get {
+                return ResourceManager.GetString("AtanDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtanhDoc {
+            get {
+                return ResourceManager.GetString("AtanhDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicAddDoc {
+            get {
+                return ResourceManager.GetString("AtomicAddDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicAndDoc {
+            get {
+                return ResourceManager.GetString("AtomicAndDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicCompSwapDoc {
+            get {
+                return ResourceManager.GetString("AtomicCompSwapDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicCounterDecrementDoc {
+            get {
+                return ResourceManager.GetString("AtomicCounterDecrementDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicCounterDoc {
+            get {
+                return ResourceManager.GetString("AtomicCounterDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicCounterIncrementDoc {
+            get {
+                return ResourceManager.GetString("AtomicCounterIncrementDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicExchangeDoc {
+            get {
+                return ResourceManager.GetString("AtomicExchangeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicMaxDoc {
+            get {
+                return ResourceManager.GetString("AtomicMaxDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicMinDoc {
+            get {
+                return ResourceManager.GetString("AtomicMinDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicOrDoc {
+            get {
+                return ResourceManager.GetString("AtomicOrDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AtomicXorDoc {
+            get {
+                return ResourceManager.GetString("AtomicXorDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string BarrierDoc {
+            get {
+                return ResourceManager.GetString("BarrierDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string BitCountDoc {
+            get {
+                return ResourceManager.GetString("BitCountDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string BitfieldExtractDoc {
+            get {
+                return ResourceManager.GetString("BitfieldExtractDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string BitfieldInsertDoc {
+            get {
+                return ResourceManager.GetString("BitfieldInsertDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string BitfieldReverseDoc {
+            get {
+                return ResourceManager.GetString("BitfieldReverseDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CeilDoc {
+            get {
+                return ResourceManager.GetString("CeilDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ClampDoc {
+            get {
+                return ResourceManager.GetString("ClampDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CosDoc {
+            get {
+                return ResourceManager.GetString("CosDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CoshDoc {
+            get {
+                return ResourceManager.GetString("CoshDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CrossDoc {
+            get {
+                return ResourceManager.GetString("CrossDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string DegreesDoc {
             get {
@@ -70,7 +340,709 @@ namespace Xannden.GLSL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Converts degrees to radians..
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DeterminantDoc {
+            get {
+                return ResourceManager.GetString("DeterminantDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DFdxDoc {
+            get {
+                return ResourceManager.GetString("DFdxDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DFdyDoc {
+            get {
+                return ResourceManager.GetString("DFdyDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DistanceDoc {
+            get {
+                return ResourceManager.GetString("DistanceDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DotDoc {
+            get {
+                return ResourceManager.GetString("DotDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmitPrimitiveDoc {
+            get {
+                return ResourceManager.GetString("EmitPrimitiveDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmitStreamPrimitiveDoc {
+            get {
+                return ResourceManager.GetString("EmitStreamPrimitiveDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmitStreamVertexDoc {
+            get {
+                return ResourceManager.GetString("EmitStreamVertexDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmitVertexDoc {
+            get {
+                return ResourceManager.GetString("EmitVertexDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EqualDoc {
+            get {
+                return ResourceManager.GetString("EqualDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Exp2Doc {
+            get {
+                return ResourceManager.GetString("Exp2Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ExpDoc {
+            get {
+                return ResourceManager.GetString("ExpDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FaceforwardDoc {
+            get {
+                return ResourceManager.GetString("FaceforwardDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FindLSBDoc {
+            get {
+                return ResourceManager.GetString("FindLSBDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FindMSBDoc {
+            get {
+                return ResourceManager.GetString("FindMSBDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FloatBitsToIntDoc {
+            get {
+                return ResourceManager.GetString("FloatBitsToIntDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FloatBitsToUintDoc {
+            get {
+                return ResourceManager.GetString("FloatBitsToUintDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FloorDoc {
+            get {
+                return ResourceManager.GetString("FloorDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FmaDoc {
+            get {
+                return ResourceManager.GetString("FmaDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FractDoc {
+            get {
+                return ResourceManager.GetString("FractDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FrexpDoc {
+            get {
+                return ResourceManager.GetString("FrexpDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FtransformDoc {
+            get {
+                return ResourceManager.GetString("FtransformDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FwidthDoc {
+            get {
+                return ResourceManager.GetString("FwidthDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string GreaterThanDoc {
+            get {
+                return ResourceManager.GetString("GreaterThanDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string GreaterThanEqualDoc {
+            get {
+                return ResourceManager.GetString("GreaterThanEqualDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string GroupMemoryBarrierDoc {
+            get {
+                return ResourceManager.GetString("GroupMemoryBarrierDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicAddDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicAddDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicAndDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicAndDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicCompSwapDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicCompSwapDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicExchangeDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicExchangeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicMaxDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicMaxDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicMinDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicMinDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicOrDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicOrDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageAtomicXorDoc {
+            get {
+                return ResourceManager.GetString("ImageAtomicXorDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageLoadDoc {
+            get {
+                return ResourceManager.GetString("ImageLoadDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageSizeDoc {
+            get {
+                return ResourceManager.GetString("ImageSizeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImageStoreDoc {
+            get {
+                return ResourceManager.GetString("ImageStoreDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ImulExtendedDoc {
+            get {
+                return ResourceManager.GetString("ImulExtendedDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string IntBitsToFloatDoc {
+            get {
+                return ResourceManager.GetString("IntBitsToFloatDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string InterpolateAtCentroidDoc {
+            get {
+                return ResourceManager.GetString("InterpolateAtCentroidDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string InterpolateAtOffsetDoc {
+            get {
+                return ResourceManager.GetString("InterpolateAtOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string InterpolateAtSampleDoc {
+            get {
+                return ResourceManager.GetString("InterpolateAtSampleDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string InverseDoc {
+            get {
+                return ResourceManager.GetString("InverseDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string InversesqrtDoc {
+            get {
+                return ResourceManager.GetString("InversesqrtDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string IsinfDoc {
+            get {
+                return ResourceManager.GetString("IsinfDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string IsnanDoc {
+            get {
+                return ResourceManager.GetString("IsnanDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LdexpDoc {
+            get {
+                return ResourceManager.GetString("LdexpDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LengthDoc {
+            get {
+                return ResourceManager.GetString("LengthDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LessThanDoc {
+            get {
+                return ResourceManager.GetString("LessThanDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LessThanEqualDoc {
+            get {
+                return ResourceManager.GetString("LessThanEqualDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Log2Doc {
+            get {
+                return ResourceManager.GetString("Log2Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LogDoc {
+            get {
+                return ResourceManager.GetString("LogDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MatrixCompMultDoc {
+            get {
+                return ResourceManager.GetString("MatrixCompMultDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MaxDoc {
+            get {
+                return ResourceManager.GetString("MaxDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MemoryBarrierAtomicCounterDoc {
+            get {
+                return ResourceManager.GetString("MemoryBarrierAtomicCounterDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MemoryBarrierBufferDoc {
+            get {
+                return ResourceManager.GetString("MemoryBarrierBufferDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MemoryBarrierDoc {
+            get {
+                return ResourceManager.GetString("MemoryBarrierDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MemoryBarrierImageDoc {
+            get {
+                return ResourceManager.GetString("MemoryBarrierImageDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MemoryBarrierSharedDoc {
+            get {
+                return ResourceManager.GetString("MemoryBarrierSharedDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MinDoc {
+            get {
+                return ResourceManager.GetString("MinDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string MixDoc {
+            get {
+                return ResourceManager.GetString("MixDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ModDoc {
+            get {
+                return ResourceManager.GetString("ModDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ModfDoc {
+            get {
+                return ResourceManager.GetString("ModfDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Noise1Doc {
+            get {
+                return ResourceManager.GetString("Noise1Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Noise2Doc {
+            get {
+                return ResourceManager.GetString("Noise2Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Noise3Doc {
+            get {
+                return ResourceManager.GetString("Noise3Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Noise4Doc {
+            get {
+                return ResourceManager.GetString("Noise4Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string NormalizeDoc {
+            get {
+                return ResourceManager.GetString("NormalizeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string NotDoc {
+            get {
+                return ResourceManager.GetString("NotDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string NotEqualDoc {
+            get {
+                return ResourceManager.GetString("NotEqualDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string OuterProductDoc {
+            get {
+                return ResourceManager.GetString("OuterProductDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackDouble2x32Doc {
+            get {
+                return ResourceManager.GetString("PackDouble2x32Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackHalf2x16Doc {
+            get {
+                return ResourceManager.GetString("PackHalf2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackSnorm2x16Doc {
+            get {
+                return ResourceManager.GetString("PackSnorm2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackSnorm4x8Doc {
+            get {
+                return ResourceManager.GetString("PackSnorm4x8Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackUnorm2x16Doc {
+            get {
+                return ResourceManager.GetString("PackUnorm2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PackUnorm4x8Doc {
+            get {
+                return ResourceManager.GetString("PackUnorm4x8Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PowDoc {
+            get {
+                return ResourceManager.GetString("PowDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string RadiansDoc {
             get {
@@ -79,11 +1051,596 @@ namespace Xannden.GLSL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The standard trigonometric sine function..
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ReflectDoc {
+            get {
+                return ResourceManager.GetString("ReflectDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string RefractDoc {
+            get {
+                return ResourceManager.GetString("RefractDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string RoundDoc {
+            get {
+                return ResourceManager.GetString("RoundDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string RoundEvenDoc {
+            get {
+                return ResourceManager.GetString("RoundEvenDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow1DDoc {
+            get {
+                return ResourceManager.GetString("Shadow1DDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow1DLodDoc {
+            get {
+                return ResourceManager.GetString("Shadow1DLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow1DProjDoc {
+            get {
+                return ResourceManager.GetString("Shadow1DProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow1DProjLodDoc {
+            get {
+                return ResourceManager.GetString("Shadow1DProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow2DDoc {
+            get {
+                return ResourceManager.GetString("Shadow2DDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow2DLodDoc {
+            get {
+                return ResourceManager.GetString("Shadow2DLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow2DProjDoc {
+            get {
+                return ResourceManager.GetString("Shadow2DProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Shadow2DProjLodDoc {
+            get {
+                return ResourceManager.GetString("Shadow2DProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SignDoc {
+            get {
+                return ResourceManager.GetString("SignDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string SinDoc {
             get {
                 return ResourceManager.GetString("SinDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SinhDoc {
+            get {
+                return ResourceManager.GetString("SinhDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SmoothstepDoc {
+            get {
+                return ResourceManager.GetString("SmoothstepDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SqrtDoc {
+            get {
+                return ResourceManager.GetString("SqrtDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string StepDoc {
+            get {
+                return ResourceManager.GetString("StepDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TanDoc {
+            get {
+                return ResourceManager.GetString("TanDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TanhDoc {
+            get {
+                return ResourceManager.GetString("TanhDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TexelFetchDoc {
+            get {
+                return ResourceManager.GetString("TexelFetchDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TexelFetchOffsetDoc {
+            get {
+                return ResourceManager.GetString("TexelFetchOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture1DDoc {
+            get {
+                return ResourceManager.GetString("Texture1DDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture1DLodDoc {
+            get {
+                return ResourceManager.GetString("Texture1DLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture1DProjDoc {
+            get {
+                return ResourceManager.GetString("Texture1DProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture1DProjLodDoc {
+            get {
+                return ResourceManager.GetString("Texture1DProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture2DDoc {
+            get {
+                return ResourceManager.GetString("Texture2DDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture2DLodDoc {
+            get {
+                return ResourceManager.GetString("Texture2DLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture2DProjDoc {
+            get {
+                return ResourceManager.GetString("Texture2DProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture2DProjLodDoc {
+            get {
+                return ResourceManager.GetString("Texture2DProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture3DDoc {
+            get {
+                return ResourceManager.GetString("Texture3DDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture3DLodDoc {
+            get {
+                return ResourceManager.GetString("Texture3DLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture3DProjDoc {
+            get {
+                return ResourceManager.GetString("Texture3DProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Texture3DProjLodDoc {
+            get {
+                return ResourceManager.GetString("Texture3DProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureCubeDoc {
+            get {
+                return ResourceManager.GetString("TextureCubeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureCubeLodDoc {
+            get {
+                return ResourceManager.GetString("TextureCubeLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureDoc {
+            get {
+                return ResourceManager.GetString("TextureDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureGatherDoc {
+            get {
+                return ResourceManager.GetString("TextureGatherDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureGatherOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureGatherOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureGatherOffsetsDoc {
+            get {
+                return ResourceManager.GetString("TextureGatherOffsetsDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureGradDoc {
+            get {
+                return ResourceManager.GetString("TextureGradDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureGradOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureGradOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureLodDoc {
+            get {
+                return ResourceManager.GetString("TextureLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureLodOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureLodOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjDoc {
+            get {
+                return ResourceManager.GetString("TextureProjDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjGradDoc {
+            get {
+                return ResourceManager.GetString("TextureProjGradDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjGradOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureProjGradOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjLodDoc {
+            get {
+                return ResourceManager.GetString("TextureProjLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjLodOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureProjLodOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureProjOffsetDoc {
+            get {
+                return ResourceManager.GetString("TextureProjOffsetDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureQueryLevelsDoc {
+            get {
+                return ResourceManager.GetString("TextureQueryLevelsDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureQueryLodDoc {
+            get {
+                return ResourceManager.GetString("TextureQueryLodDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TextureSizeDoc {
+            get {
+                return ResourceManager.GetString("TextureSizeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TransposeDoc {
+            get {
+                return ResourceManager.GetString("TransposeDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TruncDoc {
+            get {
+                return ResourceManager.GetString("TruncDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UaddCarryDoc {
+            get {
+                return ResourceManager.GetString("UaddCarryDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UintBitsToFloatDoc {
+            get {
+                return ResourceManager.GetString("UintBitsToFloatDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UmulExtendedDoc {
+            get {
+                return ResourceManager.GetString("UmulExtendedDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackDouble2x32Doc {
+            get {
+                return ResourceManager.GetString("UnpackDouble2x32Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackHalf2x16Doc {
+            get {
+                return ResourceManager.GetString("UnpackHalf2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackSnorm2x16Doc {
+            get {
+                return ResourceManager.GetString("UnpackSnorm2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackSnorm4x8Doc {
+            get {
+                return ResourceManager.GetString("UnpackSnorm4x8Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackUnorm2x16Doc {
+            get {
+                return ResourceManager.GetString("UnpackUnorm2x16Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UnpackUnorm4x8Doc {
+            get {
+                return ResourceManager.GetString("UnpackUnorm4x8Doc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UsubBorrowDoc {
+            get {
+                return ResourceManager.GetString("UsubBorrowDoc", resourceCulture);
             }
         }
     }

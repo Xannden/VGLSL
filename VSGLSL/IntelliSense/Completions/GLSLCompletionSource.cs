@@ -11,6 +11,7 @@ using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
+using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Extensions;
@@ -46,8 +47,6 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 				textBlock.Inlines.Add(new Run(" Keyword"));
 
 				this.keywords.Add(new GLSLCompletion(textBlock, text, text + "Keyword", keywordIcon));
-
-				// this.keywords.Add(new Completion(text, text, text + " Keyword", imageSource, string.Empty));
 			}
 
 			foreach (Definition definition in BuiltInData.Instance.Definitions)
@@ -76,9 +75,25 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 			{
 				IReadOnlyList<Definition> definitions = tree.Definitions.FindAll(def => def.Scope.Contains(snapshot, triggerPoint));
 
+				SyntaxNode node = tree.GetNodeFromPosition(snapshot, triggerPoint);
+				Definition currentFunction = null;
+
+				foreach (SyntaxNode ancestor in node.Ancestors)
+				{
+					if (ancestor.SyntaxType == SyntaxType.FunctionDefinition)
+					{
+						FunctionDefinitionSyntax function = ancestor as FunctionDefinitionSyntax;
+
+						currentFunction = function.FunctionHeader.Identifier.Definition;
+					}
+				}
+
 				foreach (Definition definition in definitions)
 				{
-					completions.Add(new GLSLCompletion(definition.ToTextBlock(this.provider.FormatMap.GetClassificationFormatMap("text"), this.provider.TypeRegistry), definition, definition.GetImageSource(this.provider.GlyphService)));
+					if (definition.Name != currentFunction?.Name)
+					{
+						completions.Add(new GLSLCompletion(definition.ToTextBlock(this.provider.FormatMap.GetClassificationFormatMap("text"), this.provider.TypeRegistry), definition, definition.GetImageSource(this.provider.GlyphService)));
+					}
 				}
 			}
 

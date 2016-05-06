@@ -62,8 +62,8 @@
     <Compile Include="Classification\ClassificationTypes.cs" />
     <Compile Include="Commands\Commenting\CommentSelectionCommand.cs" />
     <Compile Include="Commands\Commenting\UnCommentSelectionCommand.cs" />
-    <Compile Include="Commands\GLSLCommandHandlers.cs" />
     <Compile Include="Commands\GLSLCommandHandlersProvider.cs" />
+    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Intellisence\CompletionCommand.cs" />
     <Compile Include="Commands\Intellisence\GoToDefinitionCommand.cs" />
     <Compile Include="Commands\Intellisence\QuickInfoCommand.cs" />

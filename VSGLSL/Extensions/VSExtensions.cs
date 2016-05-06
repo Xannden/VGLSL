@@ -103,6 +103,11 @@ namespace Xannden.VSGLSL.Extensions
 			return collection.GetProperty<T>(typeof(TKey));
 		}
 
+		public static void AddProperty<T>(this PropertyCollection collection, T property)
+		{
+			collection.AddProperty(property.GetType(), property);
+		}
+
 		public static T GetService<T>(this IServiceProvider provider)
 		{
 			return (T)provider.GetService(typeof(T));

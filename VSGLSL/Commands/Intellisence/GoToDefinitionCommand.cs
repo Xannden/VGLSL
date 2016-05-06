@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
@@ -10,11 +8,11 @@ namespace Xannden.VSGLSL.Commands
 {
 	internal class GoToDefinitionCommand : VSCommand<VSConstants.VSStd97CmdID>
 	{
-		private readonly VSSource source;
+		private VSSource source;
 
-		internal GoToDefinitionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView)
+		protected override void Initilize()
 		{
-			this.source = VSSource.GetOrCreate(textView.TextBuffer);
+			this.source = VSSource.GetOrCreate(this.TextView.TextBuffer);
 
 			this.AddCommand(VSConstants.VSStd97CmdID.GotoDefn);
 		}

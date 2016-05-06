@@ -1,19 +1,17 @@
-﻿using Microsoft.VisualStudio;
+﻿using System.ComponentModel.Composition;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace Xannden.VSGLSL.Commands
 {
 	internal sealed class QuickInfoCommand : VSCommand<VSConstants.VSStd2KCmdID>
 	{
-		private readonly IQuickInfoBroker quickInfoBroker;
+		[Import]
+		private IQuickInfoBroker QuickInfoBroker { get; set; }
 
-		internal QuickInfoCommand(IVsTextView textViewAdapter, ITextView textView, IQuickInfoBroker quickInfoBroker) : base(textViewAdapter, textView)
+		protected override void Initilize()
 		{
-			this.quickInfoBroker = quickInfoBroker;
-
 			this.AddCommand(VSConstants.VSStd2KCmdID.QUICKINFO);
 		}
 
@@ -26,7 +24,7 @@ namespace Xannden.VSGLSL.Commands
 		{
 			ITrackingPoint triggerPoint = this.TextView.TextSnapshot.CreateTrackingPoint(this.TextView.Caret.Position.BufferPosition.Position, PointTrackingMode.Negative);
 
-			this.quickInfoBroker.TriggerQuickInfo(this.TextView, triggerPoint, false);
+			this.QuickInfoBroker.TriggerQuickInfo(this.TextView, triggerPoint, false);
 
 			return true;
 		}

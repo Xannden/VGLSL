@@ -22,15 +22,26 @@ namespace Xannden.GLSL.Semantics
 
 		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
-			List<SyntaxToken> result = new List<SyntaxToken>(this.TypeQualifier.GetSyntaxTokens());
+			List<SyntaxToken> result = new List<SyntaxToken>();
+
+			if (this.TypeQualifier != null)
+			{
+				result.AddRange(this.TypeQualifier.GetSyntaxTokens());
+			}
 
 			result.Add(this.ParameterType.TypeToken);
 
-			result.AddRange(this.ParameterType.ArraySpecifiers.GetSyntaxTokens());
+			if (this.ParameterType.ArraySpecifiers != null)
+			{
+				result.AddRange(this.ParameterType.ArraySpecifiers?.GetSyntaxTokens());
+			}
 
 			result.Add(this.Identifier);
 
-			result.AddRange(this.ArraySpecifiers.GetSyntaxTokens());
+			if (this.ArraySpecifiers != null)
+			{
+				result.AddRange(this.ArraySpecifiers?.GetSyntaxTokens());
+			}
 
 			return result;
 		}

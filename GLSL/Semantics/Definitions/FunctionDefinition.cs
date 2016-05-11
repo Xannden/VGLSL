@@ -2,6 +2,7 @@
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Semantics
 {
@@ -25,7 +26,7 @@ namespace Xannden.GLSL.Semantics
 
 		public override IReadOnlyList<SyntaxToken> GetTokens()
 		{
-			List<SyntaxToken> result = new List<SyntaxToken>(this.TypeQualifier?.GetSyntaxTokens());
+			List<SyntaxToken> result = new List<SyntaxToken>();
 
 			if (this.TypeQualifier != null)
 			{
@@ -56,6 +57,15 @@ namespace Xannden.GLSL.Semantics
 			result.Add(this.header.RightParentheses);
 
 			return result;
+		}
+
+		public Span GetRelativeParameterSpan(int paramIndex, Snapshot snapshot)
+		{
+			int start = this.header.Span.GetSpan(snapshot).Start;
+
+			Span span = this.header.Parameters.Nodes[paramIndex].Span.GetSpan(snapshot);
+
+			return Text.Span.Create(span.Start - start, span.End - start);
 		}
 
 		internal void AddParameter(ParameterDefinition parameter)

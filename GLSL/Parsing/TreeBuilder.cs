@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
@@ -19,7 +20,8 @@ namespace Xannden.GLSL.Parsing
 		private readonly LinkedList<Token> tokens;
 		private readonly SyntaxTree tree = new SyntaxTree();
 		private readonly Stack<Scope> scope = new Stack<Scope>();
-		private readonly List<Definition> definitions = new List<Definition>();
+		private readonly SortedDictionary<string, List<Definition>> definitions = new SortedDictionary<string, List<Definition>>(StringComparer.Ordinal);
+		private FunctionDefinition lastFunctionDefinition;
 		private LinkedListNode<Token> listNode;
 		private int testModeLayer;
 
@@ -56,7 +58,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			if (this.testModeLayer <= 0)
 			{
-				SyntaxNode node = this.CreateNode(type, this.CurrentToken.FullSpan(this.snapshot).Start);
+				SyntaxNode node = this.CreateNode(type, this.CurrentToken.Span.Start);
 
 				if (this.stack.Count != 0)
 				{
@@ -81,7 +83,7 @@ namespace Xannden.GLSL.Parsing
 		{
 			if (this.testModeLayer <= 0)
 			{
-				int end = this.listNode?.Previous?.Value.FullSpan(this.snapshot).End ?? this.tokens.Last.Value.FullSpan(this.snapshot).End;
+				int end = this.listNode?.Previous?.Value.Span.End ?? this.tokens.Last.Value.Span.End;
 
 				if (end < this.stack.Peek().TempStart)
 				{
@@ -134,7 +136,14 @@ namespace Xannden.GLSL.Parsing
 					return;
 				}
 
-				this.errorList.Add(new GLSLError($"{expected.GetText()} expected", this.CurrentToken.Span));
+				string text = expected.GetText();
+
+				if (string.IsNullOrEmpty(text))
+				{
+					return;
+				}
+
+				this.errorList.Add(new GLSLError($"{text} expected", this.CurrentToken.Span));
 
 				SyntaxNode node = new SyntaxNode(this.tree, expected, this.snapshot.CreateTrackingSpan(this.CurrentToken.Span));
 
@@ -154,7 +163,14 @@ namespace Xannden.GLSL.Parsing
 
 		public SyntaxTree GetTree()
 		{
-			this.tree.Definitions = this.definitions;
+			Dictionary<string, IReadOnlyList<Definition>> definitionDictionary = new Dictionary<string, IReadOnlyList<Definition>>();
+
+			foreach (string key in this.definitions.Keys)
+			{
+				definitionDictionary.Add(key, this.definitions[key]);
+			}
+
+			this.tree.Definitions = definitionDictionary;
 			this.tree.Errors = this.errorList;
 
 			return this.tree;
@@ -206,12 +222,13 @@ namespace Xannden.GLSL.Parsing
 			switch (type)
 			{
 				case DefinitionKind.Function:
-					definition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier, string.Empty);
+					this.lastFunctionDefinition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier, string.Empty);
+					definition = this.lastFunctionDefinition;
 					break;
 
 				case DefinitionKind.Parameter:
 					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier, string.Empty);
-					(this.definitions.FindLast(def => def.Kind == DefinitionKind.Function) as FunctionDefinition)?.AddParameter(definition as ParameterDefinition);
+					this.lastFunctionDefinition?.AddParameter(definition as ParameterDefinition);
 					break;
 
 				case DefinitionKind.Field:
@@ -236,7 +253,16 @@ namespace Xannden.GLSL.Parsing
 					break;
 			}
 
-			this.definitions.Add(definition);
+			if (this.definitions.ContainsKey(definition.Name))
+			{
+				this.definitions[definition.Name].Add(definition);
+			}
+			else
+			{
+				this.definitions.Add(definition.Name, new List<Definition> { definition });
+			}
+
+			definition.Overloads = this.definitions[definition.Name];
 
 			return definition;
 		}
@@ -248,14 +274,17 @@ namespace Xannden.GLSL.Parsing
 				return null;
 			}
 
-			Definition definition = this.definitions.FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span) && def.Name == identifier.Identifier);
-
-			if (definition == null)
+			if (this.definitions.ContainsKey(identifier.Identifier))
 			{
-				definition = BuiltInData.Instance.Definitions.Find(def => def.Name == identifier.Identifier);
+				return this.definitions[identifier.Identifier].FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span));
 			}
 
-			return definition;
+			if (BuiltInData.Instance.Definitions.ContainsKey(identifier.Identifier))
+			{
+				return BuiltInData.Instance.Definitions[identifier.Identifier][0];
+			}
+
+			return null;
 		}
 
 		public ResetPoint GetResetPoint()

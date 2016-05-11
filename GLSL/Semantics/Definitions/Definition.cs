@@ -1,4 +1,5 @@
-﻿using Xannden.GLSL.Text;
+﻿using System.Collections.Generic;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Semantics
 {
@@ -22,6 +23,8 @@ namespace Xannden.GLSL.Semantics
 		public DefinitionKind Kind { get; }
 
 		public TrackingSpan Span { get; }
+
+		public List<Definition> Overloads { get; internal set; }
 
 		public override string ToString()
 		{

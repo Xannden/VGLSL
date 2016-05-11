@@ -13,7 +13,7 @@ namespace Xannden.GLSL.Syntax.Tree
 		{
 		}
 
-		public IReadOnlyList<Definition> Definitions { get; internal set; }
+		public IReadOnlyDictionary<string, IReadOnlyList<Definition>> Definitions { get; internal set; }
 
 		public SyntaxNode Root { get; internal set; }
 

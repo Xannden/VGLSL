@@ -77,9 +77,9 @@ namespace Xannden.VSGLSL.Commands
 			this.commandIds.AddRange(commands.ConvertAll(item => Convert.ToUInt32(item)));
 		}
 
-		protected int RunNextCommand(ref Guid cmdGuid, uint cmdID, uint cmdexecopt, IntPtr vaIn, IntPtr vaOut)
+		protected bool RunNextCommand(ref Guid cmdGuid, uint cmdID, uint cmdexecopt, IntPtr vaIn, IntPtr vaOut)
 		{
-			return this.nextCommand.Exec(ref cmdGuid, cmdID, cmdexecopt, vaIn, vaOut);
+			return this.nextCommand.Exec(ref cmdGuid, cmdID, cmdexecopt, vaIn, vaOut) == VSConstants.S_OK;
 		}
 
 		protected abstract bool IsEnabled(T commandId);

@@ -118,6 +118,18 @@ namespace Xannden.VSGLSL.Extensions
 			return (T)provider.GetService(typeof(TKey));
 		}
 
+		public static ITextSnapshot ToITextSnapshot(this Snapshot snapshot)
+		{
+			VSSnapshot vs = snapshot as VSSnapshot;
+
+			if (vs == null)
+			{
+				throw new ArgumentException($"{nameof(snapshot)} must be a VSSnapshot and must not be null");
+			}
+
+			return vs.TextSnapshot;
+		}
+
 		private static int GetIndexOfFirstNoneWhiteSpace(string text)
 		{
 			for (int i = 0; i < text.Length; i++)

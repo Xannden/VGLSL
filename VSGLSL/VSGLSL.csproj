@@ -67,6 +67,7 @@
     <Compile Include="Commands\Intellisence\CompletionCommand.cs" />
     <Compile Include="Commands\Intellisence\GoToDefinitionCommand.cs" />
     <Compile Include="Commands\Intellisence\QuickInfoCommand.cs" />
+    <Compile Include="Commands\Intellisence\SignatureHelpCommand.cs" />
     <Compile Include="Commands\VSCommand.cs" />
     <Compile Include="Definitions\GLSLContentTypeDefinition.cs" />
     <Compile Include="Errors\VSErrorList.cs" />
@@ -84,12 +85,15 @@
     <Compile Include="Intellisense\Completions\GLSLCompletionPresenter.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletionSource.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletionSourceProvider.cs" />
-    <Compile Include="Intellisense\ParameterHelp\GLSLParameterHelpProvider.cs" />
+    <Compile Include="Intellisense\SignatureHelp\GLSLParameter.cs" />
+    <Compile Include="Intellisense\SignatureHelp\GLSLSignature.cs" />
+    <Compile Include="Intellisense\SignatureHelp\GLSLSignatureHelpProvider.cs" />
     <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoController.cs" />
     <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoControllerProvider.cs" />
     <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoSource.cs" />
     <Compile Include="Intellisense\QuickInfo\GLSLQuickInfoSourceProvider.cs" />
     <Compile Include="Intellisense\QuickInfo\QuickTipPanel.cs" />
+    <Compile Include="Intellisense\SignatureHelp\GLSLSignatureHelpSource.cs" />
     <Compile Include="Outlining\GLSLOutliningTagger.cs" />
     <Compile Include="Outlining\GLSLOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\Region.cs" />

@@ -26,6 +26,16 @@ namespace Xannden.GLSL.Text
 			return span?.Start == other?.Start && span?.End == other?.End;
 		}
 
+		public static Span operator -(Span span, int value)
+		{
+			return Create(span.Start - value, span.End - value);
+		}
+
+		public static Span operator +(Span span, int value)
+		{
+			return Create(span.Start + value, span.End + value);
+		}
+
 		public static Span Create(int start, int end)
 		{
 			if (start > end)

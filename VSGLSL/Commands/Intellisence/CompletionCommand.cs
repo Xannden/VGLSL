@@ -73,16 +73,20 @@ namespace Xannden.VSGLSL.Commands
 		{
 			char character = (char)(ushort)Marshal.GetObjectForNativeVariant(vaIn);
 
-			if (char.IsWhiteSpace(character) || (char.IsPunctuation(character) && character != '_'))
+			if (char.IsWhiteSpace(character) || (char.IsPunctuation(character) && character != '_' && character != '(' && character != '#'))
 			{
 				return this.Done();
 			}
+			else if (character == '(')
+			{
+				this.Done();
+			}
 
-			int returnValue = this.RunNextCommand(ref cmdGuid, cmdID, cmdexecopt, vaIn, vaOut);
+			bool returnValue = this.RunNextCommand(ref cmdGuid, cmdID, cmdexecopt, vaIn, vaOut);
 
 			Snapshot snapshot = this.source.CurrentSnapshot;
 
-			if ((char.IsLetterOrDigit(character) || character == '_') && !this.source.CommentSpans.Contains(span => span.GetSpan(snapshot).Contains(this.TextView.Caret.Position.BufferPosition)))
+			if ((char.IsLetterOrDigit(character) || character == '_' || character == '#') && !this.source.CommentSpans.Contains(span => span.GetSpan(snapshot).Contains(this.TextView.Caret.Position.BufferPosition)))
 			{
 				if (this.session?.IsDismissed ?? true)
 				{
@@ -96,7 +100,7 @@ namespace Xannden.VSGLSL.Commands
 				return true;
 			}
 
-			return returnValue == VSConstants.S_OK;
+			return returnValue;
 		}
 
 		private void CompleteWord()

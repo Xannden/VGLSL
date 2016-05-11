@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Text;
 using Xannden.GLSL.Text.Utility;
 
 namespace Xannden.GLSL.BuiltIn
@@ -54,6 +55,18 @@ namespace Xannden.GLSL.BuiltIn
 			}
 
 			return $"{this.ReturnType} {this.Name}({builder.ToString()})";
+		}
+
+		public Span GetRelativeParamterSpan(int index)
+		{
+			int start = this.ReturnType.Length + 1 + this.Name.Length + 1;
+
+			for (int i = 0; i < index; i++)
+			{
+				start += this.Parameters[i].ToString().Length + 2;
+			}
+
+			return Text.Span.Create(start, start + this.Parameters[index].ToString().Length - 1);
 		}
 
 		internal override void WriteToXml(IndentedTextWriter writer)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -9,7 +10,9 @@ using Microsoft.VisualStudio.Text.Classification;
 using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax.Tree;
+using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Data;
+using Xannden.VSGLSL.Intellisense.SignatureHelp;
 
 namespace Xannden.VSGLSL.Extensions
 {
@@ -59,7 +62,7 @@ namespace Xannden.VSGLSL.Extensions
 			return null;
 		}
 
-		public static TextBlock ToTextBlock(this Definition definition, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry)
+		public static TextBlock ToTextBlock(this Definition definition, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry, int overloads = 0)
 		{
 			TextBlock block = new TextBlock
 			{
@@ -70,7 +73,7 @@ namespace Xannden.VSGLSL.Extensions
 
 			if (definition is BuiltInDefinition)
 			{
-				return GetBuiltInTextBlock(definition, formatMap, typeRegistry);
+				return GetBuiltInTextBlock(definition, formatMap, typeRegistry, overloads);
 			}
 			else
 			{
@@ -120,10 +123,84 @@ namespace Xannden.VSGLSL.Extensions
 					runs.AddRange(tokens[i].ToRuns(formatMap, typeRegistry));
 				}
 
+				if (overloads > 0)
+				{
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+					runs.Add("(+".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+					runs.Add(overloads.ToString().ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Number)));
+					runs.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+					runs.Add("overloads".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Identifier)));
+					runs.Add(")".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+				}
+
 				block.Inlines.AddRange(runs);
 			}
 
 			return block;
+		}
+
+		public static string GetContent(this Definition definition)
+		{
+			StringBuilder builder = new StringBuilder();
+
+			if (definition is UserDefinition)
+			{
+				UserDefinition userDefinition = definition as UserDefinition;
+
+				IReadOnlyList<SyntaxToken> tokens = userDefinition.GetTokens();
+
+				for (int i = 0; i < tokens.Count; i++)
+				{
+					if (tokens[i].HasLeadingTrivia)
+					{
+						builder.Append(tokens[i].LeadingTrivia.GetTextAndReplaceNewLines(string.Empty));
+					}
+
+					builder.Append(tokens[i].Text);
+
+					if (tokens[i].HasTrailingTrivia)
+					{
+						builder.Append(tokens[i].TrailingTrivia.GetTextAndReplaceNewLines(" "));
+					}
+				}
+			}
+			else
+			{
+				builder.Append(definition.ToString());
+			}
+
+			return builder.ToString();
+		}
+
+		public static List<IParameter> GetParameters(this Definition definition, ISignature signature, Snapshot snapshot)
+		{
+			if (definition.Kind != DefinitionKind.Function)
+			{
+				return null;
+			}
+
+			List<IParameter> parameters = new List<IParameter>();
+
+			if (definition is UserDefinition)
+			{
+				FunctionDefinition functionDefinition = definition as FunctionDefinition;
+
+				for (int i = 0; i < functionDefinition.Parameters.Count; i++)
+				{
+					parameters.Add(new GLSLParameter(signature, functionDefinition.Parameters[i], functionDefinition.GetRelativeParameterSpan(i, snapshot).ToVSSpan()));
+				}
+			}
+			else
+			{
+				BuiltInFunction builtInFunction = definition as BuiltInFunction;
+
+				for (int i = 0; i < builtInFunction.Parameters.Count; i++)
+				{
+					parameters.Add(new GLSLParameter(signature, builtInFunction.Parameters[i], builtInFunction.GetRelativeParamterSpan(i).ToVSSpan()));
+				}
+			}
+
+			return parameters;
 		}
 
 		private static List<Run> ToRuns(this IReadOnlyList<Parameter> parameters, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry)
@@ -170,7 +247,7 @@ namespace Xannden.VSGLSL.Extensions
 			return runs;
 		}
 
-		private static TextBlock GetBuiltInTextBlock(Definition definition, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry)
+		private static TextBlock GetBuiltInTextBlock(Definition definition, IClassificationFormatMap formatMap, IClassificationTypeRegistryService typeRegistry, int overloads)
 		{
 			TextBlock block = new TextBlock
 			{
@@ -190,6 +267,17 @@ namespace Xannden.VSGLSL.Extensions
 					block.Inlines.Add("(".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
 					block.Inlines.AddRange(function.Parameters.ToRuns(formatMap, typeRegistry));
 					block.Inlines.Add(")".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+
+					if (overloads > 0)
+					{
+						block.Inlines.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+						block.Inlines.Add("(+".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+						block.Inlines.Add(overloads.ToString().ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Number)));
+						block.Inlines.Add(" ".ToRun(formatMap, typeRegistry.GetClassificationType(PredefinedClassificationTypeNames.WhiteSpace)));
+						block.Inlines.Add("overloads".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Identifier)));
+						block.Inlines.Add(")".ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Punctuation)));
+					}
+
 					break;
 			}
 

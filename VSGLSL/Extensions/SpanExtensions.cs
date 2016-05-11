@@ -1,5 +1,9 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using System;
+using Microsoft.VisualStudio.Text;
+using Xannden.GLSL.Text;
+using Xannden.VSGLSL.Sources;
 using GLSLSpan = Xannden.GLSL.Text.Span;
+using VSSpan = Microsoft.VisualStudio.Text.Span;
 
 namespace Xannden.VSGLSL.Extensions
 {
@@ -15,7 +19,7 @@ namespace Xannden.VSGLSL.Extensions
 			return false;
 		}
 
-		public static GLSLSpan ToGLSLSpan(this Span span)
+		public static GLSLSpan ToGLSLSpan(this VSSpan span)
 		{
 			return GLSLSpan.Create(span.Start, span.End - 1);
 		}
@@ -30,9 +34,23 @@ namespace Xannden.VSGLSL.Extensions
 			return GLSLSpan.Create(span.Start.Position, span.End.Position - 1);
 		}
 
-		public static Span ToVSSpan(this GLSLSpan span)
+		public static VSSpan ToVSSpan(this GLSLSpan span)
 		{
-			return new Span(span.Start, span.Length);
+			return VSSpan.FromBounds(span.Start, span.End + 1);
+
+			// return new VSSpan(span.Start, span.Length);
+		}
+
+		public static ITrackingSpan ToITrackingSpan(this TrackingSpan span)
+		{
+			VSTrackingSpan trackingSpan = span as VSTrackingSpan;
+
+			if (trackingSpan == null)
+			{
+				throw new ArgumentException($"{nameof(span)} must be a VSTrackingSpan and not null");
+			}
+
+			return trackingSpan.TrackingSpan;
 		}
 	}
 }

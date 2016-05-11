@@ -70,6 +70,24 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
+		public IEnumerable<SyntaxNode> DescendantsAndSelf
+		{
+			get
+			{
+				yield return this;
+
+				for (int i = 0; i < this.InternalChildren.Count; i++)
+				{
+					yield return this.InternalChildren[i];
+
+					foreach (SyntaxNode child in this.InternalChildren[i].Descendants)
+					{
+						yield return child;
+					}
+				}
+			}
+		}
+
 		public virtual TrackingSpan FullSpan => this.Span;
 
 		public bool IsMissing { get; internal set; } = false;

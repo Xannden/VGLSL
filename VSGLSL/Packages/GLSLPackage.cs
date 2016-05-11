@@ -50,6 +50,10 @@ namespace Xannden.VSGLSL.Packages
 
 			this.languageInfo = new GLSLLanguageInfo();
 			((IServiceContainer)this).AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
+
+			// SettingsManager settingsManager = new ShellSettingsManager(this);
+			// SettingsStore configurationSettingsStore = settingsManager.GetReadOnlySettingsStore(SettingsScope.UserSettings);
+			// bool test = configurationSettingsStore.GetBoolean("Text Editor\\GLSL", "Auto List Params");
 		}
 
 		#endregion Package Members

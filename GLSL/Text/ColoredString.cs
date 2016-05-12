@@ -14,12 +14,12 @@
 
 		public static bool operator ==(ColoredString left, ColoredString right)
 		{
-			return left.Text == right.Text && left.Type == right.Type;
+			return left?.Text == right?.Text && left?.Type == right?.Type;
 		}
 
 		public static bool operator !=(ColoredString left, ColoredString right)
 		{
-			return left.Text != right.Text || left.Type != right.Type;
+			return left?.Text != right?.Text || left?.Type != right?.Type;
 		}
 
 		public static ColoredString Create(string text, ColorType type)
@@ -29,12 +29,12 @@
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is ColoredString))
+			ColoredString other = obj as ColoredString;
+
+			if (other == null)
 			{
 				return false;
 			}
-
-			ColoredString other = (ColoredString)obj;
 
 			return this == other;
 		}

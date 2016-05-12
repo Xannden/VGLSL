@@ -5,7 +5,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 {
 	public class VariableDefinition : Definition
 	{
-		public VariableDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, IReadOnlyList<ColoredString> arraySpecifiers, ColoredString name, string documentation, DefinitionKind kind, Scope scope, TrackingSpan span) : base(name, documentation, kind, scope, span)
+		public VariableDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, ColoredString name, IReadOnlyList<ColoredString> arraySpecifiers, string documentation, DefinitionKind kind, Scope scope, TrackingSpan span) : base(name, documentation, kind, scope, span)
 		{
 			this.TypeQualifier = typeQualifier ?? new List<ColoredString>();
 			this.Type = type;

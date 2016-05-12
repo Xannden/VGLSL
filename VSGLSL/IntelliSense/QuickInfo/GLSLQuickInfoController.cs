@@ -62,7 +62,7 @@ namespace Xannden.VSGLSL.Intellisense.QuickInfo
 
 				Snapshot snapshot = this.source.CurrentSnapshot;
 
-				IdentifierSyntax identifier = this.source.Tree.GetNodeFromPosition(snapshot, point.Value.Position) as IdentifierSyntax;
+				IdentifierSyntax identifier = this.source.Tree?.GetNodeFromPosition(snapshot, point.Value.Position) as IdentifierSyntax;
 
 				if (identifier?.Definition != null)
 				{

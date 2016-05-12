@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text.Editor;
@@ -9,15 +8,18 @@ using Xannden.VSGLSL.Extensions;
 
 namespace Xannden.VSGLSL.Commands
 {
-	[InheritedExport(typeof(ICommand))]
-	internal abstract class VSCommand<T> : IOleCommandTarget, ICommand where T : struct, IComparable
+	internal abstract class VSCommand<T> : IOleCommandTarget where T : struct, IComparable
 	{
 		private IOleCommandTarget nextCommand;
 		private Guid commandGroup;
 		private List<uint> commandIds = new List<uint>();
 
-		protected VSCommand()
+		protected VSCommand(IVsTextView textViewAdapter, ITextView textView)
 		{
+			this.TextView = textView;
+			this.commandGroup = typeof(T).GUID;
+
+			textViewAdapter.AddCommandFilter(this, out this.nextCommand);
 		}
 
 		protected ITextView TextView { get; private set; }
@@ -62,16 +64,6 @@ namespace Xannden.VSGLSL.Commands
 			return this.nextCommand.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
 
-		public void Create(IVsTextView textViewAdapter, ITextView textView)
-		{
-			this.TextView = textView;
-			this.commandGroup = typeof(T).GUID;
-
-			textViewAdapter.AddCommandFilter(this, out this.nextCommand);
-
-			this.Initilize();
-		}
-
 		protected void AddCommand(params T[] commands)
 		{
 			this.commandIds.AddRange(commands.ConvertAll(item => Convert.ToUInt32(item)));
@@ -83,8 +75,6 @@ namespace Xannden.VSGLSL.Commands
 		}
 
 		protected abstract bool IsEnabled(T commandId);
-
-		protected abstract void Initilize();
 
 		protected virtual bool Run(T commandId, ref Guid cmdGuid, uint cmdID, uint cmdexecopt, IntPtr vaIn, IntPtr vaOut)
 		{

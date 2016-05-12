@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Xannden.VSGLSL.Extensions;
 
 namespace Xannden.VSGLSL.Commands
 {
 	internal sealed class UnCommentSelectionCommand : VSCommand<VSConstants.VSStd2KCmdID>
 	{
-		protected override void Initilize()
+		public UnCommentSelectionCommand(IVsTextView textViewAdapter, ITextView textView) : base(textViewAdapter, textView)
 		{
 			this.AddCommand(VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK, VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK);
 		}

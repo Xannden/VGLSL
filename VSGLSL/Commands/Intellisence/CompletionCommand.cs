@@ -1,9 +1,10 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Sources;
@@ -13,13 +14,12 @@ namespace Xannden.VSGLSL.Commands
 	internal sealed class CompletionCommand : VSCommand<VSConstants.VSStd2KCmdID>
 	{
 		private ICompletionSession session;
+		private ICompletionBroker completionBroker;
 		private Source source;
 
-		[Import]
-		private ICompletionBroker CompletionBroker { get; set; }
-
-		protected override void Initilize()
+		public CompletionCommand(IVsTextView textViewAdapter, ITextView textView, ICompletionBroker completionBroker) : base(textViewAdapter, textView)
 		{
+			this.completionBroker = completionBroker;
 			this.source = VSSource.GetOrCreate(this.TextView.TextBuffer);
 
 			this.AddCommand(VSConstants.VSStd2KCmdID.SHOWMEMBERLIST, VSConstants.VSStd2KCmdID.COMPLETEWORD, VSConstants.VSStd2KCmdID.TYPECHAR, VSConstants.VSStd2KCmdID.RETURN, VSConstants.VSStd2KCmdID.TAB, VSConstants.VSStd2KCmdID.BACKSPACE, VSConstants.VSStd2KCmdID.DELETE);
@@ -122,7 +122,7 @@ namespace Xannden.VSGLSL.Commands
 		{
 			SnapshotPoint point = this.TextView.Caret.Position.BufferPosition;
 
-			this.session = this.CompletionBroker.CreateCompletionSession(this.TextView, point.Snapshot.CreateTrackingPoint(point.Position, PointTrackingMode.Positive), true);
+			this.session = this.completionBroker.CreateCompletionSession(this.TextView, point.Snapshot.CreateTrackingPoint(point.Position, PointTrackingMode.Positive), true);
 
 			this.session.Dismissed += this.OnSessionDismissed;
 			this.session.Start();

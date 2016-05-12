@@ -4,6 +4,7 @@ using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Properties;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Semantics.Definitions.Base;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.BuiltIn
 {
@@ -65,7 +66,7 @@ namespace Xannden.GLSL.BuiltIn
 			Dictionary<string, List<Definition>> dictionary = new Dictionary<string, List<Definition>>(StringComparer.Ordinal);
 
 			this.LoadFunctions(dictionary);
-			this.LoadVariables();
+			this.LoadVariables(dictionary);
 
 			SortedDictionary<string, IReadOnlyList<Definition>> temp = new SortedDictionary<string, IReadOnlyList<Definition>>(StringComparer.Ordinal);
 
@@ -837,8 +838,9 @@ namespace Xannden.GLSL.BuiltIn
 			this.AddFunction(dictionary, "void", "groupMemoryBarrier", Resources.GroupMemoryBarrierDoc);
 		}
 
-		private void LoadVariables()
+		private void LoadVariables(Dictionary<string, List<Definition>> dictionary)
 		{
+			this.AddVariable(dictionary, "const", "ivec3", "gl_MaxComputeWorkGroupCount", string.Empty);
 		}
 
 		private void AddFunction(Dictionary<string, List<Definition>> dictionary, string returnType, string name, string documentation, params ParameterDefinition[][] parameters)
@@ -906,6 +908,16 @@ namespace Xannden.GLSL.BuiltIn
 			}
 
 			definition.Overloads = dictionary[definition.Name.Text];
+		}
+
+		private void AddVariable(Dictionary<string, List<Definition>> dictionary, string typeQualifier, string type, string name, string documentation)
+		{
+			if (!dictionary.ContainsKey(name))
+			{
+				dictionary.Add(name, new List<Definition>());
+			}
+
+			dictionary[name].Add(new VariableDefinition(new List<ColoredString> { ColoredString.Create(typeQualifier, ColorType.Keyword) }, new TypeDefinition(type), ColoredString.Create(name, ColorType.GlobalVariable), null, documentation, DefinitionKind.GlobalVariable, Scope.Global, null));
 		}
 	}
 }

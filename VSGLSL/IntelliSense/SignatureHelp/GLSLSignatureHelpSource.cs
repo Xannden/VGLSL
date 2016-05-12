@@ -25,7 +25,7 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 			SyntaxTree tree = this.source.Tree;
 
 			int triggerPosition = session.GetTriggerPoint(snapshot.ToITextSnapshot()).Value.Position;
-			SyntaxNode node = tree.GetNodeFromPosition(snapshot, triggerPosition);
+			SyntaxNode node = tree?.GetNodeFromPosition(snapshot, triggerPosition);
 			IdentifierSyntax identifier = node as IdentifierSyntax;
 
 			if (identifier?.Definition?.Kind != DefinitionKind.Function)

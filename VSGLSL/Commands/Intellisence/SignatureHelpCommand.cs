@@ -1,21 +1,22 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace Xannden.VSGLSL.Commands.Intellisence
+namespace Xannden.VSGLSL.Commands
 {
 	internal sealed class SignatureHelpCommand : VSCommand<VSConstants.VSStd2KCmdID>
 	{
+		private readonly ISignatureHelpBroker signatureHelpBroker;
 		private ISignatureHelpSession session;
 
-		[Import]
-		private ISignatureHelpBroker SignatureHelpBroker { get; set; }
-
-		protected override void Initilize()
+		public SignatureHelpCommand(IVsTextView textViewAdapter, ITextView textView, ISignatureHelpBroker signatureHelpBroker) : base(textViewAdapter, textView)
 		{
+			this.signatureHelpBroker = signatureHelpBroker;
+
 			this.AddCommand(VSConstants.VSStd2KCmdID.TYPECHAR, VSConstants.VSStd2KCmdID.PARAMINFO);
 		}
 
@@ -54,7 +55,7 @@ namespace Xannden.VSGLSL.Commands.Intellisence
 
 			this.session?.Dismiss();
 
-			this.session = this.SignatureHelpBroker.TriggerSignatureHelp(this.TextView, triggerPoint, true);
+			this.session = this.signatureHelpBroker.TriggerSignatureHelp(this.TextView, triggerPoint, true);
 		}
 	}
 }

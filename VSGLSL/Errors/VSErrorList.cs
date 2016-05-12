@@ -35,7 +35,7 @@ namespace Xannden.VSGLSL.Errors
 		{
 			this.errorListProvider.Tasks.Clear();
 
-			IReadOnlyList<GLSLError> errors = this.source.Tree.Errors;
+			IReadOnlyList<GLSLError> errors = this.source.Tree?.Errors;
 			Snapshot snapshot = this.source.CurrentSnapshot;
 
 			for (int i = 0; i < errors.Count; i++)

@@ -36,7 +36,7 @@ namespace Xannden.VSGLSL.Commands
 
 			IdentifierSyntax identifier = tree.GetNodeFromPosition(snapshot, position) as IdentifierSyntax;
 
-			Span span = identifier?.Definition.Span?.GetSpan(snapshot);
+			Span span = identifier?.Definition.DefinitionSpan?.GetSpan(snapshot);
 
 			if (span == null)
 			{

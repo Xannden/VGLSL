@@ -7,7 +7,7 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	internal sealed class GLSLCompletion : Completion
 	{
-		public GLSLCompletion(TextBlock textBlock, Definition definition, ImageSource icon) : base(definition.Name, definition.Name, definition.Name, icon, string.Empty)
+		public GLSLCompletion(TextBlock textBlock, Definition definition, ImageSource icon) : base(definition.Name.Text, definition.Name.Text, definition.Name.Text, icon, string.Empty)
 		{
 			this.TextBlock = textBlock;
 		}

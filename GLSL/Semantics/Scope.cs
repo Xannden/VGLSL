@@ -12,10 +12,12 @@ namespace Xannden.GLSL.Semantics
 			this.End = end;
 		}
 
-		internal Scope(bool isBuiltIn)
+		private Scope()
 		{
-			this.isBuiltIn = isBuiltIn;
+			this.isBuiltIn = true;
 		}
+
+		internal static Scope Global { get; } = new Scope();
 
 		internal TrackingPoint End { get; set; }
 

@@ -4,6 +4,7 @@ using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Semantics.Definitions.User;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
@@ -21,7 +22,7 @@ namespace Xannden.GLSL.Parsing
 		private readonly SyntaxTree tree = new SyntaxTree();
 		private readonly Stack<Scope> scope = new Stack<Scope>();
 		private readonly SortedDictionary<string, List<Definition>> definitions = new SortedDictionary<string, List<Definition>>(StringComparer.Ordinal);
-		private FunctionDefinition lastFunctionDefinition;
+		private UserFunctionDefinition lastFunctionDefinition;
 		private LinkedListNode<Token> listNode;
 		private int testModeLayer;
 
@@ -178,18 +179,13 @@ namespace Xannden.GLSL.Parsing
 
 		public bool IsTypeName(Token token)
 		{
-			foreach (SyntaxNode ancestor in this.stack.Peek().AncestorsAndSelf)
+			if (this.definitions.ContainsKey(token.Text))
 			{
-				if (ancestor.SyntaxType == SyntaxType.TypeName)
+				for (int i = 0; i < this.definitions[token.Text].Count; i++)
 				{
-					return true;
-				}
+					Definition definition = this.definitions[token.Text][i];
 
-				foreach (SyntaxNode sibling in ancestor.Siblings)
-				{
-					InterfaceBlockSyntax interfaceBlock = (sibling as SimpleStatementSyntax)?.Declaration?.InterfaceBlock;
-
-					if (interfaceBlock?.Identifier?.Identifier == token.Text)
+					if (definition.Kind == DefinitionKind.TypeName || definition.Kind == DefinitionKind.InterfaceBlock)
 					{
 						return true;
 					}
@@ -222,47 +218,60 @@ namespace Xannden.GLSL.Parsing
 			switch (type)
 			{
 				case DefinitionKind.Function:
-					this.lastFunctionDefinition = new FunctionDefinition(node as FunctionHeaderSyntax, definitionScope, identifier, string.Empty);
+					this.lastFunctionDefinition = new UserFunctionDefinition(node as FunctionHeaderSyntax, identifier, string.Empty, definitionScope);
 					definition = this.lastFunctionDefinition;
 					break;
 
 				case DefinitionKind.Parameter:
-					definition = new ParameterDefinition(node as ParameterSyntax, definitionScope, identifier, string.Empty);
-					this.lastFunctionDefinition?.AddParameter(definition as ParameterDefinition);
+					definition = new UserParameterDefinition(node as ParameterSyntax, identifier, string.Empty, definitionScope);
+					this.lastFunctionDefinition?.InternalParameters.Add(definition as UserParameterDefinition);
 					break;
 
 				case DefinitionKind.Field:
-					definition = new FieldDefinition(node as StructDeclaratorSyntax, definitionScope, identifier, string.Empty);
+					definition = new UserFieldDefinition(node as StructDeclaratorSyntax, identifier, string.Empty, definitionScope);
 					break;
 
 				case DefinitionKind.GlobalVariable:
 				case DefinitionKind.LocalVariable:
-					definition = new VariableDefinition(node, definitionScope, identifier, string.Empty, type);
+
+					switch (node.SyntaxType)
+					{
+						case SyntaxType.InitPart:
+							definition = new UserVariableDefinition(node as InitPartSyntax, identifier, string.Empty, type, definitionScope);
+							break;
+						case SyntaxType.Condition:
+							definition = new UserVariableDefinition(node as ConditionSyntax, identifier, string.Empty, type, definitionScope);
+							break;
+						case SyntaxType.StructDeclarator:
+							definition = new UserVariableDefinition(node as StructDeclaratorSyntax, identifier, string.Empty, type, definitionScope);
+							break;
+					}
+
 					break;
 
 				case DefinitionKind.Macro:
-					definition = new MacroDefinition(node as DefinePreprocessorSyntax, definitionScope, identifier, string.Empty);
+					definition = new UserMacroDefinition(node as DefinePreprocessorSyntax, identifier, string.Empty, definitionScope);
 					break;
 
 				case DefinitionKind.TypeName:
-					definition = new TypeNameDefinition(definitionScope, identifier, string.Empty);
+					definition = new UserTypeNameDefinition(identifier, string.Empty, definitionScope);
 					break;
 
 				case DefinitionKind.InterfaceBlock:
-					definition = new InterfaceBlockDefinition(node as InterfaceBlockSyntax, definitionScope, identifier, string.Empty);
+					definition = new UserInterfaceBlockDefinition(node as InterfaceBlockSyntax, identifier, string.Empty, definitionScope);
 					break;
 			}
 
-			if (this.definitions.ContainsKey(definition.Name))
+			if (this.definitions.ContainsKey(definition.Name.Text))
 			{
-				this.definitions[definition.Name].Add(definition);
+				this.definitions[definition.Name.Text].Add(definition);
 			}
 			else
 			{
-				this.definitions.Add(definition.Name, new List<Definition> { definition });
+				this.definitions.Add(definition.Name.Text, new List<Definition> { definition });
 			}
 
-			definition.Overloads = this.definitions[definition.Name];
+			definition.Overloads = this.definitions[definition.Name.Text];
 
 			return definition;
 		}

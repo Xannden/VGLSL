@@ -92,10 +92,8 @@ namespace Xannden.VSGLSL.Commands
 				{
 					this.TriggerCompletion();
 				}
-				else
-				{
-					this.session.Filter();
-				}
+
+				this.session.Filter();
 
 				return true;
 			}
@@ -108,6 +106,8 @@ namespace Xannden.VSGLSL.Commands
 			if (this.session == null || this.session.IsDismissed)
 			{
 				this.TriggerCompletion();
+
+				this.session.Filter();
 
 				if (this.session?.SelectedCompletionSet.Completions.Count <= 1)
 				{
@@ -126,8 +126,6 @@ namespace Xannden.VSGLSL.Commands
 
 			this.session.Dismissed += this.OnSessionDismissed;
 			this.session.Start();
-
-			this.session.Filter();
 
 			return;
 		}

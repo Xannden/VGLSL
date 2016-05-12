@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
@@ -67,7 +68,10 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 						span = functionCall.Span;
 					}
 
-					signatures.Add(new GLSLSignature(functionCall.Identifier.Definition, span, snapshot, session.TextView, session));
+					for (int i = 0; i < functionCall.Identifier.Definition.Overloads.Count; i++)
+					{
+						signatures.Add(new GLSLSignature(functionCall.Identifier.Definition.Overloads[i], span, snapshot, session.TextView, session));
+					}
 				}
 			}
 			else if (identifier?.Definition != null)
@@ -83,7 +87,18 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 					span = node.Span;
 				}
 
-				signatures.Add(new GLSLSignature(identifier.Definition, span, snapshot, session.TextView, session));
+				for (int i = 0; i < identifier.Definition.Overloads.Count; i++)
+				{
+					signatures.Add(new GLSLSignature(identifier.Definition.Overloads[i], span, snapshot, session.TextView, session));
+				}
+
+				if (BuiltInData.Instance.Definitions.ContainsKey(identifier.Definition.Name.Text))
+				{
+					for (int i = 0; i < BuiltInData.Instance.Definitions[identifier.Definition.Name.Text].Count; i++)
+					{
+						signatures.Add(new GLSLSignature(BuiltInData.Instance.Definitions[identifier.Definition.Name.Text][i], span, snapshot, session.TextView, session));
+					}
+				}
 			}
 		}
 

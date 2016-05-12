@@ -1,23 +1,15 @@
 ﻿using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Xannden.GLSL.BuiltIn;
-using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Semantics.Definitions.Base;
 
 namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 {
 	internal sealed class GLSLParameter : IParameter
 	{
-		public GLSLParameter(ISignature signature, Parameter parameter, Span locus)
-		{
-			this.Signature = signature;
-			this.Name = parameter.Identifier;
-			this.Locus = locus;
-		}
-
 		public GLSLParameter(ISignature signature, ParameterDefinition parameter, Span locus)
 		{
 			this.Signature = signature;
-			this.Name = parameter.Name;
+			this.Name = parameter.Name.Text;
 			this.Locus = locus;
 		}
 

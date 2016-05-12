@@ -21,7 +21,7 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 			GLSL.Text.Span span = trackingSpan.GetSpan(snapshot);
 
 			this.ApplicableToSpan = snapshot.CreateTrackingSpan(GLSL.Text.Span.Create(span.Start, span.End - 1)).ToITrackingSpan();
-			this.Content = definition.GetContent();
+			this.Content = definition.ToString();
 			this.Documentation = definition.Documentation;
 			this.Parameters = new ReadOnlyCollection<IParameter>(definition.GetParameters(this, snapshot));
 			this.textView = textView;
@@ -91,7 +91,8 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 			string text = snapshot.GetText(this.ApplicableToSpan.GetStartPoint(snapshot).Position, this.ApplicableToSpan.GetSpan(snapshot).Length + 1);
 
 			int parameterIndex = 0;
-			int cursorPosition = this.textView.Caret.Position.BufferPosition - this.ApplicableToSpan.GetSpan(snapshot).Start.Position;
+			int cursorPosition = this.textView.Caret.Position.BufferPosition.Position - this.ApplicableToSpan.GetSpan(snapshot).Start.Position;
+			int parenthesisDepth = 0;
 
 			for (int i = 0; i < text.Length; i++)
 			{
@@ -100,9 +101,21 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 					break;
 				}
 
-				if (text[i] == ',')
+				switch (text[i])
 				{
-					parameterIndex++;
+					case ',':
+						if (parenthesisDepth <= 1)
+						{
+							parameterIndex++;
+						}
+
+						break;
+					case '(':
+						parenthesisDepth++;
+						break;
+					case ')':
+						parenthesisDepth--;
+						break;
 				}
 			}
 

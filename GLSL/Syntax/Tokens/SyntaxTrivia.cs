@@ -1,4 +1,5 @@
-﻿using Xannden.GLSL.Text;
+﻿using System.Collections.Generic;
+using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Syntax.Tokens
 {
@@ -47,6 +48,19 @@ namespace Xannden.GLSL.Syntax.Tokens
 			}
 
 			return string.Empty;
+		}
+
+		internal void ToColoredString(List<ColoredString> list)
+		{
+			this.GetColoredString(list);
+		}
+
+		protected virtual void GetColoredString(List<ColoredString> list)
+		{
+			if (this.SyntaxType == SyntaxType.WhiteSpaceTrivia)
+			{
+				list.Add(ColoredString.Create(this.text, ColorType.WhiteSpace));
+			}
 		}
 	}
 }

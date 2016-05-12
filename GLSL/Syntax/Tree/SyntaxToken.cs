@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Text;
 
@@ -72,7 +73,44 @@ namespace Xannden.GLSL.Syntax.Tree
 			return elements;
 		}
 
-		internal override void ToString(StringBuilder builder)
+		protected override void ToColoredString(List<ColoredString> list)
+		{
+			ColorType type = ColorType.Identifier;
+
+			if (this.SyntaxType.IsPreprocessor())
+			{
+				type = ColorType.PreprocessorKeyword;
+			}
+			else if (this?.IsExcludedCode() ?? false)
+			{
+				type = ColorType.ExcludedCode;
+			}
+			else if (this.SyntaxType.IsPunctuation())
+			{
+				type = ColorType.Punctuation;
+			}
+			else if (this?.IsPreprocessorText() ?? false)
+			{
+				type = ColorType.PreprocessorText;
+			}
+			else if (this.SyntaxType.IsKeyword())
+			{
+				type = ColorType.Keyword;
+			}
+			else if (this.SyntaxType.IsNumber())
+			{
+				type = ColorType.Number;
+			}
+
+			list.Add(ColoredString.Create(this.Text, type));
+
+			if (this.HasTrailingTrivia)
+			{
+				this.TrailingTrivia.ToColoredString(list);
+			}
+		}
+
+		protected override void ToString(StringBuilder builder)
 		{
 			if (this.HasLeadingTrivia)
 			{

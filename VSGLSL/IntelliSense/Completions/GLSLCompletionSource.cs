@@ -108,6 +108,13 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 				{
 					if (definitions[i].Name != currentFunction?.Name)
 					{
+						int overloads = definitions[i].Overloads.Count;
+
+						if (BuiltInData.Instance.Definitions.ContainsKey(definitions[i].Name.Text))
+						{
+							overloads += BuiltInData.Instance.Definitions[definitions[i].Name.Text].Count;
+						}
+
 						completions.Add(new GLSLCompletion(definitions[i].ToTextBlock(this.formatMap, this.provider.TypeRegistry, definitions[i].Overloads.Count - 1), definitions[i], definitions[i].GetImageSource(this.provider.GlyphService)));
 					}
 				}

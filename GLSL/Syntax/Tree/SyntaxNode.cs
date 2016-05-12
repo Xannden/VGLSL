@@ -156,6 +156,18 @@ namespace Xannden.GLSL.Syntax.Tree
 			return false;
 		}
 
+		public IReadOnlyList<ColoredString> ToColoredString()
+		{
+			List<ColoredString> list = new List<ColoredString>();
+
+			for (int i = 0; i < this.InternalChildren.Count; i++)
+			{
+				this.InternalChildren[i].ToColoredString(list);
+			}
+
+			return list;
+		}
+
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();
@@ -225,11 +237,19 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
-		internal virtual void ToString(StringBuilder builder)
+		protected virtual void ToString(StringBuilder builder)
 		{
 			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
 				this.InternalChildren[i].ToString(builder);
+			}
+		}
+
+		protected virtual void ToColoredString(List<ColoredString> list)
+		{
+			for (int i = 0; i < this.InternalChildren.Count; i++)
+			{
+				this.InternalChildren[i].ToColoredString(list);
 			}
 		}
 

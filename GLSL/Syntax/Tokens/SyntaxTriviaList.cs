@@ -60,5 +60,13 @@ namespace Xannden.GLSL.Syntax.Tokens
 
 			return builder.ToString();
 		}
+
+		protected override void GetColoredString(List<ColoredString> list)
+		{
+			for (int i = 0; i < this.List.Count; i++)
+			{
+				this.List[i].ToColoredString(list);
+			}
+		}
 	}
 }

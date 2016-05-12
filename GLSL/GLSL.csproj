@@ -75,10 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltIn\BuiltInData.cs" />
-    <Compile Include="BuiltIn\BuiltInDefinition.cs" />
-    <Compile Include="BuiltIn\BuiltInFunction.cs" />
-    <Compile Include="BuiltIn\Parameter.cs" />
-    <Compile Include="BuiltIn\Variable.cs" />
     <Compile Include="Errors\GLSLError.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTypeExtensions.cs" />
@@ -90,17 +86,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Semantics\Definitions\Definition.cs" />
-    <Compile Include="Semantics\Definitions\DefinitionKind.cs" />
-    <Compile Include="Semantics\Definitions\FieldDefinition.cs" />
-    <Compile Include="Semantics\Definitions\FunctionDefinition.cs" />
-    <Compile Include="Semantics\Definitions\InterfaceBlockDefinition.cs" />
-    <Compile Include="Semantics\Definitions\MacroDefinition.cs" />
-    <Compile Include="Semantics\Definitions\ParameterDefinition.cs" />
-    <Compile Include="Semantics\Definitions\TypeDefinition.cs" />
-    <Compile Include="Semantics\Definitions\TypeNameDefinition.cs" />
-    <Compile Include="Semantics\Definitions\UserDefinition.cs" />
-    <Compile Include="Semantics\Definitions\VariableDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\Definition.cs" />
+    <Compile Include="Semantics\Definitions\Base\DefinitionKind.cs" />
+    <Compile Include="Semantics\Definitions\Base\FieldDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\FunctionDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\InterfaceBlockDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\MacroDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\ParameterDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\TypeDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\TypeNameDefinition.cs" />
+    <Compile Include="Semantics\Definitions\Base\VariableDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserFieldDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserFunctionDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserInterfaceBlockDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserMacroDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserParameterDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserTypeNameDefinition.cs" />
+    <Compile Include="Semantics\Definitions\User\UserVariableDefinition.cs" />
     <Compile Include="Settings\GLSLSettings.cs" />
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
@@ -201,6 +203,8 @@
     <Compile Include="Syntax\Tree\Syntax\WhileStatementSyntax.cs" />
     <Compile Include="Syntax\Tokens\SyntaxTrivia.cs" />
     <Compile Include="Syntax\Tokens\SyntaxTriviaList.cs" />
+    <Compile Include="Text\ColoredString.cs" />
+    <Compile Include="Text\ColorType.cs" />
     <Compile Include="Text\Span.cs" />
     <Compile Include="Text\TrackingPoint.cs" />
     <Compile Include="Text\TrackingSpan.cs" />

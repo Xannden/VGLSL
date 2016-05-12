@@ -73,6 +73,7 @@
     <Compile Include="Errors\VSErrorList.cs" />
     <Compile Include="Errors\VSErrorListProvider.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\ColoredStringExtension.cs" />
     <Compile Include="Extensions\DefinitionExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

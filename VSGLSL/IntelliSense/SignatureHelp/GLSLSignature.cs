@@ -119,7 +119,7 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 				}
 			}
 
-			if (this.Parameters.Count < parameterIndex)
+			if (this.Parameters.Count <= parameterIndex)
 			{
 				this.currentParameter = this.Parameters.Last();
 			}

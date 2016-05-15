@@ -6,8 +6,10 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text.Classification;
+using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Semantics.Definitions.Base;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Text;
 using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Intellisense.SignatureHelp;
@@ -23,13 +25,58 @@ namespace Xannden.VSGLSL.Extensions
 			switch (definition.Kind)
 			{
 				case DefinitionKind.Field:
-					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
+					FieldDefinition field = definition as FieldDefinition;
+
+					if (field.TypeQualifiers.Contains(SyntaxType.ConstKeyword))
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupConstant, StandardGlyphItem.GlyphItemPublic);
+					}
+					else
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupField, StandardGlyphItem.GlyphItemPublic);
+					}
+
 					break;
 				case DefinitionKind.LocalVariable:
 				case DefinitionKind.GlobalVariable:
+					VariableDefinition variable = definition as VariableDefinition;
+
+					if (variable.TypeQualifiers.Contains(SyntaxType.ConstKeyword))
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupConstant, StandardGlyphItem.GlyphItemPublic);
+					}
+					else
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
+					}
+
+					break;
 				case DefinitionKind.Parameter:
+
+					ParameterDefinition parameter = definition as ParameterDefinition;
+
+					if (parameter.TypeQualifiers.Contains(SyntaxType.ConstKeyword))
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupConstant, StandardGlyphItem.GlyphItemPublic);
+					}
+					else
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
+					}
+
+					break;
 				case DefinitionKind.InterfaceBlock:
-					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
+					InterfaceBlockDefinition interfaceBlock = definition as InterfaceBlockDefinition;
+
+					if (interfaceBlock.TypeQualifiers.Contains(SyntaxType.ConstKeyword))
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupConstant, StandardGlyphItem.GlyphItemPublic);
+					}
+					else
+					{
+						imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupVariable, StandardGlyphItem.GlyphItemPublic);
+					}
+
 					break;
 				case DefinitionKind.Macro:
 					imageSource = glyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro, StandardGlyphItem.GlyphItemPublic);
@@ -128,7 +175,7 @@ namespace Xannden.VSGLSL.Extensions
 			return block;
 		}
 
-		public static List<IParameter> GetParameters(this Definition definition, ISignature signature, Snapshot snapshot)
+		public static List<IParameter> GetParameters(this Definition definition, ISignature signature)
 		{
 			if (definition.Kind != DefinitionKind.Function)
 			{
@@ -141,13 +188,13 @@ namespace Xannden.VSGLSL.Extensions
 
 			for (int i = 0; i < functionDefinition.Parameters.Count; i++)
 			{
-				parameters.Add(new GLSLParameter(signature, functionDefinition.Parameters[i], functionDefinition.GetRelativeParameterSpan(i, snapshot).ToVSSpan()));
+				parameters.Add(new GLSLParameter(signature, functionDefinition.Parameters[i], functionDefinition.GetRelativeParameterSpan(i).ToVSSpan()));
 			}
 
 			return parameters;
 		}
 
-		public static GLSL.Text.Span GetRelativeParameterSpan(this FunctionDefinition definition, int index, Snapshot snapshot)
+		public static GLSL.Text.Span GetRelativeParameterSpan(this FunctionDefinition definition, int index)
 		{
 			int start = definition.ToString().IndexOf('(') + 1;
 

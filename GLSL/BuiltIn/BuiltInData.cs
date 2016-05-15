@@ -4,6 +4,8 @@ using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Properties;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Semantics.Definitions.Base;
+using Xannden.GLSL.Settings;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.BuiltIn
@@ -37,7 +39,6 @@ namespace Xannden.GLSL.BuiltIn
 				["gsampler2DArray"] = new string[] { "sampler2DArray", "isampler2DArray", "usampler2DArray" },
 				["gsampler2DMS"] = new string[] { "sampler2DMS", "isampler2DMS", "usampler2DMS" },
 				["gsampler2DMSArray"] = new string[] { "sampler2DMSArray", "isampler2DMSArray", "usampler2DMSArray" },
-				["gsamplerCubeArrayShadow"] = new string[] { "samplerCubeArrayShadow", "isamplerCubeArrayShadow", "usamplerCubeArrayShadow" },
 				["gsamplerBuffer"] = new string[] { "samplerBuffer", "isamplerBuffer", "usamplerBuffer" },
 				["gvec4"] = new string[] { "vec4", "ivec4", "uvec4" },
 				["gimage1D"] = new string[] { "image1D", "iimage1D", "uimage1D" },
@@ -45,7 +46,6 @@ namespace Xannden.GLSL.BuiltIn
 				["gimage3D"] = new string[] { "image3D", "iimage3D", "uimage3D" },
 				["gimageCube"] = new string[] { "imageCube", "iimageCube", "uimageCube" },
 				["gimageCubeArray"] = new string[] { "imageCubeArray", "iimageCubeArray", "uimageCubeArray" },
-				["gimageRect"] = new string[] { "imageRect", "iimageRect", "uimageRect" },
 				["gimage1DArray"] = new string[] { "image1DArray", "iimage1DArray", "uimage1DArray" },
 				["gimage2DArray"] = new string[] { "image2DArray", "iimage2DArray", "uimage2DArray" },
 				["gimageBuffer"] = new string[] { "imageBuffer", "iimageBuffer", "uimageBuffer" },
@@ -381,7 +381,7 @@ namespace Xannden.GLSL.BuiltIn
 			this.AddFunction(dictionary, "float", "texture", Resources.TextureDoc, ParameterDefinition.Create("sampler2DArrayShadow", "sampler"), ParameterDefinition.Create("vec4", "P"));
 			this.AddFunction(dictionary, "gvec4", "texture", Resources.TextureDoc, ParameterDefinition.Create("gsampler2DRect", "sampler"), ParameterDefinition.Create("vec2", "P"));
 			this.AddFunction(dictionary, "float", "texture", Resources.TextureDoc, ParameterDefinition.Create("sampler2DRectShadow", "sampler"), ParameterDefinition.Create("vec3", "P"));
-			this.AddFunction(dictionary, "float", "texture", Resources.TextureDoc, ParameterDefinition.Create("gsamplerCubeArrayShadow", "sampler"), ParameterDefinition.Create("vec4", "P"), ParameterDefinition.Create("float", "compare"));
+			this.AddFunction(dictionary, "float", "texture", Resources.TextureDoc, ParameterDefinition.Create("samplerCubeArrayShadow", "sampler"), ParameterDefinition.Create("vec4", "P"), ParameterDefinition.Create("float", "compare"));
 			this.AddFunction(dictionary, "gvec4", "textureProj", Resources.TextureProjDoc, ParameterDefinition.Create("gsampler1D", "sampler"), ParameterDefinition.Create("vec2", "P"), ParameterDefinition.Create("float", "bias", true));
 			this.AddFunction(dictionary, "gvec4", "textureProj", Resources.TextureProjDoc, ParameterDefinition.Create("gsampler1D", "sampler"), ParameterDefinition.Create("vec4", "P"), ParameterDefinition.Create("float", "bias", true));
 			this.AddFunction(dictionary, "gvec4", "textureProj", Resources.TextureProjDoc, ParameterDefinition.Create("gsampler2D", "sampler"), ParameterDefinition.Create("vec3", "P"), ParameterDefinition.Create("float", "bias", true));
@@ -582,17 +582,17 @@ namespace Xannden.GLSL.BuiltIn
 			this.AddFunction(dictionary, "int", "atomicCompSwap", Resources.AtomicCompSwapDoc, ParameterDefinition.Create("inout", "int", "mem"), ParameterDefinition.Create("int", "compare"), ParameterDefinition.Create("int", "data"));
 
 			// Image
-			this.AddFunction(dictionary, "int", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage1D", "image"));
-			this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2D", "image"));
-			this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage3D", "image"));
-			this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageCube", "image"));
-			this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageCubeArray", "image"));
-			this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageRect", "image"));
-			this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage1DArray", "image"));
-			this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DArray", "image"));
-			this.AddFunction(dictionary, "int", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageBuffer", "image"));
-			this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DMS", "image"));
-			this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DMSArray", "image"));
+			//this.AddFunction(dictionary, "int", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage1D", "image"));
+			//this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2D", "image"));
+			//this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage3D", "image"));
+			//this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageCube", "image"));
+			//this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageCubeArray", "image"));
+			//this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DRect", "image"));
+			//this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage1DArray", "image"));
+			//this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DArray", "image"));
+			//this.AddFunction(dictionary, "int", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimageBuffer", "image"));
+			//this.AddFunction(dictionary, "ivec2", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DMS", "image"));
+			//this.AddFunction(dictionary, "ivec3", "imageSize", Resources.ImageSizeDoc, ParameterDefinition.Create("readonly writeonly", "gimage2DMSArray", "image"));
 			this.AddFunction(dictionary, "gvec4", "imageLoad", Resources.ImageLoadDoc, ParameterDefinition.Create("readonly", "gimage1D", "image"), ParameterDefinition.Create("int", "P"));
 			this.AddFunction(dictionary, "gvec4", "imageLoad", Resources.ImageLoadDoc, ParameterDefinition.Create("readonly", "gimage2D", "image"), ParameterDefinition.Create("ivec2", "P"));
 			this.AddFunction(dictionary, "gvec4", "imageLoad", Resources.ImageLoadDoc, ParameterDefinition.Create("readonly", "gimage3D", "image"), ParameterDefinition.Create("ivec3", "P"));
@@ -840,10 +840,120 @@ namespace Xannden.GLSL.BuiltIn
 
 		private void LoadVariables(Dictionary<string, List<Definition>> dictionary)
 		{
-			this.AddVariable(dictionary, "const", "ivec3", "gl_MaxComputeWorkGroupCount", string.Empty);
+			// Compute
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.UVec3Keyword, "gl_NumWorkGroups", false, ShaderType.Compute);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.UVec3Keyword, "gl_WorkGroupSize", false, ShaderType.Compute);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.UVec3Keyword, "gl_WorkGroupID", false, ShaderType.Compute);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.UVec3Keyword, "gl_LocalInvocationID", false, ShaderType.Compute);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.UVec3Keyword, "gl_GlobalInvocationID", false, ShaderType.Compute);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.UIntKeyword, "gl_LocalInvocationIndex", false, ShaderType.Compute);
+
+			// Vertex
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_VertexID", false, ShaderType.Vertex);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_InstanceID", false, ShaderType.Vertex);
+			this.AddInterfaceBlock(dictionary, SyntaxType.OutKeyword, "gl_PerVertex", string.Empty, false, ShaderType.Vertex, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatConstToken, "gl_PointSize"), FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_ClipDistance", true));
+
+			// Geometry
+			this.AddInterfaceBlock(dictionary, SyntaxType.InKeyword, "gl_PerVertex", "gl_in", true, ShaderType.Geometry, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_ClipDistance", true));
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_PrimitiveIDIn", false, ShaderType.Geometry);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_InvocationID", false, ShaderType.Geometry);
+			this.AddInterfaceBlock(dictionary, SyntaxType.OutKeyword, "gl_PerVertex", string.Empty, false, ShaderType.Geometry, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_ClipDistance", true));
+			this.AddVariable(dictionary, SyntaxType.OutKeyword, SyntaxType.IntKeyword, "gl_PrimitiveID", false, ShaderType.Geometry);
+			this.AddVariable(dictionary, SyntaxType.OutKeyword, SyntaxType.IntKeyword, "gl_Layer", false, ShaderType.Geometry);
+			this.AddVariable(dictionary, SyntaxType.OutKeyword, SyntaxType.IntKeyword, "gl_ViewportIndex", false, ShaderType.Geometry);
+
+			// Tessellation Control
+			this.AddInterfaceBlock(dictionary, SyntaxType.InKeyword, "gl_PerVertex", "gl_in", true, ShaderType.TessellationControl, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_ClipDistance", true));
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_PatchVerticesIn", false, ShaderType.TessellationControl);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_PrimitiveID", false, ShaderType.TessellationControl);
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_InvocationID", false, ShaderType.TessellationControl);
+			this.AddInterfaceBlock(dictionary, SyntaxType.OutKeyword, "gl_PerVertex", "gl_out", true, ShaderType.TessellationControl, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_ClipDistance", true));
+			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_InvocationID", false, ShaderType.TessellationControl);
+
+			// Constants
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IVec3Keyword, "gl_MaxComputeWorkGroupCount", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IVec3Keyword, "gl_MaxComputeWorkGroupSize", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxComputeUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxComputeTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxComputeImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxComputeAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxComputeAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexAttribs", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVaryingComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryInputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentInputComponetns", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedImageUnitsAndFragmentOutputs", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedShaderOutputResources", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxImageSamples", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedImageUniforms", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxDrawBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxClipDistances", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryOutputVertices", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryTotalOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryVaryingComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlInputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlTotalOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationInputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationOutputComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationTextureImageUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationUniformComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessPatchComponents", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxPatchVertices", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessGenLevel", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxViewports", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexUniformVectors", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentUniformVectors", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVaryingVectors", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedAtomicCounters", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxAtomicCounterBindings", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVertexAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessControlAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTessEvaluationAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxGeometryAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxFragmentAtomicCounterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxCombinedAtomicCOunterBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxAtomicCounterBufferSize", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MinProgramTexelOffset", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxProgramTexelOffset", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTransformFeedbackBuffers", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTransformFeedbackInterleavedComponents", false, ShaderType.All);
+
+			// Compatibility Constants
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTextureUnits", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxTextureCoords", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxClipPlanes", false, ShaderType.All);
+			this.AddVariable(dictionary, SyntaxType.ConstKeyword, SyntaxType.IntKeyword, "gl_MaxVaryingFloats", false, ShaderType.All);
 		}
 
 		private void AddFunction(Dictionary<string, List<Definition>> dictionary, string returnType, string name, string documentation, params ParameterDefinition[][] parameters)
+		{
+			this.AddFunction(dictionary, returnType, name, documentation, ShaderType.All, parameters);
+		}
+
+		private void AddFunction(Dictionary<string, List<Definition>> dictionary, string returnType, string name, string documentation, ShaderType type, params ParameterDefinition[][] parameters)
 		{
 			int overloads = 0;
 			string[] returnTypes;
@@ -866,34 +976,32 @@ namespace Xannden.GLSL.BuiltIn
 				returnTypes = new string[] { returnType };
 			}
 
+			List<ParameterDefinition> paramList = new List<ParameterDefinition>(parameters.Length);
+
 			if (overloads == 0)
 			{
-				List<ParameterDefinition> paramList = new List<ParameterDefinition>(parameters.Length);
-
 				for (int i = 0; i < parameters.Length; i++)
 				{
 					paramList.Add(parameters[i][0]);
 				}
 
-				this.AddToDic(dictionary, new FunctionDefinition(new TypeDefinition(returnType), name, paramList, documentation, Scope.Global, null));
+				this.AddToDic(dictionary, new FunctionDefinition(new TypeDefinition(returnType.GetSyntaxType()), name, paramList, documentation, Scope.Global, null), type);
 			}
 			else
 			{
 				for (int i = 0; i < overloads; i++)
 				{
-					List<ParameterDefinition> paramList = new List<ParameterDefinition>(parameters.Length);
-
 					for (int j = 0; j < parameters.Length; j++)
 					{
 						paramList.Add(parameters[j][i % parameters[j].Length]);
 					}
 
-					this.AddToDic(dictionary, new FunctionDefinition(new TypeDefinition(returnTypes[i % returnTypes.Length]), name, paramList, documentation, Scope.Global, null));
+					this.AddToDic(dictionary, new FunctionDefinition(new TypeDefinition(returnTypes[i % returnTypes.Length].GetSyntaxType()), name, paramList, documentation, Scope.Global, null), type);
 				}
 			}
 		}
 
-		private void AddToDic(Dictionary<string, List<Definition>> dictionary, Definition definition)
+		private Definition AddToDic(Dictionary<string, List<Definition>> dictionary, FunctionDefinition definition, ShaderType type)
 		{
 			if (dictionary.ContainsKey(definition.Name.Text))
 			{
@@ -908,16 +1016,64 @@ namespace Xannden.GLSL.BuiltIn
 			}
 
 			definition.Overloads = dictionary[definition.Name.Text];
+
+			definition.ShaderType = type;
+
+			return definition;
 		}
 
-		private void AddVariable(Dictionary<string, List<Definition>> dictionary, string typeQualifier, string type, string name, string documentation)
+		private Definition AddToDic(Dictionary<string, List<Definition>> dictionary, Definition definition, ShaderType type)
 		{
-			if (!dictionary.ContainsKey(name))
+			if (dictionary.ContainsKey(definition.Name.Text))
 			{
-				dictionary.Add(name, new List<Definition>());
+				dictionary[definition.Name.Text].Add(definition);
+			}
+			else
+			{
+				dictionary.Add(definition.Name.Text, new List<Definition> { definition });
 			}
 
-			dictionary[name].Add(new VariableDefinition(new List<ColoredString> { ColoredString.Create(typeQualifier, ColorType.Keyword) }, new TypeDefinition(type), ColoredString.Create(name, ColorType.GlobalVariable), null, documentation, DefinitionKind.GlobalVariable, Scope.Global, null));
+			definition.ShaderType = type;
+
+			return definition;
+		}
+
+		private void AddInterfaceBlock(Dictionary<string, List<Definition>> dictionary, SyntaxType typeQualifier, string typeName, string name, bool isArray, ShaderType shaderType, params FieldDefinition[] fields)
+		{
+			this.AddToDic(dictionary, new InterfaceBlockDefinition(new List<SyntaxType> { typeQualifier }, typeName, string.Empty, new List<FieldDefinition>(fields), Scope.Global, null), shaderType);
+
+			if (!string.IsNullOrEmpty(name))
+			{
+				//Definition variable = this.AddVariable(dictionary, null, new TypeDefinition(type.Name), name, isArray, shaderType, fields);
+			}
+		}
+
+		private Definition AddVariable(Dictionary<string, List<Definition>> dictionary, IReadOnlyList<SyntaxType> typeQualifiers, TypeDefinition type, string identifier, bool isArray, ShaderType shaderType, params FieldDefinition[] fields)
+		{
+			List<ColoredString> arraySpecifier = new List<ColoredString>();
+
+			if (isArray)
+			{
+				arraySpecifier.Add(ColoredString.Create("[]", ColorType.Punctuation));
+			}
+
+			return this.AddToDic(dictionary, new VariableDefinition(typeQualifiers, type, ColoredString.Create(identifier, ColorType.GlobalVariable), arraySpecifier, string.Empty, DefinitionKind.GlobalVariable, Scope.Global, null), shaderType);
+		}
+
+
+		private Definition AddVariable(Dictionary<string, List<Definition>> dictionary, IReadOnlyList<SyntaxType> typeQualifiers, SyntaxType type, string identifier, bool isArray, ShaderType shaderType, params FieldDefinition[] fields)
+		{
+			return this.AddVariable(dictionary, typeQualifiers, new TypeDefinition(type), identifier, isArray, shaderType, fields);
+		}
+
+		private Definition AddVariable(Dictionary<string, List<Definition>> dictionary, SyntaxType typeQualifiers, SyntaxType type, string identifier, bool isArray, ShaderType shaderType, params FieldDefinition[] fields)
+		{
+			return this.AddVariable(dictionary, new List<SyntaxType> { typeQualifiers }, type, identifier, isArray, shaderType, fields);
+		}
+
+		private Definition AddVariable(Dictionary<string, List<Definition>> dictionary, SyntaxType typeQualifiers, SyntaxType type, string identifier, bool isArray, ShaderType shaderType)
+		{
+			return this.AddVariable(dictionary, new List<SyntaxType> { typeQualifiers }, type, identifier, isArray, shaderType, null);
 		}
 	}
 }

@@ -111,6 +111,11 @@ namespace Xannden.VSGLSL.Extensions
 				}
 			}
 
+			if (identifier?.Parent.SyntaxType == SyntaxType.FieldSelection)
+			{
+				return GLSLConstants.Field;
+			}
+
 			if (token.SyntaxType == SyntaxType.IdentifierToken)
 			{
 				return GLSLConstants.Identifier;

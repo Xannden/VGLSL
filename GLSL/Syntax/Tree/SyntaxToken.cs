@@ -110,6 +110,11 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
+		protected override void ToSyntaxTypes(List<SyntaxType> list)
+		{
+			list.Add(this.SyntaxType);
+		}
+
 		protected override void ToString(StringBuilder builder)
 		{
 			if (this.HasLeadingTrivia)

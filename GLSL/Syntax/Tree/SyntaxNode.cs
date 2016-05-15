@@ -168,6 +168,18 @@ namespace Xannden.GLSL.Syntax.Tree
 			return list;
 		}
 
+		public IReadOnlyList<SyntaxType> ToSyntaxTypes()
+		{
+			List<SyntaxType> list = new List<SyntaxType>();
+
+			for (int i = 0; i < this.InternalChildren.Count; i++)
+			{
+				this.InternalChildren[i].ToSyntaxTypes(list);
+			}
+
+			return list;
+		}
+
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();
@@ -250,6 +262,14 @@ namespace Xannden.GLSL.Syntax.Tree
 			for (int i = 0; i < this.InternalChildren.Count; i++)
 			{
 				this.InternalChildren[i].ToColoredString(list);
+			}
+		}
+
+		protected virtual void ToSyntaxTypes(List<SyntaxType> list)
+		{
+			for (int i = 0; i < this.InternalChildren.Count; i++)
+			{
+				this.InternalChildren[i].ToSyntaxTypes(list);
 			}
 		}
 

@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Semantics.Definitions.Base
 {
 	public class VariableDefinition : Definition
 	{
-		public VariableDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, ColoredString name, IReadOnlyList<ColoredString> arraySpecifiers, string documentation, DefinitionKind kind, Scope scope, TrackingSpan span) : base(name, documentation, kind, scope, span)
+		public VariableDefinition(IReadOnlyList<SyntaxType> typeQualifier, TypeDefinition type, ColoredString name, IReadOnlyList<ColoredString> arraySpecifiers, string documentation, DefinitionKind kind, Scope scope, TrackingSpan span)
+			: base(name, documentation, kind, scope, span)
 		{
-			this.TypeQualifier = typeQualifier ?? new List<ColoredString>();
+			this.TypeQualifiers = typeQualifier ?? new List<SyntaxType>();
 			this.Type = type;
 			this.ArraySpecifiers = arraySpecifiers ?? new List<ColoredString>();
 		}
@@ -16,7 +19,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 		}
 
-		public IReadOnlyList<ColoredString> TypeQualifier { get; protected set; }
+		public IReadOnlyList<SyntaxType> TypeQualifiers { get; protected set; }
 
 		public TypeDefinition Type { get; protected set; }
 
@@ -31,7 +34,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 				return false;
 			}
 
-			if (this.TypeQualifier != other.TypeQualifier || !this.Type.Equals(other.Type) || this.ArraySpecifiers.Count != other.ArraySpecifiers.Count)
+			if (this.TypeQualifiers != other.TypeQualifiers || !this.Type.Equals(other.Type) || this.ArraySpecifiers.Count != other.ArraySpecifiers.Count)
 			{
 				return false;
 			}
@@ -51,9 +54,11 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			List<ColoredString> list = new List<ColoredString>();
 
-			list.AddRange(this.TypeQualifier);
+			list.AddRange(this.TypeQualifiers.ConvertList(text => text.ToColoredString(), ColoredString.Space, true));
 
 			list.AddRange(this.Type.GetColoredText());
+
+			list.Add(ColoredString.Space);
 
 			list.Add(this.Name);
 

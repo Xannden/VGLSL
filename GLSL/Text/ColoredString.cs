@@ -8,6 +8,8 @@
 			this.Type = type;
 		}
 
+		public static ColoredString Space { get; } = Create(" ", ColorType.WhiteSpace);
+
 		public string Text { get; }
 
 		public ColorType Type { get; }

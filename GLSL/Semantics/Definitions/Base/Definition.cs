@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Semantics
@@ -31,18 +32,25 @@ namespace Xannden.GLSL.Semantics
 
 		public DefinitionKind Kind { get; }
 
+		public ShaderType ShaderType { get; internal set; } = ShaderType.All;
+
 		public TrackingSpan DefinitionSpan { get; }
 
 		public List<Definition> Overloads { get; internal set; }
 
 		public static bool operator ==(Definition left, Definition right)
 		{
-			if (Equals(left, right))
+			if (ReferenceEquals(left, right))
 			{
 				return true;
 			}
 
 			if (Equals(left, null) || Equals(right, null))
+			{
+				return false;
+			}
+
+			if (left.ShaderType != right.ShaderType || left.Name != right.Name)
 			{
 				return false;
 			}
@@ -71,7 +79,14 @@ namespace Xannden.GLSL.Semantics
 
 		public override bool Equals(object obj)
 		{
-			return (obj as Definition)?.Equals(this) ?? false;
+			Definition other = obj as Definition;
+
+			if (other == null)
+			{
+				return false;
+			}
+
+			return this == other;
 		}
 
 		public override int GetHashCode()

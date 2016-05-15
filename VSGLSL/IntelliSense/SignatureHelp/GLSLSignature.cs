@@ -23,7 +23,7 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 			this.ApplicableToSpan = snapshot.CreateTrackingSpan(GLSL.Text.Span.Create(span.Start, span.End - 1)).ToITrackingSpan();
 			this.Content = definition.ToString();
 			this.Documentation = definition.Documentation;
-			this.Parameters = new ReadOnlyCollection<IParameter>(definition.GetParameters(this, snapshot));
+			this.Parameters = new ReadOnlyCollection<IParameter>(definition.GetParameters(this));
 			this.textView = textView;
 			this.session = session;
 

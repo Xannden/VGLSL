@@ -97,8 +97,12 @@
     <Compile Include="Outlining\GLSLOutliningTagger.cs" />
     <Compile Include="Outlining\GLSLOutliningTaggerProvider.cs" />
     <Compile Include="Outlining\Region.cs" />
+    <Compile Include="Packages\GLSLEditorFactory.cs" />
+    <Compile Include="Packages\GLSLEditorFactoryWithEncoding.cs" />
+    <Compile Include="Packages\GLSLEditorFactoryWithoutEncoding.cs" />
     <Compile Include="Packages\GLSLLanguageInfo.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
+    <Compile Include="Packages\GLSLPreferences.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedAction.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSourceProvider.cs" />

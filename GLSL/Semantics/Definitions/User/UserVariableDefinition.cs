@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.Semantics.Definitions.Base;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 
@@ -7,7 +8,8 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 {
 	public sealed class UserVariableDefinition : VariableDefinition
 	{
-		public UserVariableDefinition(InitPartSyntax initPart, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope) : base(documentation, kind, scope, identifier.Span)
+		public UserVariableDefinition(InitPartSyntax initPart, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope)
+			: base(documentation, kind, scope, identifier.Span)
 		{
 			if (kind == DefinitionKind.LocalVariable)
 			{
@@ -20,7 +22,7 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 
 			InitDeclaratorListSyntax initDeclaratorList = initPart.Parent as InitDeclaratorListSyntax;
 
-			this.TypeQualifier = initDeclaratorList.TypeQualifier?.ToColoredString() ?? new List<ColoredString>();
+			this.TypeQualifiers = initDeclaratorList.TypeQualifier?.ToSyntaxTypes() ?? new List<SyntaxType>();
 			this.Type = new TypeDefinition(initDeclaratorList.TypeSyntax);
 
 			List<ColoredString> arraySpecifiers = new List<ColoredString>();
@@ -33,7 +35,8 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 			this.ArraySpecifiers = arraySpecifiers;
 		}
 
-		public UserVariableDefinition(ConditionSyntax condition, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope) : base(documentation, kind, scope, identifier.Span)
+		public UserVariableDefinition(ConditionSyntax condition, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope)
+			: base(documentation, kind, scope, identifier.Span)
 		{
 			if (kind == DefinitionKind.LocalVariable)
 			{
@@ -44,12 +47,13 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 				this.Name = ColoredString.Create(identifier.Identifier, ColorType.GlobalVariable);
 			}
 
-			this.TypeQualifier = condition.TypeQualifier?.ToColoredString() ?? new List<ColoredString>();
+			this.TypeQualifiers = condition.TypeQualifier?.ToSyntaxTypes() ?? new List<SyntaxType>();
 			this.Type = new TypeDefinition(condition.TypeSyntax);
 			this.ArraySpecifiers = new List<ColoredString>();
 		}
 
-		public UserVariableDefinition(StructDeclaratorSyntax declarator, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope) : base(documentation, kind, scope, identifier.Span)
+		public UserVariableDefinition(StructDeclaratorSyntax declarator, IdentifierSyntax identifier, string documentation, DefinitionKind kind, Scope scope)
+			: base(documentation, kind, scope, identifier.Span)
 		{
 			if (kind == DefinitionKind.LocalVariable)
 			{
@@ -62,8 +66,8 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 
 			InterfaceBlockSyntax block = declarator.Parent as InterfaceBlockSyntax;
 
-			this.TypeQualifier = block.TypeQualifier?.ToColoredString() ?? new List<ColoredString>();
-			this.Type = new TypeDefinition(block.Identifier.Identifier);
+			this.TypeQualifiers = block.TypeQualifier?.ToSyntaxTypes() ?? new List<SyntaxType>();
+			this.Type = new TypeDefinition(SyntaxType.TypeName);
 
 			List<ColoredString> arraySpecifiers = new List<ColoredString>();
 

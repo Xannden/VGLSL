@@ -93,7 +93,10 @@ namespace Xannden.VSGLSL.Commands
 					this.TriggerCompletion();
 				}
 
-				this.session.Filter();
+				if (this.session?.IsDismissed ?? false)
+				{
+					this.session.Filter();
+				}
 
 				return true;
 			}

@@ -5,7 +5,8 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 {
 	public sealed class UserInterfaceBlockDefinition : InterfaceBlockDefinition
 	{
-		public UserInterfaceBlockDefinition(InterfaceBlockSyntax interfaceBlock, IdentifierSyntax identifier, string documentation, Scope scope) : base(interfaceBlock.TypeQualifier?.ToColoredString(), identifier.Identifier, documentation, scope, identifier.Span)
+		public UserInterfaceBlockDefinition(InterfaceBlockSyntax interfaceBlock, IdentifierSyntax identifier, string documentation, Scope scope)
+			: base(interfaceBlock.TypeQualifier?.ToSyntaxTypes(), identifier.Identifier, documentation, scope, identifier.Span)
 		{
 		}
 	}

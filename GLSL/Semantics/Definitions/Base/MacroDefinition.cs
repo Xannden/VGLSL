@@ -5,10 +5,14 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 {
 	public class MacroDefinition : Definition
 	{
-		public MacroDefinition(string name, IReadOnlyList<ColoredString> tokenString, string documentation, Scope scope, TrackingSpan span) : base(ColoredString.Create(name, ColorType.Macro), documentation, DefinitionKind.Macro, scope, span)
+		public MacroDefinition(string name, IReadOnlyList<ColoredString> parameters, IReadOnlyList<ColoredString> tokenString, string documentation, Scope scope, TrackingSpan span)
+			: base(ColoredString.Create(name, ColorType.Macro), documentation, DefinitionKind.Macro, scope, span)
 		{
+			this.Parameters = parameters ?? new List<ColoredString>();
 			this.TokenString = tokenString ?? new List<ColoredString>();
 		}
+
+		public IReadOnlyList<ColoredString> Parameters { get; }
 
 		public IReadOnlyList<ColoredString> TokenString { get; }
 
@@ -34,6 +38,17 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 			List<ColoredString> list = new List<ColoredString>();
 
 			list.Add(this.Name);
+
+			if (this.Parameters.Count > 0)
+			{
+				list.Add(ColoredString.Create("(", ColorType.Punctuation));
+
+				list.AddRange(this.Parameters);
+
+				list.Add(ColoredString.Create(")", ColorType.Punctuation));
+			}
+
+			list.Add(ColoredString.Space);
 
 			list.AddRange(this.TokenString);
 

@@ -5,7 +5,8 @@ namespace Xannden.GLSL.Semantics.Definitions.User
 {
 	public class UserTypeNameDefinition : TypeNameDefinition
 	{
-		public UserTypeNameDefinition(IdentifierSyntax identifier, string documentation, Scope scope) : base(identifier.Identifier, documentation, scope, identifier.Span)
+		public UserTypeNameDefinition(IdentifierSyntax identifier, string documentation, Scope scope)
+			: base(identifier.Identifier, documentation, scope, identifier.Span)
 		{
 		}
 	}

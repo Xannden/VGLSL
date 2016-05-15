@@ -23,6 +23,7 @@ namespace Xannden.GLSL.Parsing
 		private readonly Stack<Scope> scope = new Stack<Scope>();
 		private readonly SortedDictionary<string, List<Definition>> definitions = new SortedDictionary<string, List<Definition>>(StringComparer.Ordinal);
 		private UserFunctionDefinition lastFunctionDefinition;
+		private Definition lastStructDefinition;
 		private LinkedListNode<Token> listNode;
 		private int testModeLayer;
 
@@ -218,8 +219,7 @@ namespace Xannden.GLSL.Parsing
 			switch (type)
 			{
 				case DefinitionKind.Function:
-					this.lastFunctionDefinition = new UserFunctionDefinition(node as FunctionHeaderSyntax, identifier, string.Empty, definitionScope);
-					definition = this.lastFunctionDefinition;
+					definition = this.lastFunctionDefinition = new UserFunctionDefinition(node as FunctionHeaderSyntax, identifier, string.Empty, definitionScope);
 					break;
 
 				case DefinitionKind.Parameter:
@@ -229,6 +229,16 @@ namespace Xannden.GLSL.Parsing
 
 				case DefinitionKind.Field:
 					definition = new UserFieldDefinition(node as StructDeclaratorSyntax, identifier, string.Empty, definitionScope);
+
+					if (this.lastStructDefinition is UserTypeNameDefinition)
+					{
+						(this.lastStructDefinition as UserTypeNameDefinition)?.InternalFields.Add(definition as UserFieldDefinition);
+					}
+					else
+					{
+						(this.lastStructDefinition as UserTypeNameDefinition)?.InternalFields.Add(definition as UserFieldDefinition);
+					}
+
 					break;
 
 				case DefinitionKind.GlobalVariable:
@@ -255,10 +265,12 @@ namespace Xannden.GLSL.Parsing
 
 				case DefinitionKind.TypeName:
 					definition = new UserTypeNameDefinition(identifier, string.Empty, definitionScope);
+					this.lastStructDefinition = definition;
 					break;
 
 				case DefinitionKind.InterfaceBlock:
 					definition = new UserInterfaceBlockDefinition(node as InterfaceBlockSyntax, identifier, string.Empty, definitionScope);
+					this.lastStructDefinition = definition;
 					break;
 			}
 
@@ -285,6 +297,11 @@ namespace Xannden.GLSL.Parsing
 
 			if (this.definitions.ContainsKey(identifier.Identifier))
 			{
+				if (identifier.Parent.SyntaxType == SyntaxType.FunctionCall)
+				{
+					return this.definitions[identifier.Identifier].FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span) && (def.Kind == DefinitionKind.Function || def.Kind == DefinitionKind.Macro));
+				}
+
 				return this.definitions[identifier.Identifier].FindLast(def => def.Scope.Contains(this.snapshot, identifier.Span));
 			}
 

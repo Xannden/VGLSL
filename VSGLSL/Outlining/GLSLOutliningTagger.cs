@@ -35,7 +35,7 @@ namespace Xannden.VSGLSL.Outlining
 
 		public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
 		{
-			VSSnapshot snapshot = this.source.CurrentSnapshot as VSSnapshot;
+			VSSnapshot snapshot = new VSSnapshot(this.source, spans[0].Snapshot);
 			SyntaxTree tree = this.source.Tree;
 
 			List<Region> list;
@@ -45,9 +45,15 @@ namespace Xannden.VSGLSL.Outlining
 				list = this.regions;
 			}
 
-			foreach (Region region in list)
+			foreach (SnapshotSpan span in spans)
 			{
-				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, region.Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", region.Text));
+				foreach (Region region in list)
+				{
+					if (span.Contains(region.Span.GetSpan(snapshot).ToVSSpan()))
+					{
+						yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, region.Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", region.Text));
+					}
+				}
 			}
 		}
 
@@ -185,6 +191,11 @@ namespace Xannden.VSGLSL.Outlining
 
 			SourceLine startLine = snapshot.GetLineFromPosition(startNode.Span.GetSpan(snapshot).End);
 			SourceLine endLine = snapshot.GetLineFromPosition(end);
+
+			if (startLine.LineNumber == endLine.LineNumber)
+			{
+				return;
+			}
 
 			string text;
 

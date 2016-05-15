@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Xannden.VSGLSL.Data;
 
 namespace Xannden.VSGLSL.Packages
@@ -28,34 +31,53 @@ namespace Xannden.VSGLSL.Packages
 	[ProvideService(typeof(GLSLLanguageInfo))]
 	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true)]
 	[ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
-	[Guid(PackageGuidString)]
+	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithoutEncoding), 101)]
+	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithEncoding), 102)]
+	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithoutEncoding), VSConstants.LOGVIEWID.TextView_string)]
+	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithEncoding), VSConstants.LOGVIEWID.TextView_string)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".glsl", 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".glsl", 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".*", 2)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".*", 1)]
+	[Guid(GLSLConstants.GLSLPackageString)]
 	public sealed class GLSLPackage : Package
 	{
-		/// <summary>
-		/// GLSLPackage GUID string.
-		/// </summary>
-		public const string PackageGuidString = "40d37d04-e60a-4b6e-8390-a2055347798d";
-
 		private GLSLLanguageInfo languageInfo;
 
-		#region Package Members
+		public static GLSLPackage Instance { get; private set; }
 
-		/// <summary>
-		/// Initialization of the package; this method is called right after the package is sited, so this is the place
-		/// where you can put all the initialization code that rely on services provided by VisualStudio.
-		/// </summary>
+		internal GLSLPreferences Preferences { get; private set; }
+
+		public new object GetService(Type serviceType)
+		{
+			return base.GetService(serviceType);
+		}
+
 		protected override void Initialize()
 		{
 			base.Initialize();
 
+			Instance = this;
+
 			this.languageInfo = new GLSLLanguageInfo();
 			((IServiceContainer)this).AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
 
-			// SettingsManager settingsManager = new ShellSettingsManager(this);
-			// SettingsStore configurationSettingsStore = settingsManager.GetReadOnlySettingsStore(SettingsScope.UserSettings);
-			// bool test = configurationSettingsStore.GetBoolean("Text Editor\\GLSL", "Auto List Params");
-		}
+			this.RegisterEditorFactory(new GLSLEditorFactoryWithoutEncoding(this));
+			this.RegisterEditorFactory(new GLSLEditorFactoryWithEncoding(this));
 
-		#endregion Package Members
+			IVsTextManager textManager = (IVsTextManager)this.GetService(typeof(SVsTextManager));
+
+			LANGPREFERENCES[] lanaguagePreferences = new LANGPREFERENCES[1];
+			lanaguagePreferences[0].guidLang = typeof(GLSLLanguageInfo).GUID;
+			ErrorHandler.ThrowOnFailure(textManager.GetUserPreferences(null, null, lanaguagePreferences, null));
+			this.Preferences = new GLSLPreferences(lanaguagePreferences[0]);
+
+			Guid events2Guid = typeof(IVsTextManagerEvents2).GUID;
+			IConnectionPoint connectionPoint;
+			((IConnectionPointContainer)textManager).FindConnectionPoint(ref events2Guid, out connectionPoint);
+
+			uint cookie;
+			connectionPoint.Advise(this.Preferences, out cookie);
+		}
 	}
 }

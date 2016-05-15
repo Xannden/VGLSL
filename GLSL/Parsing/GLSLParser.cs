@@ -1446,11 +1446,6 @@ namespace Xannden.GLSL.Parsing
 
 			IdentifierSyntax identifier = this.PreprocessorRequireToken(SyntaxType.IdentifierToken) as IdentifierSyntax;
 
-			if (identifier != null)
-			{
-				identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionKind.Macro);
-			}
-
 			if (this.AcceptTokenPreprocessor(SyntaxType.LeftParenToken))
 			{
 				if (this.builder.CurrentToken.SyntaxType == SyntaxType.IdentifierToken)
@@ -1465,6 +1460,11 @@ namespace Xannden.GLSL.Parsing
 			else
 			{
 				this.ParseTokenString(line);
+			}
+
+			if (identifier != null)
+			{
+				identifier.Definition = this.builder.AddDefinition(node, identifier, DefinitionKind.Macro);
 			}
 
 			this.builder.EndNode();
@@ -1993,10 +1993,7 @@ namespace Xannden.GLSL.Parsing
 				{
 					this.builder.MoveNext();
 
-					if (this.builder.CurrentToken.SyntaxType == SyntaxType.EqualToken || this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken || this.builder.CurrentToken.SyntaxType == SyntaxType.LeftBracketToken)
-					{
-						result = true;
-					}
+					result = true;
 				}
 				else if (this.builder.CurrentToken.SyntaxType == SyntaxType.SemicolonToken)
 				{

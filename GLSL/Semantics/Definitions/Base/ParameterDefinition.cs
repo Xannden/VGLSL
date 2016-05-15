@@ -1,42 +1,33 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.BuiltIn;
+using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Text;
 
 namespace Xannden.GLSL.Semantics.Definitions.Base
 {
 	public class ParameterDefinition : Definition
 	{
-		public ParameterDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, string identifier, string documentation, IReadOnlyList<ColoredString> arraySpecifiers, Scope scope, TrackingSpan span) : base(ColoredString.Create(identifier, ColorType.Parameter), documentation, DefinitionKind.Parameter, scope, span)
+		public ParameterDefinition(IReadOnlyList<SyntaxType> typeQualifier, TypeDefinition type, string identifier, string documentation, IReadOnlyList<ColoredString> arraySpecifiers, Scope scope, TrackingSpan span)
+			: base(ColoredString.Create(identifier, ColorType.Parameter), documentation, DefinitionKind.Parameter, scope, span)
 		{
-			this.TypeQualifier = typeQualifier ?? new List<ColoredString>();
+			this.TypeQualifiers = typeQualifier ?? new List<SyntaxType>();
 			this.Type = type;
 			this.ArraySpecifiers = arraySpecifiers ?? new List<ColoredString>();
 		}
 
-		protected ParameterDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, string identifier, string documentation, Scope scope, TrackingSpan span) : this(typeQualifier, type, identifier, documentation, new List<ColoredString>(), scope, span)
+		protected ParameterDefinition(IReadOnlyList<SyntaxType> typeQualifier, TypeDefinition type, string identifier, string documentation, Scope scope, TrackingSpan span)
+			: this(typeQualifier, type, identifier, documentation, new List<ColoredString>(), scope, span)
 		{
 		}
 
-		private ParameterDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, string identifier, string documentation, bool isOptional) : this(typeQualifier, type, identifier, documentation, new List<ColoredString>(), null, null)
-		{
-			this.IsOptional = isOptional;
-		}
-
-		private ParameterDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, string identifier, string documentation, int arraySize) : this(typeQualifier, type, identifier, documentation, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, null, null)
-		{
-		}
-
-		private ParameterDefinition(IReadOnlyList<ColoredString> typeQualifier, TypeDefinition type, string identifier, string documentation) : this(typeQualifier, type, identifier, documentation, new List<ColoredString>(), null, null)
-		{
-		}
-
-		public IReadOnlyList<ColoredString> TypeQualifier { get; }
+		public IReadOnlyList<SyntaxType> TypeQualifiers { get; }
 
 		public TypeDefinition Type { get; }
 
 		public IReadOnlyList<ColoredString> ArraySpecifiers { get; protected set; }
 
-		public bool IsOptional { get; }
+		public bool IsOptional { get; private set; }
 
 		public override bool Equals(Definition definition)
 		{
@@ -47,7 +38,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 				return false;
 			}
 
-			if (this.TypeQualifier != other.TypeQualifier || !this.Type.Equals(other.Type) || this.ArraySpecifiers.Count != other.ArraySpecifiers.Count)
+			if (this.TypeQualifiers != other.TypeQualifiers || !this.Type.Equals(other.Type) || this.ArraySpecifiers.Count != other.ArraySpecifiers.Count)
 			{
 				return false;
 			}
@@ -67,9 +58,11 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			List<ColoredString> list = new List<ColoredString>();
 
-			list.AddRange(this.TypeQualifier);
+			list.AddRange(this.TypeQualifiers.ConvertList(text => text.ToColoredString(), ColoredString.Space));
 
 			list.AddRange(this.Type.GetColoredText());
+
+			list.Add(ColoredString.Space);
 
 			list.Add(this.Name);
 
@@ -88,14 +81,14 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(types[i], ColorType.Keyword)), name, string.Empty);
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(type, ColorType.Keyword)), name, string.Empty) };
+				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null) };
 			}
 		}
 
@@ -109,14 +102,14 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(new List<ColoredString> { ColoredString.Create(typeQualifier, ColorType.Keyword), ColoredString.Create(" ", ColorType.WhiteSpace) }, new TypeDefinition(ColoredString.Create(types[i], ColorType.Keyword)), name, string.Empty);
+					parameters[i] = new ParameterDefinition(new List<SyntaxType> { typeQualifier.GetSyntaxType() }, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(new List<ColoredString> { ColoredString.Create(typeQualifier, ColorType.Keyword), ColoredString.Create(" ", ColorType.WhiteSpace) }, new TypeDefinition(ColoredString.Create(type, ColorType.Keyword)), name, string.Empty) };
+				return new ParameterDefinition[] { new ParameterDefinition(new List<SyntaxType> { typeQualifier.GetSyntaxType() }, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null) };
 			}
 		}
 
@@ -130,14 +123,18 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(types[i], ColorType.Keyword)), name, string.Empty, isOptional);
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
+					parameters[i].IsOptional = isOptional;
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(type, ColorType.Keyword)), name, string.Empty, isOptional) };
+				ParameterDefinition param = new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null);
+				param.IsOptional = isOptional;
+
+				return new ParameterDefinition[] { param };
 			}
 		}
 
@@ -151,14 +148,14 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(types[i], ColorType.Keyword)), name, string.Empty, arraySize);
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.Global, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(ColoredString.Create(type, ColorType.Keyword)), name, string.Empty, arraySize) };
+				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.Global, null) };
 			}
 		}
 	}

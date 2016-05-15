@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="BuiltIn\BuiltInData.cs" />
     <Compile Include="Errors\GLSLError.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReadOnlyListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTypeExtensions.cs" />
     <Compile Include="Lexing\GLSLLexer.cs" />
@@ -107,6 +108,8 @@
     <Compile Include="Settings\IfPreprocessor.cs" />
     <Compile Include="Settings\Preprocessor.cs" />
     <Compile Include="Semantics\Scope.cs" />
+    <Compile Include="Settings\ShaderProfile.cs" />
+    <Compile Include="Settings\ShaderType.cs" />
     <Compile Include="Syntax\SyntaxType.cs" />
     <Compile Include="Syntax\Tokens\InvalidToken.cs" />
     <Compile Include="Syntax\Tokens\Token.cs" />

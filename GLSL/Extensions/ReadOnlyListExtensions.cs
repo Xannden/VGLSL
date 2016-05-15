@@ -62,6 +62,24 @@ namespace Xannden.GLSL.Extensions
 			return false;
 		}
 
+		public static bool Contains<T>(this IReadOnlyList<T> list, T value)
+		{
+			if (list == null)
+			{
+				throw new ArgumentNullException(nameof(list));
+			}
+
+			for (int i = 0; i < (list?.Count ?? 0); i++)
+			{
+				if (list[i].Equals(value))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public static T Last<T>(this IReadOnlyList<T> list)
 		{
 			if (list == null)
@@ -87,6 +105,32 @@ namespace Xannden.GLSL.Extensions
 			}
 
 			return tokens;
+		}
+
+		public static IEnumerable<TResult> ConvertList<TInput, TResult>(this IReadOnlyList<TInput> list, Func<TInput, TResult> converter)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				yield return converter(list[i]);
+			}
+		}
+
+		public static IEnumerable<TResult> ConvertList<TInput, TResult>(this IReadOnlyList<TInput> list, Func<TInput, TResult> converter, TResult seperator, bool endWithSeperator = false)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				if (i != 0)
+				{
+					yield return seperator;
+				}
+
+				yield return converter(list[i]);
+			}
+
+			if (endWithSeperator && list.Count > 0)
+			{
+				yield return seperator;
+			}
 		}
 	}
 }

@@ -5,11 +5,13 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 {
 	public class FunctionDefinition : Definition
 	{
-		public FunctionDefinition(TypeDefinition returnType, string identifier, string documentation, Scope scope, TrackingSpan span) : this(returnType, identifier, new List<ParameterDefinition>(), documentation, scope, span)
+		public FunctionDefinition(TypeDefinition returnType, string identifier, string documentation, Scope scope, TrackingSpan span)
+			: this(returnType, identifier, new List<ParameterDefinition>(), documentation, scope, span)
 		{
 		}
 
-		public FunctionDefinition(TypeDefinition returnType, string identifier, List<ParameterDefinition> parameters, string documentation, Scope scope, TrackingSpan span) : base(ColoredString.Create(identifier, ColorType.Function), documentation, DefinitionKind.Function, scope, span)
+		public FunctionDefinition(TypeDefinition returnType, string identifier, List<ParameterDefinition> parameters, string documentation, Scope scope, TrackingSpan span)
+			: base(ColoredString.Create(identifier, ColorType.Function), documentation, DefinitionKind.Function, scope, span)
 		{
 			this.ReturnType = returnType;
 			this.InternalParameters = parameters;
@@ -52,6 +54,8 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 			list.AddRange(this.ReturnType.GetColoredText());
 
+			list.Add(ColoredString.Space);
+
 			list.Add(this.Name);
 
 			list.Add(ColoredString.Create("(", ColorType.Punctuation));
@@ -61,7 +65,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 				if (i != 0)
 				{
 					list.Add(ColoredString.Create(",", ColorType.Punctuation));
-					list.Add(ColoredString.Create(" ", ColorType.WhiteSpace));
+					list.Add(ColoredString.Space);
 				}
 
 				list.AddRange(this.Parameters[i].GetColoredText());

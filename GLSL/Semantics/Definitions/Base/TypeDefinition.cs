@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree.Syntax;
 using Xannden.GLSL.Text;
 
@@ -10,11 +12,12 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			if (type.VoidKeyword != null)
 			{
-				this.Type = type.VoidKeyword.ToColoredString();
+				this.Type = SyntaxType.VoidKeyword;
+				this.ArraySpecifiers = new List<ColoredString>();
 			}
 			else
 			{
-				this.Type = type.TypeSyntax.TypeNonArray.ToColoredString();
+				this.Type = type.TypeSyntax.TypeNonArray.Children[0].SyntaxType;
 
 				List<ColoredString> arraySpecifiers = new List<ColoredString>();
 
@@ -29,7 +32,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 		public TypeDefinition(TypeSyntax type)
 		{
-			this.Type = type.TypeNonArray.ToColoredString();
+			this.Type = type.TypeNonArray.Children[0].SyntaxType;
 
 			List<ColoredString> arraySpecifiers = new List<ColoredString>();
 
@@ -41,19 +44,13 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 			this.ArraySpecifiers = arraySpecifiers;
 		}
 
-		internal TypeDefinition(ColoredString type)
+		internal TypeDefinition(SyntaxType type)
 		{
-			this.Type = new List<ColoredString> { type, ColoredString.Create(" ", ColorType.WhiteSpace) };
+			this.Type = type;
 			this.ArraySpecifiers = new List<ColoredString>();
 		}
 
-		internal TypeDefinition(string type)
-		{
-			this.Type = new List<ColoredString> { ColoredString.Create(type, ColorType.Keyword), ColoredString.Create(" ", ColorType.WhiteSpace) };
-			this.ArraySpecifiers = new List<ColoredString>();
-		}
-
-		public IReadOnlyList<ColoredString> Type { get; }
+		public SyntaxType Type { get; }
 
 		public IReadOnlyList<ColoredString> ArraySpecifiers { get; }
 
@@ -61,7 +58,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			List<ColoredString> list = new List<ColoredString>();
 
-			list.AddRange(this.Type);
+			list.Add(this.Type.ToColoredString());
 			list.AddRange(this.ArraySpecifiers);
 
 			return list;

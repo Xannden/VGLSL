@@ -31,9 +31,10 @@ namespace Xannden.VSGLSL.Classification
 
 		public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
 		{
-			LinkedList<Token> tokens = this.lexer.Run(new VSSnapshot(this.source, span.Snapshot), span.Start.GetContainingLine().ExtentIncludingLineBreak.Span.ToGLSLSpan());
-			List<ClassificationSpan> spans = new List<ClassificationSpan>();
 			VSSnapshot currentSnapshot = new VSSnapshot(this.source, span.Snapshot);
+
+			LinkedList<Token> tokens = this.lexer.Run(currentSnapshot, span.Start.GetContainingLine().ExtentIncludingLineBreak.Span.ToGLSLSpan());
+			List<ClassificationSpan> spans = new List<ClassificationSpan>();
 
 			SyntaxTree tree = this.source.Tree;
 

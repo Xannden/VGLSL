@@ -17,6 +17,7 @@ namespace Xannden.VSGLSL.Sources
 		private readonly GLSLLexer lexer = new GLSLLexer();
 		private readonly object lockObject = new object();
 		private bool isParsing = false;
+		private bool hasChanged = false;
 
 		private VSSource(ITextBuffer buffer, string fileName) : base(fileName)
 		{
@@ -91,6 +92,10 @@ namespace Xannden.VSGLSL.Sources
 					this.isParsing = true;
 					ThreadPool.QueueUserWorkItem(this.Parse);
 				}
+				else
+				{
+					this.hasChanged = true;
+				}
 			}
 		}
 
@@ -104,25 +109,48 @@ namespace Xannden.VSGLSL.Sources
 
 		private void Parse(object obj)
 		{
-#pragma warning disable S108 // Nested blocks of code should not be left empty
-			while (this.autoResetEvent.WaitOne(200))
+			while (true)
 			{
+				this.hasChanged = false;
+
+				while (this.autoResetEvent.WaitOne(200))
+				{
+				}
+
+				Snapshot snapshot = this.CurrentSnapshot;
+
+				LinkedList<Token> tokens = this.lexer.Run(snapshot);
+
+				if (this.hasChanged)
+				{
+					continue;
+				}
+
+				this.CommentSpans = this.lexer.CommentSpans;
+
+				this.Tree = this.Parser.Run(snapshot, tokens);
+
+				if (this.hasChanged)
+				{
+					continue;
+				}
+
+				this.Settings.SetPreprocessors(this.Parser.Preprocessors);
+
+				lock (this.lockObject)
+				{
+					if (this.hasChanged)
+					{
+						continue;
+					}
+
+					this.DoneParsing?.Invoke(this, new EventArgs());
+
+					this.isParsing = false;
+
+					break;
+				}
 			}
-#pragma warning restore S108 // Nested blocks of code should not be left empty
-
-			Snapshot snapshot = this.CurrentSnapshot;
-
-			LinkedList<Token> tokens = this.lexer.Run(snapshot);
-
-			this.CommentSpans = this.lexer.CommentSpans;
-
-			this.Tree = this.Parser.Run(snapshot, tokens);
-
-			this.Settings.SetPreprocessors(this.Parser.Preprocessors);
-
-			this.DoneParsing?.Invoke(this, new EventArgs());
-
-			this.isParsing = false;
 		}
 	}
 }

@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Text.Operations;
 using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
 using Xannden.GLSL.Syntax.Tree.Syntax;
@@ -57,9 +58,15 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 				this.keywords.Add(new GLSLCompletion(textBlock, text, text + "Keyword", keywordIcon));
 			}
 
-			foreach (string key in BuiltInData.Instance.Definitions.Keys)
+			foreach (List<Definition> definitions in BuiltInData.Instance.Definitions.Values)
 			{
-				this.builtIn.Add(new GLSLCompletion(BuiltInData.Instance.Definitions[key][0].ToTextBlock(this.formatMap, this.provider.TypeRegistry, BuiltInData.Instance.Definitions[key].Count), BuiltInData.Instance.Definitions[key][0], BuiltInData.Instance.Definitions[key][0].GetImageSource(this.provider.GlyphService)));
+				for (int i = 0; i < definitions.Count; i++)
+				{
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(this.source.Type))
+					{
+						this.builtIn.Add(new GLSLCompletion(definitions[i].ToTextBlock(this.formatMap, this.provider.TypeRegistry, definitions.Count), definitions[i], definitions[i].GetImageSource(this.provider.GlyphService)));
+					}
+				}
 			}
 		}
 

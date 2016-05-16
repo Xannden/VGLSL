@@ -9,40 +9,41 @@ using Xannden.VSGLSL.Data;
 
 namespace Xannden.VSGLSL.Packages
 {
-	/// <summary>
-	/// This is the class that implements the package exposed by this assembly.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// The minimum requirement for a class to be considered a valid package for Visual Studio
-	/// is to implement the IVsPackage interface and register itself with the shell.
-	/// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-	/// to do it: it derives from the Package class that provides the implementation of the
-	/// IVsPackage interface and uses the registration attributes defined in the framework to
-	/// register itself and its components with the shell. These attributes tell the pkgdef creation
-	/// utility what data to put into .pkgdef file.
-	/// </para>
-	/// <para>
-	/// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
-	/// </para>
-	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
+
 	[ProvideService(typeof(GLSLLanguageInfo))]
 	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true)]
 	[ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
+
 	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithoutEncoding), 101)]
 	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithEncoding), 102)]
+
 	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithoutEncoding), VSConstants.LOGVIEWID.TextView_string)]
 	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithEncoding), VSConstants.LOGVIEWID.TextView_string)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".glsl", 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".glsl", 49)]
+
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.VertexExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.VertexExtension, 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.FragmentExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.FragmentExtension, 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.GeometryExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.GeometryExtension, 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.ComputeExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.ComputeExtension, 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.TessellationControlExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.TessellationControlExtension, 49)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.TessellationEvaluationExtension, 50)]
+	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.TessellationEvaluationExtension, 49)]
+
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".*", 2)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".*", 1)]
+
 	[Guid(GLSLConstants.GLSLPackageString)]
 	public sealed class GLSLPackage : Package
 	{
 		private GLSLLanguageInfo languageInfo;
+		private uint cookie;
+		private IConnectionPoint connectionPoint;
 
 		public static GLSLPackage Instance { get; private set; }
 
@@ -73,11 +74,16 @@ namespace Xannden.VSGLSL.Packages
 			this.Preferences = new GLSLPreferences(lanaguagePreferences[0]);
 
 			Guid events2Guid = typeof(IVsTextManagerEvents2).GUID;
-			IConnectionPoint connectionPoint;
-			((IConnectionPointContainer)textManager).FindConnectionPoint(ref events2Guid, out connectionPoint);
+			((IConnectionPointContainer)textManager).FindConnectionPoint(ref events2Guid, out this.connectionPoint);
 
-			uint cookie;
-			connectionPoint.Advise(this.Preferences, out cookie);
+			this.connectionPoint.Advise(this.Preferences, out this.cookie);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			this.connectionPoint.Unadvise(this.cookie);
+
+			base.Dispose(disposing);
 		}
 	}
 }

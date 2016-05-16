@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Text;
+using Xannden.VSGLSL.Packages;
 using Xannden.VSGLSL.Sources;
 
 namespace Xannden.VSGLSL.Commands
@@ -88,17 +89,17 @@ namespace Xannden.VSGLSL.Commands
 
 			if ((char.IsLetterOrDigit(character) || character == '_' || character == '#') && !this.source.CommentSpans.Contains(span => span.GetSpan(snapshot).Contains(this.TextView.Caret.Position.BufferPosition)))
 			{
-				if (this.session?.IsDismissed ?? true)
+				if ((this.session?.IsDismissed ?? true) && GLSLPackage.Instance.Preferences.AutoListMembers)
 				{
 					this.TriggerCompletion();
 				}
 
-				if (this.session?.IsDismissed ?? false)
-				{
-					this.session.Filter();
-				}
+				returnValue = true;
+			}
 
-				return true;
+			if (!this.session?.IsDismissed ?? false)
+			{
+				this.session.Filter();
 			}
 
 			return returnValue;

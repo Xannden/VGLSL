@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+	<Name>Compute Shader (GLSL)</Name>
+	<Description>Empty compute shader</Description>
+	<Icon>GLSLItemTemplate.ico</Icon>
+	<ProjectType>CSharp</ProjectType>
+	<DefaultName>shader.comp</DefaultName>
+  </TemplateData>
+  <TemplateContent>
+	<ProjectItem>shader</ProjectItem>
+  </TemplateContent>
+</VSTemplate>
+

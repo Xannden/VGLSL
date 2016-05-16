@@ -74,18 +74,18 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 		internal static FieldDefinition Create(SyntaxType type, string name)
 		{
-			return new FieldDefinition(null, new TypeDefinition(type), name, string.Empty, Scope.Global, null);
+			return new FieldDefinition(null, new TypeDefinition(type), name, string.Empty, Scope.BuiltIn, null);
 		}
 
 		internal static FieldDefinition Create(SyntaxType type, string name, bool isArray)
 		{
 			if (isArray)
 			{
-				return new FieldDefinition(null, new TypeDefinition(type), name, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create("]", ColorType.Punctuation) }, string.Empty, Scope.Global, null);
+				return new FieldDefinition(null, new TypeDefinition(type), name, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create("]", ColorType.Punctuation) }, string.Empty, Scope.BuiltIn, null);
 			}
 			else
 			{
-				return new FieldDefinition(null, new TypeDefinition(type), name, string.Empty, Scope.Global, null);
+				return new FieldDefinition(null, new TypeDefinition(type), name, string.Empty, Scope.BuiltIn, null);
 			}
 		}
 	}

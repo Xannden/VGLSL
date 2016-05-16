@@ -44,6 +44,10 @@ namespace Xannden.GLSL.Text
 
 		public string FileName { get; }
 
+		public ShaderProfile Profile { get; } = ShaderProfile.Core;
+
+		public ShaderType Type { get; protected set; } = ShaderType.Vertex;
+
 		public GLSLSettings Settings { get; } = new GLSLSettings();
 
 		public SyntaxTree Tree

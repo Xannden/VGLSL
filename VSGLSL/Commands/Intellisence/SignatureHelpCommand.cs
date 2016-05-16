@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Xannden.VSGLSL.Packages;
 
 namespace Xannden.VSGLSL.Commands
 {
@@ -31,11 +32,11 @@ namespace Xannden.VSGLSL.Commands
 			{
 				this.TriggerParameterHelp(this.TextView.Caret.Position.BufferPosition);
 			}
-			else
+			else if (commandId == VSConstants.VSStd2KCmdID.TYPECHAR)
 			{
 				char character = (char)(ushort)Marshal.GetObjectForNativeVariant(vaIn);
 
-				if (character == '(')
+				if (character == '(' && !GLSLPackage.Instance.Preferences.AutoListParams)
 				{
 					this.TriggerParameterHelp(this.TextView.Caret.Position.BufferPosition - 1);
 				}

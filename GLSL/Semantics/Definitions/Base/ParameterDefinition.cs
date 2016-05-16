@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Extensions;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Text;
 
@@ -81,18 +82,18 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null) };
+				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null) };
 			}
 		}
 
-		internal static ParameterDefinition[] Create(string typeQualifier, string type, string name)
+		internal static ParameterDefinition[] Create(SyntaxType typeQualifier, string type, string name)
 		{
 			string[] types;
 
@@ -102,18 +103,18 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(new List<SyntaxType> { typeQualifier.GetSyntaxType() }, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
+					parameters[i] = new ParameterDefinition(new List<SyntaxType> { typeQualifier }, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(new List<SyntaxType> { typeQualifier.GetSyntaxType() }, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null) };
+				return new ParameterDefinition[] { new ParameterDefinition(new List<SyntaxType> { typeQualifier }, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null) };
 			}
 		}
 
-		internal static ParameterDefinition[] Create(string type, string name, bool isOptional)
+		internal static ParameterDefinition[] Create(SyntaxType[] typeQualifiers, string type, string name)
 		{
 			string[] types;
 
@@ -123,16 +124,39 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.Global, null);
+					parameters[i] = new ParameterDefinition(new List<SyntaxType>(typeQualifiers), new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null);
+				}
+
+				return parameters;
+			}
+			else
+			{
+				return new ParameterDefinition[] { new ParameterDefinition(new List<SyntaxType>(typeQualifiers), new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null) };
+			}
+		}
+
+		internal static ParameterDefinition[] Create(string type, string name, bool isOptional, ShaderType shaderType)
+		{
+			string[] types;
+
+			if (BuiltInData.GenTypes.TryGetValue(type, out types))
+			{
+				ParameterDefinition[] parameters = new ParameterDefinition[types.Length];
+
+				for (int i = 0; i < types.Length; i++)
+				{
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null);
 					parameters[i].IsOptional = isOptional;
+					parameters[i].ShaderType = shaderType;
 				}
 
 				return parameters;
 			}
 			else
 			{
-				ParameterDefinition param = new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.Global, null);
+				ParameterDefinition param = new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, Scope.BuiltIn, null);
 				param.IsOptional = isOptional;
+				param.ShaderType = shaderType;
 
 				return new ParameterDefinition[] { param };
 			}
@@ -148,14 +172,14 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 
 				for (int i = 0; i < types.Length; i++)
 				{
-					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.Global, null);
+					parameters[i] = new ParameterDefinition(null, new TypeDefinition(types[i].GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.BuiltIn, null);
 				}
 
 				return parameters;
 			}
 			else
 			{
-				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.Global, null) };
+				return new ParameterDefinition[] { new ParameterDefinition(null, new TypeDefinition(type.GetSyntaxType()), name, string.Empty, new List<ColoredString> { ColoredString.Create("[", ColorType.Punctuation), ColoredString.Create(arraySize.ToString(), ColorType.Number), ColoredString.Create("]", ColorType.Punctuation) }, Scope.BuiltIn, null) };
 			}
 		}
 	}

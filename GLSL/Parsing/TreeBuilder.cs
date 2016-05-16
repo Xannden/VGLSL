@@ -5,6 +5,7 @@ using Xannden.GLSL.Errors;
 using Xannden.GLSL.Extensions;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Semantics.Definitions.User;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Syntax.Tree;
@@ -307,7 +308,13 @@ namespace Xannden.GLSL.Parsing
 
 			if (BuiltInData.Instance.Definitions.ContainsKey(identifier.Identifier))
 			{
-				return BuiltInData.Instance.Definitions[identifier.Identifier][0];
+				for (int i = 0; i < BuiltInData.Instance.Definitions[identifier.Identifier].Count; i++)
+				{
+					if (BuiltInData.Instance.Definitions[identifier.Identifier][i].ShaderType.HasFlag<ShaderType>(this.snapshot.Source.Type))
+					{
+						return BuiltInData.Instance.Definitions[identifier.Identifier][i];
+					}
+				}
 			}
 
 			return null;

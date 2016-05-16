@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualStudio.Text;
 using Xannden.GLSL.Lexing;
+using Xannden.GLSL.Settings;
 using Xannden.GLSL.Syntax.Tokens;
 using Xannden.GLSL.Text;
+using Xannden.VSGLSL.Data;
 using Xannden.VSGLSL.Extensions;
 
 namespace Xannden.VSGLSL.Sources
@@ -31,7 +33,34 @@ namespace Xannden.VSGLSL.Sources
 
 		public static VSSource GetOrCreate(ITextBuffer buffer)
 		{
-			VSSource source = buffer.Properties.GetOrCreateSingletonProperty(() => new VSSource(buffer, buffer.GetFileName()));
+			string filePath = buffer.GetFilePath();
+
+			VSSource source = buffer.Properties.GetOrCreateSingletonProperty(() => new VSSource(buffer, buffer.GetFilePath()));
+
+			if (filePath.EndsWith(GLSLConstants.VertexExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.Vertex;
+			}
+			else if (filePath.EndsWith(GLSLConstants.FragmentExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.Fragment;
+			}
+			else if (filePath.EndsWith(GLSLConstants.GeometryExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.Geometry;
+			}
+			else if (filePath.EndsWith(GLSLConstants.ComputeExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.Compute;
+			}
+			else if (filePath.EndsWith(GLSLConstants.TessellationControlExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.TessellationControl;
+			}
+			else if (filePath.EndsWith(GLSLConstants.TessellationEvaluationExtension, StringComparison.Ordinal))
+			{
+				source.Type = ShaderType.TessellationEvaluation;
+			}
 
 			if (source.Tree == null)
 			{

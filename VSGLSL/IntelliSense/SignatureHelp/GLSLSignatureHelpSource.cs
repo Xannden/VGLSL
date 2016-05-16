@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Xannden.GLSL.BuiltIn;
 using Xannden.GLSL.Semantics;
 using Xannden.GLSL.Syntax;
 using Xannden.GLSL.Syntax.Tree;
@@ -92,13 +91,13 @@ namespace Xannden.VSGLSL.Intellisense.SignatureHelp
 					signatures.Add(new GLSLSignature(identifier.Definition.Overloads[i], span, snapshot, session.TextView, session));
 				}
 
-				if (BuiltInData.Instance.Definitions.ContainsKey(identifier.Definition.Name.Text))
-				{
-					for (int i = 0; i < BuiltInData.Instance.Definitions[identifier.Definition.Name.Text].Count; i++)
-					{
-						signatures.Add(new GLSLSignature(BuiltInData.Instance.Definitions[identifier.Definition.Name.Text][i], span, snapshot, session.TextView, session));
-					}
-				}
+				//if (BuiltInData.Instance.Definitions.ContainsKey(identifier.Definition.Name.Text))
+				//{
+				//	for (int i = 0; i < BuiltInData.Instance.Definitions[identifier.Definition.Name.Text].Count; i++)
+				//	{
+				//		signatures.Add(new GLSLSignature(BuiltInData.Instance.Definitions[identifier.Definition.Name.Text][i], span, snapshot, session.TextView, session));
+				//	}
+				//}
 			}
 		}
 

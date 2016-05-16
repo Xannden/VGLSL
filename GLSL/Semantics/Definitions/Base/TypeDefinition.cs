@@ -50,15 +50,32 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 			this.ArraySpecifiers = new List<ColoredString>();
 		}
 
+		internal TypeDefinition(Definition definition)
+		{
+			this.Type = SyntaxType.TypeName;
+			this.Definition = definition;
+			this.ArraySpecifiers = new List<ColoredString>();
+		}
+
 		public SyntaxType Type { get; }
 
 		public IReadOnlyList<ColoredString> ArraySpecifiers { get; }
+
+		public Definition Definition { get; }
 
 		public IReadOnlyList<ColoredString> GetColoredText()
 		{
 			List<ColoredString> list = new List<ColoredString>();
 
-			list.Add(this.Type.ToColoredString());
+			if (this.Type == SyntaxType.TypeName)
+			{
+				list.AddRange(this.Definition.GetColoredText());
+			}
+			else
+			{
+				list.Add(this.Type.ToColoredString());
+			}
+
 			list.AddRange(this.ArraySpecifiers);
 
 			return list;

@@ -6,12 +6,7 @@ namespace Xannden.GLSL.Extensions
 	{
 		public static bool HasFlag<T>(this T enumeration, T flag) where T : struct, IConvertible
 		{
-			if (typeof(T).IsEnum)
-			{
-				return (enumeration.ToInt64(null) & flag.ToInt64(null)) != 0;
-			}
-
-			return false;
+			return (enumeration.ToInt64(null) & flag.ToInt64(null)) != 0;
 		}
 
 		public static bool HasFlags<T>(this T enumeration, params T[] flags) where T : struct, IConvertible

@@ -62,7 +62,6 @@ namespace Xannden.VSGLSL.Intellisense.QuickInfo
 
 		public void Dispose()
 		{
-			// Method intentionally left empty.
 		}
 	}
 }

@@ -88,7 +88,7 @@ namespace Xannden.VSGLSL.Extensions
 			manager.NavigateToLineAndColumn(textBuffer, logicalViewGuid, startLine, startColumn, startLine, startColumn);
 		}
 
-		public static string GetFileName(this ITextBuffer buffer)
+		public static string GetFilePath(this ITextBuffer buffer)
 		{
 			return buffer.Properties.GetProperty<ITextDocument>().FilePath;
 		}

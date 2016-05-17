@@ -1196,7 +1196,7 @@ namespace Xannden.GLSL.Parsing
 				}
 				else
 				{
-					this.RequireToken(SyntaxType.IntConstToken, SyntaxType.UIntConstToken, SyntaxType.FloatConstToken, SyntaxType.BoolConstToken, SyntaxType.DoubleConstToken);
+					this.RequireToken(SyntaxType.IntConstToken, SyntaxType.UIntConstToken, SyntaxType.FloatConstToken, SyntaxType.TrueKeyword, SyntaxType.FalseKeyword, SyntaxType.DoubleConstToken);
 				}
 			}
 
@@ -2318,7 +2318,8 @@ namespace Xannden.GLSL.Parsing
 				case SyntaxType.IntConstToken:
 				case SyntaxType.UIntConstToken:
 				case SyntaxType.FloatConstToken:
-				case SyntaxType.BoolConstToken:
+				case SyntaxType.TrueKeyword:
+				case SyntaxType.FalseKeyword:
 				case SyntaxType.DoubleConstToken:
 				case SyntaxType.LeftBracketToken:
 				case SyntaxType.DotToken:

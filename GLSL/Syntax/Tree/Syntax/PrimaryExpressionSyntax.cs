@@ -33,7 +33,8 @@ namespace Xannden.GLSL.Syntax.Tree.Syntax
 				case SyntaxType.IntConstToken:
 				case SyntaxType.UIntConstToken:
 				case SyntaxType.FloatConstToken:
-				case SyntaxType.BoolConstToken:
+				case SyntaxType.TrueKeyword:
+				case SyntaxType.FalseKeyword:
 				case SyntaxType.DoubleConstToken:
 					this.NumberConstant = node as SyntaxToken;
 					break;

@@ -137,14 +137,19 @@ namespace Xannden.VSGLSL.Sources
 
 				this.Settings.SetPreprocessors(this.Parser.Preprocessors);
 
+				if (this.hasChanged)
+				{
+					continue;
+				}
+
+				this.DoneParsing?.Invoke(this, new EventArgs());
+
 				lock (this.lockObject)
 				{
 					if (this.hasChanged)
 					{
 						continue;
 					}
-
-					this.DoneParsing?.Invoke(this, new EventArgs());
 
 					this.isParsing = false;
 

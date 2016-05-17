@@ -13,8 +13,7 @@ namespace Xannden.VSGLSL.Packages
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
 
 	[ProvideService(typeof(GLSLLanguageInfo))]
-	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true)]
-	[ProvideLanguageExtension(typeof(GLSLLanguageInfo), ".glsl")]
+	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true, ShowSmartIndent = true)]
 
 	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithoutEncoding), 101)]
 	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithEncoding), 102)]

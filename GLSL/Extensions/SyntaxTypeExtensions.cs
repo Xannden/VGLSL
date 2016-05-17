@@ -10,7 +10,7 @@ namespace Xannden.GLSL.Extensions
 		#region Lookup Table
 		private static Dictionary<SyntaxType, string> lookupTable = new Dictionary<SyntaxType, string>
 		{
-			[SyntaxType.None] = "",
+			[SyntaxType.None] = string.Empty,
 			[SyntaxType.LeftParenToken] = "(",
 			[SyntaxType.RightParenToken] = ")",
 			[SyntaxType.LeftBracketToken] = "[",

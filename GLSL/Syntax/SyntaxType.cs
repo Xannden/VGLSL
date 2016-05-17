@@ -292,7 +292,6 @@
 		// tokens with Text
 		IdentifierToken,
 
-		BoolConstToken,
 		FloatConstToken,
 		DoubleConstToken,
 		IntConstToken,

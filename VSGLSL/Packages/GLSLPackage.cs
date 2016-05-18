@@ -16,26 +16,17 @@ namespace Xannden.VSGLSL.Packages
 	[ProvideLanguageService(typeof(GLSLLanguageInfo), GLSLConstants.Name, 106, EnableLineNumbers = true, ShowCompletion = true, EnableAdvancedMembersOption = true, RequestStockColors = true, ShowSmartIndent = true)]
 
 	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithoutEncoding), 101)]
-	[ProvideEditorFactory(typeof(GLSLEditorFactoryWithEncoding), 102)]
 
 	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithoutEncoding), VSConstants.LOGVIEWID.TextView_string)]
-	[ProvideEditorLogicalView(typeof(GLSLEditorFactoryWithEncoding), VSConstants.LOGVIEWID.TextView_string)]
 
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.VertexExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.VertexExtension, 49)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.FragmentExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.FragmentExtension, 49)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.GeometryExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.GeometryExtension, 49)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.ComputeExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.ComputeExtension, 49)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.TessellationControlExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.TessellationControlExtension, 49)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), GLSLConstants.TessellationEvaluationExtension, 50)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), GLSLConstants.TessellationEvaluationExtension, 49)]
 
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".*", 2)]
-	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".*", 1)]
 
 	[ProvideBraceCompletion(GLSLConstants.Name)]
 	[Guid(GLSLConstants.GLSLPackageString)]
@@ -64,7 +55,6 @@ namespace Xannden.VSGLSL.Packages
 			((IServiceContainer)this).AddService(typeof(GLSLLanguageInfo), this.languageInfo, true);
 
 			this.RegisterEditorFactory(new GLSLEditorFactoryWithoutEncoding(this));
-			this.RegisterEditorFactory(new GLSLEditorFactoryWithEncoding(this));
 
 			IVsTextManager textManager = (IVsTextManager)this.GetService(typeof(SVsTextManager));
 

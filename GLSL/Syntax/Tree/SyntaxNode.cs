@@ -88,7 +88,7 @@ namespace Xannden.GLSL.Syntax.Tree
 			}
 		}
 
-		public virtual TrackingSpan FullSpan => this.Span;
+		public virtual TrackingSpan FullSpan { get; private set; }
 
 		public bool IsMissing { get; internal set; } = false;
 
@@ -128,6 +128,8 @@ namespace Xannden.GLSL.Syntax.Tree
 		internal List<SyntaxNode> InternalChildren { get; } = new List<SyntaxNode>();
 
 		internal int TempStart { get; private set; }
+
+		internal int TempFullStart { get; private set; }
 
 		public IReadOnlyList<SyntaxToken> GetSyntaxTokens()
 		{
@@ -205,9 +207,10 @@ namespace Xannden.GLSL.Syntax.Tree
 			return null;
 		}
 
-		internal void SetEnd(Snapshot snapshot, int end)
+		internal void SetEnd(Snapshot snapshot, int end, int fullEnd)
 		{
 			this.Span = snapshot.CreateTrackingSpan(Text.Span.Create(this.TempStart, end));
+			this.FullSpan = snapshot.CreateTrackingSpan(Text.Span.Create(this.TempFullStart, fullEnd));
 		}
 
 		internal virtual void WriteToXml(IndentedTextWriter writer, Snapshot snapshot)

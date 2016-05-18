@@ -87,14 +87,15 @@ namespace Xannden.GLSL.Parsing
 			if (this.testModeLayer <= 0)
 			{
 				int end = this.listNode?.Previous?.Value.Span.End ?? this.tokens.Last.Value.Span.End;
+				int fullEnd = this.listNode?.Previous?.Value.FullSpan(this.snapshot).End ?? this.tokens.Last.Value.FullSpan(this.snapshot).End;
 
 				if (end < this.stack.Peek().TempStart)
 				{
-					this.stack.Peek().SetEnd(this.snapshot, this.stack.Peek().TempStart);
+					this.stack.Peek().SetEnd(this.snapshot, this.stack.Peek().TempStart, this.stack.Peek().TempFullStart);
 				}
 				else
 				{
-					this.stack.Peek().SetEnd(this.snapshot, end);
+					this.stack.Peek().SetEnd(this.snapshot, end, fullEnd);
 				}
 
 				SyntaxNode node = this.stack.Peek();

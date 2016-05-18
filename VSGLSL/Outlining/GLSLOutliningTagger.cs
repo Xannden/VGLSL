@@ -35,19 +35,24 @@ namespace Xannden.VSGLSL.Outlining
 
 		public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
 		{
+			if (spans.Count == 0)
+			{
+				yield break;
+			}
+
 			VSSnapshot snapshot = this.source.CurrentSnapshot as VSSnapshot;
 			SyntaxTree tree = this.source.Tree;
 
-			List<Region> list;
+			List<Region> regionList;
 
 			lock (this.lockObject)
 			{
-				list = this.regions;
+				regionList = this.regions;
 			}
 
-			foreach (Region region in list)
+			for (int j = 0; j < regionList.Count; j++)
 			{
-				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, region.Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", region.Text));
+				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, regionList[j].Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", regionList[j].Text));
 			}
 		}
 

@@ -81,6 +81,8 @@
     <Compile Include="Data\GLSLConstants.cs" />
     <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="Extensions\VSExtensions.cs" />
+    <Compile Include="Formatting\BraceCompletion\GLSLBraceCompletionContext.cs" />
+    <Compile Include="Formatting\BraceCompletion\GLSLBraceCompletionContextProvider.cs" />
     <Compile Include="Formatting\SmartIndent\GLSLSmartIndent.cs" />
     <Compile Include="Formatting\SmartIndent\GLSLSmartIndentProvider.cs" />
     <Compile Include="Intellisense\Completions\GLSLCompletion.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Packages\GLSLLanguageInfo.cs" />
     <Compile Include="Packages\GLSLPackage.cs" />
     <Compile Include="Packages\GLSLPreferences.cs" />
+    <Compile Include="Packages\ProvideBraceCompletionAttribute.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedAction.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSource.cs" />
     <Compile Include="Preprocessors\PreprocessorSuggestedActionsSourceProvider.cs" />

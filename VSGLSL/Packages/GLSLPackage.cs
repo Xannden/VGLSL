@@ -37,6 +37,7 @@ namespace Xannden.VSGLSL.Packages
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithoutEncoding), ".*", 2)]
 	[ProvideEditorExtension(typeof(GLSLEditorFactoryWithEncoding), ".*", 1)]
 
+	[ProvideBraceCompletion(GLSLConstants.Name)]
 	[Guid(GLSLConstants.GLSLPackageString)]
 	public sealed class GLSLPackage : Package
 	{

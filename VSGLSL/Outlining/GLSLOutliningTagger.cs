@@ -52,6 +52,11 @@ namespace Xannden.VSGLSL.Outlining
 
 			for (int j = 0; j < regionList.Count; j++)
 			{
+				if (regionList[j].Span.GetSpan(snapshot).End >= snapshot.Length)
+				{
+					continue;
+				}
+
 				yield return new TagSpan<IOutliningRegionTag>(new SnapshotSpan(snapshot.TextSnapshot, regionList[j].Span.GetSpan(snapshot).ToVSSpan()), new OutliningRegionTag(false, true, "...", regionList[j].Text));
 			}
 		}

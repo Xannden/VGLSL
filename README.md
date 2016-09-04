@@ -1,31 +1,59 @@
-# VSGLSL
-
-<!-- Replace this badge with your own-->
+# GLSL Language Service for Visual Studio
 
 <!-- Update the VS Gallery link after you upload the VSIX-->
 Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
-or get the [CI build](http://vsixgallery.com/extension/22e23217-3b60-46c7-8047-a5ae0a268489/).
-
----------------------------------------
-
-Empty VSIX Project.
 
 See the [changelog](CHANGELOG.md) for changes and roadmap.
 
+---
+
 ## Features
 
-- Feature 1
-- Feature 2
-  - Sub feature
+- Syntax highlighting
+ - Semantic highlighting
+- Intellisense
+ - Statement completion
+ - Quick info
+ - Signature help
+- Real-time syntax errors.
+- Other
+ - Outlining
+ - Brace completion
+ - Brace matching
+ - Smart indention
 
-### Feature 1
-Describe feature 1. Add screenshots/code samples etc.
+### Syntax highlighting
+Full Syntax and semantic coloring.
 
-### Feature 2
-Describe feature 2. Add screenshots/code samples etc.
+![Coloring](Art/Coloring.png)
 
-#### Sub feature
-Describe sub feature. Add screenshots/code samples etc.
+Coloring is fully customizable from the Fonts and Colors options page.
+
+### Intellisense
+#### Statement Completion
+Gives suggestions as you type or using the standard keyboard shortcuts.
+
+#### Quick Info
+Hover over any identifier to see more info about it.
+
+#### Signature Help
+Displays what the parameters to the function are as you type.
+
+### Real-time Syntax Errors
+Syntax errors automatically show up in the editor and the Error List.
+
+### Other
+#### Outlining
+Makes functions and other languages structures collapsible.
+
+#### Brace Completion
+Automatically inserts the closing brace.
+
+#### Brace Matching
+Highlights the brace that matches the one under the cursor.
+
+#### Smart Indention
+Automatically indents the cursor to the correct indention level.
 
 ## Contribute
 Check out the [contribution guidelines](CONTRIBUTING.md)

@@ -37,12 +37,22 @@ namespace Xannden.VSGLSL.Tagging.BraceMatching
 
 			SnapshotPoint? caretPoint = this.textView.Caret.Position.Point.GetPoint(this.textView.TextBuffer, this.textView.Caret.Position.Affinity);
 
-			if (!caretPoint.HasValue)
+			if (!caretPoint.HasValue || caretPoint.Value.Snapshot.Length == 0)
 			{
 				yield break;
 			}
 
-			SnapshotPoint currPoint = caretPoint.Value.Position != caretPoint.Value.Snapshot.Length ? caretPoint.Value : caretPoint.Value - 1;
+			SnapshotPoint currPoint;
+
+			if (caretPoint.Value.Position == caretPoint.Value.Snapshot.Length && caretPoint.Value.Position != 0)
+			{
+				currPoint = caretPoint.Value - 1;
+			}
+			else
+			{
+				currPoint = caretPoint.Value;
+			}
+
 			SnapshotPoint prevPoint = caretPoint.Value.Position != 0 ? caretPoint.Value - 1 : caretPoint.Value;
 
 			char currentCharacter = currPoint.GetChar();
@@ -158,12 +168,12 @@ namespace Xannden.VSGLSL.Tagging.BraceMatching
 					}
 				}
 
-				if (lineNumber < 0)
+				if (lineNumber-- <= 0)
 				{
 					break;
 				}
 
-				line = line.Snapshot.GetLineFromLineNumber(--lineNumber);
+				line = line.Snapshot.GetLineFromLineNumber(lineNumber);
 				text = line.GetText();
 				offset = text.Length - 1;
 			}

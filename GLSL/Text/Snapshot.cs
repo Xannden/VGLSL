@@ -16,9 +16,18 @@
 
 		public string FileName { get; }
 
-#pragma warning disable SA1101
-		public Span Span => Span.Create(0, this.Length - 1);
-#pragma warning restore SA1101
+		public Span Span
+		{
+			get
+			{
+				if (this.Length > 0)
+				{
+					return Span.Create(0, this.Length - 1);
+				}
+
+				return Span.Create(0, 0);
+			}
+		}
 
 		public abstract TrackingSpan CreateTrackingSpan(Span span);
 

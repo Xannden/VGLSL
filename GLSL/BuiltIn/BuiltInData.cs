@@ -851,7 +851,7 @@ namespace Xannden.GLSL.BuiltIn
 			// Vertex
 			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_VertexID", false, ShaderType.Vertex);
 			this.AddVariable(dictionary, SyntaxType.InKeyword, SyntaxType.IntKeyword, "gl_InstanceID", false, ShaderType.Vertex);
-			this.AddInterfaceBlock(dictionary, SyntaxType.OutKeyword, "gl_PerVertex", string.Empty, false, ShaderType.Vertex, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatConstToken, "gl_PointSize"), FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_ClipDistance", true));
+			this.AddInterfaceBlock(dictionary, SyntaxType.OutKeyword, "gl_PerVertex", string.Empty, false, ShaderType.Vertex, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_ClipDistance", true));
 
 			// Geometry
 			this.AddInterfaceBlock(dictionary, SyntaxType.InKeyword, "gl_PerVertex", "gl_in", true, ShaderType.Geometry, FieldDefinition.Create(SyntaxType.Vec4Keyword, "gl_Position"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_PointSize"), FieldDefinition.Create(SyntaxType.FloatKeyword, "gl_ClipDistance", true));

@@ -3,10 +3,12 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using Xannden.VSGLSL.Data;
+using Xannden.VSGLSL.Intellisense.Completions;
 
 namespace Xannden.VSGLSL.Commands
 {
@@ -25,6 +27,15 @@ namespace Xannden.VSGLSL.Commands
 		[Import]
 		private ISignatureHelpBroker SignagtureHelpBroker { get; set; }
 
+		[Import]
+		private IGlyphService GlyphService { get; set; }
+
+		[Import]
+		private IClassificationFormatMapService FormatMapService { get; set; }
+
+		[Import]
+		private IClassificationTypeRegistryService TypeRegistry { get; set; }
+
 		public void VsTextViewCreated(IVsTextView textViewAdapter)
 		{
 			IComponentModel componentModel = Package.GetGlobalService(typeof(SComponentModel)) as IComponentModel;
@@ -35,6 +46,8 @@ namespace Xannden.VSGLSL.Commands
 			{
 				return;
 			}
+
+			GLSLCompletionSource.LoadDefaultCompletions(this.GlyphService, this.FormatMapService, this.TypeRegistry);
 
 			textView.Properties.GetOrCreateSingletonProperty(() => new CommentSelectionCommand(textViewAdapter, textView));
 			textView.Properties.GetOrCreateSingletonProperty(() => new UnCommentSelectionCommand(textViewAdapter, textView));

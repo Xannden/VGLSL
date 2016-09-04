@@ -20,6 +20,7 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			this.TypeQualifiers = typeQualifier ?? new List<SyntaxType>();
 			this.Type = type;
+			this.ArraySpecifiers = new List<ColoredString>();
 		}
 
 		public IReadOnlyList<SyntaxType> TypeQualifiers { get; }
@@ -57,7 +58,10 @@ namespace Xannden.GLSL.Semantics.Definitions.Base
 		{
 			List<ColoredString> list = new List<ColoredString>();
 
-			list.AddRange(this.TypeQualifiers.ConvertList(text => text.ToColoredString(), ColoredString.Space, true));
+			if (this.TypeQualifiers.Count > 0)
+			{
+				list.AddRange(this.TypeQualifiers.ConvertList(text => text.ToColoredString(), ColoredString.Space, true));
+			}
 
 			list.AddRange(this.Type.GetColoredText());
 

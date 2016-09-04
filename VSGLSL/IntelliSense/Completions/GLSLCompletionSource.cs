@@ -22,10 +22,11 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 {
 	internal sealed class GLSLCompletionSource : ICompletionSource
 	{
+		private static List<Completion> keywords = new List<Completion>();
+		private static Dictionary<ShaderType, List<Completion>> builtIn = new Dictionary<ShaderType, List<Completion>>();
+
 		private readonly ITextBuffer textBuffer;
 		private readonly GLSLCompletionSourceProvider provider;
-		private readonly List<Completion> keywords = new List<Completion>();
-		private readonly List<Completion> builtIn = new List<Completion>();
 		private readonly VSSource source;
 		private readonly IClassificationFormatMap formatMap;
 
@@ -34,40 +35,7 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 			this.textBuffer = textBuffer;
 			this.provider = provider;
 			this.source = source;
-			this.formatMap = this.provider.FormatMap.GetClassificationFormatMap("text");
-
-			ImageSource keywordIcon = this.provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword, StandardGlyphItem.GlyphItemPublic);
-
-			for (SyntaxType type = SyntaxType.AttributeKeyword; type <= SyntaxType.LinePreprocessorKeyword; type++)
-			{
-				string text = type.GetText();
-
-				TextBlock textBlock = new TextBlock();
-
-				if (type.IsPreprocessor())
-				{
-					textBlock.Inlines.Add(text.ToRun(this.formatMap, this.provider.TypeRegistry.GetClassificationType(GLSLConstants.PreprocessorKeyword)));
-				}
-				else
-				{
-					textBlock.Inlines.Add(text.ToRun(this.formatMap, this.provider.TypeRegistry.GetClassificationType(GLSLConstants.Keyword)));
-				}
-
-				textBlock.Inlines.Add(new Run(" Keyword"));
-
-				this.keywords.Add(new GLSLCompletion(textBlock, text, text + "Keyword", keywordIcon));
-			}
-
-			foreach (List<Definition> definitions in BuiltInData.Instance.Definitions.Values)
-			{
-				for (int i = 0; i < definitions.Count; i++)
-				{
-					if (definitions[i].ShaderType.HasFlag<ShaderType>(this.source.Type))
-					{
-						this.builtIn.Add(new GLSLCompletion(definitions[i].ToTextBlock(this.formatMap, this.provider.TypeRegistry, definitions.Count), definitions[i], definitions[i].GetImageSource(this.provider.GlyphService)));
-					}
-				}
-			}
+			this.formatMap = provider.FormatMap.GetClassificationFormatMap("text");
 		}
 
 		public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -77,7 +45,7 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 				return;
 			}
 
-			List<Completion> completions = new List<Completion>(this.keywords);
+			List<Completion> completions = new List<Completion>(keywords);
 
 			SyntaxTree tree = this.source.Tree;
 			Snapshot snapshot = this.source.CurrentSnapshot;
@@ -127,11 +95,11 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 				}
 			}
 
-			for (int i = 0; i < this.builtIn.Count; i++)
+			for (int i = 0; i < builtIn.Count; i++)
 			{
-				if (!completions.Contains(completion => completion.DisplayText == this.builtIn[i].DisplayText))
+				if (!completions.Contains(completion => completion.DisplayText == builtIn[this.source.Type][i].DisplayText))
 				{
-					completions.Add(this.builtIn[i]);
+					completions.Add(builtIn[this.source.Type][i]);
 				}
 			}
 
@@ -144,6 +112,76 @@ namespace Xannden.VSGLSL.Intellisense.Completions
 
 		public void Dispose()
 		{
+		}
+
+		internal static void LoadDefaultCompletions(IGlyphService glyphService, IClassificationFormatMapService formatMapService, IClassificationTypeRegistryService typeRegistry)
+		{
+			IClassificationFormatMap formatMap = formatMapService.GetClassificationFormatMap("text");
+
+			ImageSource keywordIcon = glyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword, StandardGlyphItem.GlyphItemPublic);
+
+			for (SyntaxType syntaxType = SyntaxType.AttributeKeyword; syntaxType <= SyntaxType.LinePreprocessorKeyword; syntaxType++)
+			{
+				string text = syntaxType.GetText();
+
+				TextBlock textBlock = new TextBlock();
+
+				if (syntaxType.IsPreprocessor())
+				{
+					textBlock.Inlines.Add(text.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.PreprocessorKeyword)));
+				}
+				else
+				{
+					textBlock.Inlines.Add(text.ToRun(formatMap, typeRegistry.GetClassificationType(GLSLConstants.Keyword)));
+				}
+
+				textBlock.Inlines.Add(new Run(" Keyword"));
+
+				keywords.Add(new GLSLCompletion(textBlock, text, text + "Keyword", keywordIcon));
+			}
+
+			for (int j = 1; j <= 32; j *= 2)
+			{
+				builtIn.Add((ShaderType)j, new List<Completion>());
+			}
+
+			foreach (List<Definition> definitions in BuiltInData.Instance.Definitions.Values)
+			{
+				for (int i = 0; i < definitions.Count; i++)
+				{
+					GLSLCompletion completion = new GLSLCompletion(definitions[i].ToTextBlock(formatMap, typeRegistry, definitions.Count), definitions[i], definitions[i].GetImageSource(glyphService));
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.Compute))
+					{
+						builtIn[ShaderType.Compute].Add(completion);
+					}
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.Vertex))
+					{
+						builtIn[ShaderType.Vertex].Add(completion);
+					}
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.Geometry))
+					{
+						builtIn[ShaderType.Geometry].Add(completion);
+					}
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.TessellationControl))
+					{
+						builtIn[ShaderType.TessellationControl].Add(completion);
+					}
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.TessellationEvaluation))
+					{
+						builtIn[ShaderType.TessellationEvaluation].Add(completion);
+					}
+
+					if (definitions[i].ShaderType.HasFlag<ShaderType>(ShaderType.Fragment))
+					{
+						builtIn[ShaderType.Fragment].Add(completion);
+					}
+				}
+			}
 		}
 
 		private ITrackingSpan FindTokenSpanAtPosition(ICompletionSession session)

@@ -5,6 +5,7 @@ namespace Xannden.GLSL.Settings
 	[Flags]
 	public enum ShaderType : uint
 	{
+		None = 0,
 		Compute = 1,
 		Vertex = 2,
 		Geometry = 4,
